@@ -1,17 +1,11 @@
 project
 =======
 
-To build the project, run
+To build the project and copy it to catalina/webapps/proj1, run
 
-    ant compile
+    ant deploy
   
 from the root folder. This will build the project and deploy it to the work/ folder.
-
-To make life easy, you can add a link from your catalina webapps folder to the work folder with the following command:
-
-    ln -s path_to_work_file deployedProject/
-    
-    eg. ln -s proj1/work  project/
 
 Before doing this, you should create the file WEB-INF/dbCreds.txt with your database credentials. The first line should be your username, and the second should be your password.
 

@@ -8,12 +8,13 @@
   <property name="src.home"      value="${basedir}/src"/>
   <property name="web.home"      value="${basedir}/web"/>
   <property name="webinf.home"      value="${basedir}/WEB-INF"/>
+  <property name="catalina.home"  value="${user.home}/catalina/webapps/proj1"/>
 
   <target name="help">
     <echo>You can use the following targets:</echo>
     <echo> </echo>
     <echo>  help    : (default) Prints this message </echo>
-    <echo>  all     : Cleans, compiles, and packages application</echo>
+    <echo>  all     : Cleans, compiles, deploys and packages application</echo>
     <echo>  clean   : Deletes work directories</echo>
     <echo>  compile : Compiles servlets into class files</echo>
     <echo>  dist    : Packages artifacts into a deployable WAR</echo>
@@ -37,7 +38,7 @@
     </fileset>
   </path>
 
-  <target name="all" depends="clean,compile,dist"
+  <target name="all" depends="clean,compile,dist,deploy"
           description="Clean work dirs, then compile and create a WAR"/>
 
   <target name="clean"
@@ -68,9 +69,14 @@
     <copy  todir="${work.home}/WEB-INF/classes">
       <fileset dir="${src.home}" excludes="**/*.java"/>
     </copy>
-
   </target>
 
+  <target name="deploy" depends="compile"
+          description="Deploy compiled files to Catalina">
+    <copy todir="${catalina.home}">
+      <fileset dir="${work.home}" />
+    </copy>
+  </target>
 
   <target name="dist" depends="compile"
           description="Create WAR file for binary distribution">
