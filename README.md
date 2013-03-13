@@ -9,6 +9,8 @@ from the root folder. This will build the project and deploy it to the work/ fol
 
 Before doing this, you should create the file WEB-INF/dbCreds.txt with your database credentials. The first line should be your username, and the second should be your password.
 
+## jdbc driver errors
+If the project can't find OracleDriver, then copy the ojdbc6.jar file from /oracle/jdbc/lib to catalina/lib.
 
 ## project layout
 <dd>
