@@ -7,6 +7,7 @@
   <property name="dist.home"     value="${basedir}/dist"/>
   <property name="src.home"      value="${basedir}/src"/>
   <property name="web.home"      value="${basedir}/web"/>
+  <property name="webinf.home"      value="${basedir}/WEB-INF"/>
 
   <target name="help">
     <echo>You can use the following targets:</echo>
@@ -52,6 +53,9 @@
     <!-- Copy static HTML and JSP files to work dir -->
     <copy todir="${work.home}">
       <fileset dir="${web.home}"/>
+    </copy>
+    <copy todir="${work.home}/WEB-INF/">
+      <fileset dir="${webinf.home}"/>
     </copy>
   </target>
 
