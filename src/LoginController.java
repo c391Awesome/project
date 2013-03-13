@@ -17,14 +17,14 @@ public class LoginController {
 		this.context = context;
 	}
 
-	public boolean attemptLogin(HttpServletRequest request) {
+	public boolean attemptLogin(HttpServletRequest request) throws SQLException {
 		String userName = request.getParameter(USERNAME_FIELD).trim();
 		String password = request.getParameter(PASSWORD_FIELD).trim();
 
 		DatabaseConnection connection = new DatabaseConnection();
 		if (!connection.connect(context)) {
 			connection.close();
-			return false;
+			throw new RuntimeException("Failed to connect to database");
 		}
 
 		// now do SQL stuff, in the future, this will be in the User model
@@ -48,7 +48,7 @@ public class LoginController {
 		} catch (SQLException e) {
 			// todo
 			connection.close();
-			return false;
+			throw e;
 		}
 
 		connection.close();

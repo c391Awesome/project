@@ -41,22 +41,21 @@ public class DatabaseConnection {
 			password = credentialsReader.readLine().trim();
 	
 			credentialsReader.close();
-		} catch (IOException e) {
-			// TODO
-			return false;
+		} catch (IOException credentialsException) {
+			throw new RuntimeException("Failed to read database credentials",
+						credentialsException);
 		}
 
 		try {
 			Class driverClass = Class.forName(DRIVERNAME);
 			DriverManager.registerDriver((Driver) driverClass.newInstance());
 
-			connection = DriverManager.getConnection(DATABASE, userName, password);
+			connection = DriverManager.getConnection(DATABASE, userName,
+							password);
 			connection.setAutoCommit(false);
-		} catch (SQLException e) {
-			return false;
-			// TODO
-		} catch(Exception e) {
-			return false;
+		} catch(Exception connectionException) {
+			throw new RuntimeException("Failed to connect to database",
+						connectionException);
 		}
 		return true;
 	}
