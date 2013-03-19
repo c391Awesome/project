@@ -52,7 +52,7 @@ public class DatabaseConnection {
 
 			connection = DriverManager.getConnection(DATABASE, userName,
 							password);
-			connection.setAutoCommit(false);
+			connection.setAutoCommit(true);
 		} catch(Exception connectionException) {
 			throw new RuntimeException("Failed to connect to database",
 						connectionException);
