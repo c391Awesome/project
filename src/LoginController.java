@@ -45,6 +45,11 @@ public class LoginController {
 		return user.getPassword().equals(password);
 	}
 
+	public void logout() {
+		session.setAttribute("user", null);
+		user = null;
+	}
+
 	public boolean requestIsPost() {
 		return "POST".equalsIgnoreCase(request.getMethod());
 	}
