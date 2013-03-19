@@ -44,6 +44,7 @@ public class LoginController {
 
 		if (foundUser != null && foundUser.getPassword().equals(password)) {
 			user = foundUser;
+			user.loadPersonalInfo(getDatabaseConnection(context));
 			session.setAttribute("user", user);
 			return true;
 		}

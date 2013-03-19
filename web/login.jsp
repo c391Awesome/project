@@ -18,7 +18,8 @@
 
 	if (controller.user != null) {
 		%>
-			Successfully logged in as <%= controller.user.getUserName() %>.
+			Hello, <%= controller.user.getFirstName() %>
+					<%= controller.user.getLastName() %>.
 			<ul>
 				<li><a href="logout.jsp">logout</a></li>
 				<li><a href="changePassword.jsp">changePassword</a></li>
