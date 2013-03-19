@@ -33,14 +33,14 @@
 				<TR VALIGN=TOP ALIGN=LEFT>
 					<TD><B><I>Username:</I></B></TD>
 					<TD>
-						<INPUT TYPE="text" NAME="<%= LoginController.USERNAME_FIELD %>" VALUE="userid">
+						<INPUT TYPE="text" NAME="<%= LoginController.USERNAME_FIELD %>">
 						<BR>
 					</TD>
 				</TR>
 				<TR VALIGN=TOP ALIGN=LEFT>
 					<TD><B><I>Password:</I></B></TD>
 					<TD>
-						<INPUT TYPE="password" NAME="<%= LoginController.PASSWORD_FIELD %>" VALUE="password"></TD>
+						<INPUT TYPE="password" NAME="<%= LoginController.PASSWORD_FIELD %>"></TD>
 				</TR>
 			</TABLE>
 
