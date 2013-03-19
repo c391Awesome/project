@@ -9,7 +9,8 @@ public class LoginController {
 	public static String USERNAME_FIELD = "USERNAME";
 	public static String PASSWORD_FIELD = "PASSWORD";
 
-	public String userName = "";
+	// view-accessible fields
+	public User user;
 	
 	private ServletContext context;
 
@@ -17,41 +18,25 @@ public class LoginController {
 		this.context = context;
 	}
 
-	public boolean attemptLogin(HttpServletRequest request) throws SQLException {
+	public boolean attemptLogin(HttpServletRequest request) {
 		String userName = request.getParameter(USERNAME_FIELD).trim();
 		String password = request.getParameter(PASSWORD_FIELD).trim();
 
+		DatabaseConnection connection = getDatabaseConnection(context);
+		user = User.findUserByName(userName, connection);
+		if (user == null) {
+			return false;
+		}
+
+		return user.getPassword().equals(password);
+	}
+
+	private DatabaseConnection getDatabaseConnection(ServletContext context) {
 		DatabaseConnection connection = new DatabaseConnection();
 		if (!connection.connect(context)) {
 			connection.close();
 			throw new RuntimeException("Failed to connect to database");
 		}
-
-		// now do SQL stuff, in the future, this will be in the User model
-		ResultSet results = null;
-		Statement statement = null;
-		try {
-			statement = connection.createStatement();
-			results = statement.executeQuery(
-				"select password from users where user_name = '"
-				+ userName + "'"
-			);
-			
-			while (results != null && results.next()) {
-				String actualPassword = results.getString(1).trim();
-				if (actualPassword.equals(password) && !password.equals("")) {		
-					connection.close();
-					this.userName = userName;
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			// todo
-			connection.close();
-			throw e;
-		}
-
-		connection.close();
-		return false;
+		return connection;
 	}
 };

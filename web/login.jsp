@@ -1,7 +1,7 @@
 <HTML>
 <HEAD>
-
-<TITLE>Your Login Result</TITLE>
+	<link rel="stylesheet" href="style/style.css"/>
+	<TITLE>Your Login Result</TITLE>
 </HEAD>
 
 <BODY>
@@ -10,12 +10,15 @@
 
 	LoginController controller = new LoginController(getServletContext());
 	if(request.getParameter("Submit") != null) {
-	        //get the user input from the login page
-			if (controller.attemptLogin(request)) {
-				%>Successfully logged in as <%= controller.userName %><%
-			} else {
-				%>Login failed<%
-			}
+	    //get the user input from the login page
+		if (!controller.attemptLogin(request)) {
+			%><span class="error">Login failed</span><%
+		}
+	}
+
+
+	if (controller.user != null) {
+		%>Successfully logged in as <%= controller.user.getUserName() %><%
 	} else {
 		%>
 		<FORM NAME="LoginForm" ACTION="login.jsp" METHOD="post" >
