@@ -1,7 +1,7 @@
 <HTML>
 <HEAD>
 	<link rel="stylesheet" href="style/style.css"/>
-	<TITLE>Your Login Result</TITLE>
+	<TITLE>Log out</TITLE>
 </HEAD>
 
 <BODY>
