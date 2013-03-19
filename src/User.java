@@ -73,6 +73,28 @@ public class User {
 		}
 	}
 
+	public static void updateUserPassword(User user, String password,
+		DatabaseConnection connection) {
+
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			int modified = statement.executeUpdate(
+				"UPDATE users SET password='" + password + "'"
+				+ " where user_name = '" + user.getUserName() + "'"
+			);
+			
+			if (modified == 0) {
+				throw new RuntimeException("no result from update!");
+			}
+
+			connection.close();
+		} catch (SQLException e) {
+			connection.close();
+			throw new RuntimeException("failed to findUserByName()", e);
+		}
+	}
+
 	private static Integer getTypeFromString(String type) {
 		if (type.equals("a")) {
 			return new Integer(ADMINISTRATOR_T);
