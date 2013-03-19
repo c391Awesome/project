@@ -8,12 +8,11 @@
 <%@ page import="java.sql.*,ca.awesome.*" %>
 <% 
 
-	LoginController controller = new LoginController(getServletContext());
-	if(request.getParameter("Submit") != null) {
-	    //get the user input from the login page
-		if (!controller.attemptLogin(request)) {
-			%><span class="error">Login failed</span><%
-		}
+	LoginController controller = new LoginController(getServletContext(),
+										request, response, session);
+
+	if (controller.requestIsPost() && !controller.attemptLogin()) {
+		%><span class="error">Login failed</span><%
 	}
 
 

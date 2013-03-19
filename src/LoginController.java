@@ -13,12 +13,25 @@ public class LoginController {
 	public User user;
 	
 	private ServletContext context;
+	private HttpServletRequest request;
+	private HttpServletResponse response;
+	private HttpSession session;
 
-	public LoginController(ServletContext context) {
+	public LoginController(ServletContext context, HttpServletRequest request,
+				HttpServletResponse response, HttpSession session) {
 		this.context = context;
+		this.request = request;
+		this.response = response;
+		this.session = session;
+
+		this.user = (User)session.getAttribute("user");
 	}
 
-	public boolean attemptLogin(HttpServletRequest request) {
+	public boolean userIsLoggedIn() {
+		return this.user == null;
+	}
+		
+	public boolean attemptLogin() {
 		String userName = request.getParameter(USERNAME_FIELD).trim();
 		String password = request.getParameter(PASSWORD_FIELD).trim();
 
@@ -28,7 +41,12 @@ public class LoginController {
 			return false;
 		}
 
+		session.setAttribute("user", user);
 		return user.getPassword().equals(password);
+	}
+
+	public boolean requestIsPost() {
+		return "POST".equalsIgnoreCase(request.getMethod());
 	}
 
 	private DatabaseConnection getDatabaseConnection(ServletContext context) {
