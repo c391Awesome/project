@@ -40,13 +40,15 @@ public class LoginController {
 		String password = request.getParameter(PASSWORD_FIELD).trim();
 
 		DatabaseConnection connection = getDatabaseConnection(context);
-		user = User.findUserByName(userName, connection);
-		if (user == null) {
-			return false;
+		User foundUser = User.findUserByName(userName, connection);
+
+		if (foundUser != null && foundUser.getPassword().equals(password)) {
+			user = foundUser;
+			session.setAttribute("user", user);
+			return true;
 		}
 
-		session.setAttribute("user", user);
-		return user.getPassword().equals(password);
+		return false;
 	}
 
 	public void requireLogin() {
