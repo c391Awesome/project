@@ -9,10 +9,18 @@ public class User {
 	public static final int DOCTOR_T = 4;
 	public static final int RADIOLOGIST_T = 8;
 	
+	// info from users table
 	private String userName;
 	private String password;
 	private Integer type;
 	private Date dateRegistered;
+
+	// info from persons table
+	private String firstName;
+	private String lastName;
+	private String address;
+	private String email;
+	private String phone;
 
 	public User(String name, String password, Integer type, Date registered) {
 		this.userName = name;
@@ -42,7 +50,70 @@ public class User {
 		return type.intValue();
 	}
 
-	
+	// info from persons table
+
+	public String getFirstName() {
+		if (firstName == null) {
+			throw new MissingFieldException("firstName", this);
+		}
+		return firstName;
+	}
+
+	public String getLastName() {
+		if (lastName == null) {
+			throw new MissingFieldException("lastName", this);
+		}
+		return lastName;
+	}
+
+	public String getAddress() {
+		if (address == null) {
+			throw new MissingFieldException("address", this);
+		}
+		return address;
+	}
+
+	public String getEmail() {
+		if (email == null) {
+			throw new MissingFieldException("email", this);
+		}
+		return email;
+	}
+
+	public String getPhone() {
+		if (phone == null) {
+			throw new MissingFieldException("phone", this);
+		}
+		return phone;
+	}
+
+	public void loadPersonalInfo(DatabaseConnection connection) {
+		ResultSet results = null;
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			results = statement.executeQuery(
+				"select first_name, last_name, address, email, phone"
+				+ " from persons where user_name = '" + userName + "'"
+			);
+			
+			if (results == null || !results.next()) {
+				throw new RuntimeException("failed to loadPersonalInfo()");
+			}
+
+			this.firstName = results.getString(1);
+			this.lastName = results.getString(2);
+			this.address = results.getString(3);
+			this.email = results.getString(4);
+			this.phone = results.getString(5);
+
+			connection.close();
+		} catch (SQLException e) {
+			connection.close();
+			throw new RuntimeException("failed to loadPersonalInfo()", e);
+		}
+	}
+
 	static public User findUserByName(String name,
 		DatabaseConnection connection) {
 
