@@ -52,7 +52,7 @@ public class LoginController {
 		return false;
 	}
 
-	public void requireLogin() {
+	public boolean requireLogin() {
 		if (user == null) {
 			try {
 				response.sendRedirect("login.jsp");
@@ -60,7 +60,9 @@ public class LoginController {
 				throw new RuntimeException("failed to redirect to login.jsp",
 							exception);
 			}
+			return false;
 		}
+		return true;
 	}
 
 	public void logout() {
