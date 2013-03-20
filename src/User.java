@@ -3,7 +3,15 @@ package ca.awesome;
 import java.sql.*;
 
 
+/*
+ * methods like findBy____() get users from the DB.
+ * methods like update____() update data in the DB.
+ *
+ * TODO: user preparedStatements to avoid SQLInjection
+ * 	attacks.
+ */
 public class User {
+	// different types (classes) of users
 	public static final int ADMINISTRATOR_T = 1;
 	public static final int PATIENT_T = 2;
 	public static final int DOCTOR_T = 4;
@@ -114,6 +122,11 @@ public class User {
 		}
 	}
 
+	/*
+	 * Updates info for this user in the persons table.
+	 *
+	 * TODO: handle inserts also.
+	 */
 	public boolean updatePersonalInfo(String newFirstName, String newLastName,
 		String newAddress, String newEmail, String newPhone,
 		DatabaseConnection connection) {
@@ -150,6 +163,9 @@ public class User {
 		}
 	}
 
+	/*
+	 * Load a user from the database with the username provided.
+	 */
 	static public User findUserByName(String name,
 		DatabaseConnection connection) {
 
@@ -180,6 +196,9 @@ public class User {
 		}
 	}
 
+	/*
+	 * Set the user's password in the db.
+	 */
 	public static void updateUserPassword(User user, String password,
 		DatabaseConnection connection) {
 
@@ -202,6 +221,9 @@ public class User {
 		}
 	}
 
+	/*
+	 * Translate a string (from the db) into a user type.
+	 */
 	private static Integer getTypeFromString(String type) {
 		if (type.equals("a")) {
 			return new Integer(ADMINISTRATOR_T);
