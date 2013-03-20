@@ -25,6 +25,8 @@ public class Controller {
 
 		this.user = (User)session.getAttribute("user");
 		this.error = null;
+
+		DatabaseConnection.initialize(context);
 	}
 
 	public boolean userIsLoggedIn() {
@@ -71,7 +73,7 @@ public class Controller {
 
 	protected DatabaseConnection getDatabaseConnection(ServletContext context) {
 		DatabaseConnection connection = new DatabaseConnection();
-		if (!connection.connect(context)) {
+		if (!connection.connect()) {
 			connection.close();
 			throw new RuntimeException("Failed to connect to database");
 		}

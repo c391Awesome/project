@@ -22,16 +22,22 @@ public class DatabaseConnection {
 	private static String DRIVERNAME = "oracle.jdbc.driver.OracleDriver";
 	private static String DATABASE = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
 
+	private static String userName = null;
+	private static String password = null;
+
 
 	private Connection connection;
 
 	public DatabaseConnection()
 	{
 	}
-	
-	public boolean connect(ServletContext context)
+
+	public static void initialize(ServletContext context)
 	{
-		String userName, password;
+		if (userName != null) {
+			return;
+		}
+
 		try {
 			InputStream stream = context.getResourceAsStream(CREDENTIALS_FILE);
 			if (stream == null) {
@@ -53,14 +59,20 @@ public class DatabaseConnection {
 		try {
 			Class driverClass = Class.forName(DRIVERNAME);
 			DriverManager.registerDriver((Driver) driverClass.newInstance());
-
-			connection = DriverManager.getConnection(DATABASE, userName,
-							password);
-			connection.setAutoCommit(true);
-		} catch(Exception connectionException) {
-			throw new RuntimeException("Failed to connect to database",
-						connectionException);
+		} catch(Exception e) {
+			throw new RuntimeException("Failed to load jdbc driver!", e);
 		}
+	}
+	
+	public boolean connect()
+	{
+		try {
+			connection = DriverManager.getConnection(DATABASE, userName, password);
+			connection.setAutoCommit(true);
+		} catch (SQLException e) {
+			return false;
+		}
+
 		return true;
 	}
 
