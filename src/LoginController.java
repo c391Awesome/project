@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.sql.*;
 
 
-public class LoginController {
+public class LoginController extends Controller {
 	public static String USERNAME_FIELD = "USERNAME";
 	public static String PASSWORD_FIELD = "PASSWORD";
 	public static String PASSWORD_CONF_FIELD = "PASSWORD_CONF";
@@ -16,30 +16,11 @@ public class LoginController {
 	public static String EMAIL = "EMAIL";
 	public static String PHONE = "PHONE";
 
-	// view-accessible fields
-	public User user = null;
-	public String error = null;
-	
-	private ServletContext context;
-	private HttpServletRequest request;
-	private HttpServletResponse response;
-	private HttpSession session;
-
 	public LoginController(ServletContext context, HttpServletRequest request,
 				HttpServletResponse response, HttpSession session) {
-		this.context = context;
-		this.request = request;
-		this.response = response;
-		this.session = session;
-
-		this.user = (User)session.getAttribute("user");
-		this.error = null;
+		super(context, request, response, session);
 	}
 
-	public boolean userIsLoggedIn() {
-		return this.user != null;
-	}
-		
 	public boolean attemptLogin() {
 		String userName = request.getParameter(USERNAME_FIELD).trim();
 		String password = request.getParameter(PASSWORD_FIELD).trim();
@@ -55,19 +36,6 @@ public class LoginController {
 		}
 
 		return false;
-	}
-
-	public boolean requireLogin() {
-		if (user == null) {
-			try {
-				response.sendRedirect("login.jsp");
-			} catch (IOException exception) {
-				throw new RuntimeException("failed to redirect to login.jsp",
-							exception);
-			}
-			return false;
-		}
-		return true;
 	}
 
 	public void logout() {
@@ -110,33 +78,5 @@ public class LoginController {
 
 		return user.updatePersonalInfo(firstName, lastName, address, email, phone,
 			getDatabaseConnection(context));
-	}
-
-	public boolean hasError() {
-		return error != null;
-	}
-
-	public boolean requestIsPost() {
-		return "POST".equalsIgnoreCase(request.getMethod());
-	}
-
-	private boolean validateStringLength(String input, String name, int len) {
-		if (input.length() > len) {
-			if (error == null) {
-				error = "";
-			}
-
-			error += name + " cannot exceed " + len + " characters.";
-			return false;
-		}
-		return true;
-	}
-	private DatabaseConnection getDatabaseConnection(ServletContext context) {
-		DatabaseConnection connection = new DatabaseConnection();
-		if (!connection.connect(context)) {
-			connection.close();
-			throw new RuntimeException("Failed to connect to database");
-		}
-		return connection;
 	}
 };
