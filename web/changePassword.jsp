@@ -10,7 +10,9 @@
 
 	LoginController controller = new LoginController(getServletContext(),
 										request, response, session);
-	controller.requireLogin();
+	if (!controller.requireLogin()) {
+		return;
+	}
 
 	if (controller.requestIsPost() && controller.attemptChangePassword()) {
 		%><span class="success">Password changed!</span><%
