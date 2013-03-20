@@ -34,6 +34,10 @@ public class DatabaseConnection {
 		String userName, password;
 		try {
 			InputStream stream = context.getResourceAsStream(CREDENTIALS_FILE);
+			if (stream == null) {
+				throw new FileNotFoundException("Can't find "
+							+ CREDENTIALS_FILE);
+			}
 			InputStreamReader streamReader = new InputStreamReader(stream);
 			BufferedReader credentialsReader = new BufferedReader(streamReader);
 	
