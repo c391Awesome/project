@@ -51,6 +51,32 @@ public class Controller {
 		return true;
 	}
 
+	/*
+	 * Checks whether a user is logged in as admin.
+	 * If not, gives 403 forbidden error.
+	 * returns true if the user is logged in as admin.
+	 */
+	public boolean requireAdmin() {
+		if (!requireLogin()) {
+			return false;
+		}
+
+		if (user.getType() != User.ADMINISTRATOR_T) {
+			userIsForbidden();
+			return false;
+		}
+		return true;
+	}
+
+	public void userIsForbidden() {
+		try {
+			// 403 == forbidden error
+			response.sendError(403);
+		} catch (IOException exception) {
+			throw new RuntimeException("Failed to send 403 error", exception);
+		}
+	}
+
 	public boolean hasError() {
 		return error != null;
 	}
