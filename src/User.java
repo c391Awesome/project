@@ -114,6 +114,42 @@ public class User {
 		}
 	}
 
+	public boolean updatePersonalInfo(String newFirstName, String newLastName,
+		String newAddress, String newEmail, String newPhone,
+		DatabaseConnection connection) {
+
+		// TODO: handle duplicate email problems.
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			int modified = statement.executeUpdate(
+				"UPDATE persons SET"
+				+ " first_name = '" + newFirstName + "',"
+				+ " last_name = '" + newLastName + "',"
+				+ " address = '" + newAddress + "',"
+				+ " email = '" + newEmail + "',"
+				+ " phone = '" + phone + "'"
+				+ " where user_name = '" + getUserName() + "'"
+			);
+			
+			if (modified == 0) {
+				throw new RuntimeException("no result from update!");
+			} else {
+				firstName = newFirstName;
+				lastName = newLastName;
+				address = newAddress;
+				email = newEmail;
+				phone = newPhone;
+			}
+
+			connection.close();
+			return true;
+		} catch (SQLException e) {
+			connection.close();
+			throw new RuntimeException("failed to updatePersonalInfo()", e);
+		}
+	}
+
 	static public User findUserByName(String name,
 		DatabaseConnection connection) {
 
@@ -162,7 +198,7 @@ public class User {
 			connection.close();
 		} catch (SQLException e) {
 			connection.close();
-			throw new RuntimeException("failed to findUserByName()", e);
+			throw new RuntimeException("failed to updateUserPassword()", e);
 		}
 	}
 
