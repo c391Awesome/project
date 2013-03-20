@@ -37,7 +37,7 @@ public class LoginController {
 	}
 
 	public boolean userIsLoggedIn() {
-		return this.user == null;
+		return this.user != null;
 	}
 		
 	public boolean attemptLogin() {

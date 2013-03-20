@@ -16,7 +16,7 @@
 	}
 
 
-	if (controller.user != null) {
+	if (controller.userIsLoggedIn()) {
 		%>
 			Hello, <%= controller.user.getFirstName() %>
 					<%= controller.user.getLastName() %>.
