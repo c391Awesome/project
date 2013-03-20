@@ -22,7 +22,8 @@
 					<%= controller.user.getLastName() %>.
 			<ul>
 				<li><a href="logout.jsp">logout</a></li>
-				<li><a href="changePassword.jsp">changePassword</a></li>
+				<li><a href="changePassword.jsp">change password</a></li>
+				<li><a href="editPersonalInfo.jsp">editPersonalInfo</a></li>
 			</ul>
 		<%
 	} else {

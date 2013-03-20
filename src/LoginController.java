@@ -10,10 +10,15 @@ public class LoginController {
 	public static String USERNAME_FIELD = "USERNAME";
 	public static String PASSWORD_FIELD = "PASSWORD";
 	public static String PASSWORD_CONF_FIELD = "PASSWORD_CONF";
+	public static String FIRST_NAME = "FIRSTNAME";
+	public static String LAST_NAME = "LASTNAME";
+	public static String ADDRESS = "ADDRESS";
+	public static String EMAIL = "EMAIL";
+	public static String PHONE = "PHONE";
 
 	// view-accessible fields
-	public User user;
-	public String error;
+	public User user = null;
+	public String error = null;
 	
 	private ServletContext context;
 	private HttpServletRequest request;
@@ -84,6 +89,29 @@ public class LoginController {
 		return true;
 	}
 
+	public boolean attemptUpdateInfo() {
+		String firstName = request.getParameter(FIRST_NAME).trim();
+		String lastName = request.getParameter(LAST_NAME).trim();
+		String address = request.getParameter(ADDRESS).trim();
+		String email = request.getParameter(EMAIL).trim();
+		String phone = request.getParameter(PHONE).trim();
+
+		boolean valid = true;
+		// do validation
+		valid &= validateStringLength(firstName, "first name", 24);
+		valid &= validateStringLength(lastName, "last name", 24);
+		valid &= validateStringLength(address, "address", 128);
+		valid &= validateStringLength(email, "email", 128);
+		valid &= validateStringLength(phone, "phone", 10);
+
+		if (valid == false) {
+			return false;
+		}
+
+		return user.updatePersonalInfo(firstName, lastName, address, email, phone,
+			getDatabaseConnection(context));
+	}
+
 	public boolean hasError() {
 		return error != null;
 	}
@@ -92,6 +120,17 @@ public class LoginController {
 		return "POST".equalsIgnoreCase(request.getMethod());
 	}
 
+	private boolean validateStringLength(String input, String name, int len) {
+		if (input.length() > len) {
+			if (error == null) {
+				error = "";
+			}
+
+			error += name + " cannot exceed " + len + " characters.";
+			return false;
+		}
+		return true;
+	}
 	private DatabaseConnection getDatabaseConnection(ServletContext context) {
 		DatabaseConnection connection = new DatabaseConnection();
 		if (!connection.connect(context)) {
