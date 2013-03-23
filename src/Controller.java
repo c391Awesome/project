@@ -97,6 +97,10 @@ public class Controller {
 		return true;
 	}
 
+	protected DatabaseConnection getDatabaseConnection() {
+		return getDatabaseConnection(this.context);
+	}
+
 	protected DatabaseConnection getDatabaseConnection(ServletContext context) {
 		DatabaseConnection connection = new DatabaseConnection();
 		if (!connection.connect()) {
