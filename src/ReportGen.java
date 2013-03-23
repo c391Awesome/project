@@ -39,7 +39,7 @@ public class ReportGen {
 			
 			if (results == null || !results.next()) {
 				//throw new RuntimeException("failed to getQueryResult()");
-				//System.out.println("No result is found!");
+				System.out.println("No result is found!");
 				return false;
 			}
 			
