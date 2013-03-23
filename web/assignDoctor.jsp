@@ -5,6 +5,7 @@
 </HEAD>
 
 <BODY>
+	<h1>Assign Family Doctor</h1>
 <%@ page import="java.sql.*,ca.awesome.*" %>
 <% 
 
@@ -15,16 +16,30 @@
 		return;
 	}
 
+	if (controller.requestIsPost()) {
+		if (controller.attemptAssignDoctor()) {
+			%><span class="success">
+				<%= controller.patientName %>
+				assigned to doctor
+				<%= controller.doctorName %>
+			</span><%
+		} else {
+			%><span class="error">failed to assign doctor</span><%
+		}
+	}
+
+	controller.getAssignDoctor();
+
 	%>
 		<FORM NAME="AssignDoctorForm" ACTION="assignDoctor.jsp" METHOD="post" >
 			<TABLE>
 				<TR VALIGN=TOP ALIGN=LEFT>
-					<TD><B><I>patient username:</I></B></TD>
+					<TD><B><I>patient</I></B></TD>
 					<TD>
 						<select NAME="<%= UserManagementController.PATIENT_FIELD%>">
-							<% for(User doctor: controller.doctors) { %>
-								<option value="<%= doctor.getUserName() %>">
-									<%= doctor.getUserName() %>
+							<% for(User patient: controller.patients) { %>
+								<option value="<%= patient.getUserName() %>">
+									<%= patient.getUserName() %>
 								</option>
 							<% } %>
 						</select>
@@ -32,7 +47,7 @@
 					</TD>
 				</TR>
 				<TR VALIGN=TOP ALIGN=LEFT>
-					<TD><B><I>Doctor:</I></B></TD>
+					<TD><B><I>doctor:</I></B></TD>
 					<TD>
 						<select NAME="<%= UserManagementController.DOCTOR_FIELD %>">
 							<% for(User doctor: controller.doctors) { %>
@@ -45,7 +60,7 @@
 				</TR>
 			</TABLE>
 
-			<INPUT TYPE="submit" NAME="Submit" VALUE="LOGIN">
+			<INPUT TYPE="submit" NAME="Submit" VALUE="Assign">
 		</FORM>
 		
 	<%
