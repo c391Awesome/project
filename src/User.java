@@ -36,7 +36,7 @@ public class User {
 		this.userName = name;
 		this.password = password;
 		this.type = type;
-		this.dateRegistered = dateRegistered;
+		this.dateRegistered = registered;
 	}
 
 	public String getUserName() {
@@ -58,6 +58,13 @@ public class User {
 			throw new MissingFieldException("type", this);
 		}
 		return type.intValue();
+	}
+
+	public Date getDateRegistered() {
+		if (dateRegistered == null) {
+			throw new MissingFieldException("dateRegistered", this);
+		}
+		return dateRegistered;
 	}
 
 	// info from persons table
