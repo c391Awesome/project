@@ -34,7 +34,7 @@ public class DatabaseConnection {
 
 	public static void initialize(ServletContext context)
 	{
-		if (userName != null) {
+		if (userName != null && password != null) {
 			return;
 		}
 
@@ -94,5 +94,10 @@ public class DatabaseConnection {
 	public Statement createStatement() throws SQLException
 	{
 		return connection.createStatement();
+	}
+
+	public PreparedStatement prepareStatement(String sql) throws SQLException
+	{
+		return connection.prepareStatement(sql);
 	}
 };
