@@ -104,6 +104,26 @@ public class User {
 		return phone;
 	}
 
+	public boolean insert(DatabaseConnection connection) {
+		PreparedStatement statement = null;
+		try {
+			statement = connection.prepareStatement(
+				"insert into users"
+				+ " (user_name, password, class, date_registered)"
+				+ " VALUES(?, ?, ?, ?)"
+			);
+			statement.setString(1, getUserName());
+			statement.setString(2, getPassword());
+			statement.setString(3, getStringFromType(getType()));
+			statement.setDate(4, getDateRegistered());
+			return (statement.executeUpdate() == 1);
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to findUsersByType()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
 	public void loadPersonalInfo(DatabaseConnection connection) {
 		ResultSet results = null;
 		Statement statement = null;
