@@ -117,10 +117,10 @@ public class User {
 			this.email = results.getString(4);
 			this.phone = results.getString(5);
 
-			connection.close();
 		} catch (SQLException e) {
-			connection.close();
 			throw new RuntimeException("failed to loadPersonalInfo()", e);
+		} finally {
+			connection.close();
 		}
 	}
 
@@ -157,11 +157,11 @@ public class User {
 				phone = newPhone;
 			}
 
-			connection.close();
 			return true;
 		} catch (SQLException e) {
-			connection.close();
 			throw new RuntimeException("failed to updatePersonalInfo()", e);
+		} finally {
+			connection.close();
 		}
 	}
 
@@ -188,13 +188,12 @@ public class User {
 			String type = results.getString(3);
 			Date registered = results.getDate(4);
 
-			connection.close();
-
 			return new User(name, password, getTypeFromString(type),
 							registered);
 		} catch (SQLException e) {
-			connection.close();
 			throw new RuntimeException("failed to findUserByName()", e);
+		} finally {
+			connection.close();
 		}
 	}
 
@@ -223,10 +222,10 @@ public class User {
 
 			return users;
 		} catch (SQLException e) {
-			connection.close();
 			throw new RuntimeException("failed to findUsersByType()", e);
+		} finally {
+			connection.close();
 		}
-		
 	}
 
 	/*
@@ -246,11 +245,10 @@ public class User {
 			if (modified == 0) {
 				throw new RuntimeException("no result from update!");
 			}
-
-			connection.close();
 		} catch (SQLException e) {
-			connection.close();
 			throw new RuntimeException("failed to updateUserPassword()", e);
+		} finally {
+			connection.close();
 		}
 	}
 
