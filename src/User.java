@@ -1,6 +1,8 @@
 package ca.awesome;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 /*
@@ -196,6 +198,37 @@ public class User {
 		}
 	}
 
+	static Collection<User> findUsersByType(int type,
+			DatabaseConnection connection) {
+		ResultSet results = null;
+		PreparedStatement statement = null;
+		try {
+			statement = connection.prepareStatement(
+				"select user_name, password, date_registered"
+				+ " from users where class=?"
+			);
+			statement.setString(1, getStringFromType(type));
+			results = statement.executeQuery();
+			
+			ArrayList<User> users = new ArrayList<User>();
+
+			while (results != null && results.next()) {
+				String userName = results.getString(1);
+				String password = results.getString(2);
+				Date registered = results.getDate(3);
+
+				users.add(new User(userName, password, type,
+							registered));
+			}
+
+			return users;
+		} catch (SQLException e) {
+			connection.close();
+			throw new RuntimeException("failed to findUsersByType()", e);
+		}
+		
+	}
+
 	/*
 	 * Set the user's password in the db.
 	 */
@@ -233,6 +266,20 @@ public class User {
 			return new Integer(DOCTOR_T);
 		} else if (type.equals("r")) {
 			return new Integer(RADIOLOGIST_T);
+		}
+
+		return null;
+	}
+
+	private static String getStringFromType(int type) {
+		if (ADMINISTRATOR_T == type) {
+			return "a";
+		} else if (PATIENT_T == type) {
+			return "p";
+		} else if (DOCTOR_T == type) {
+			return "d";
+		} else if (RADIOLOGIST_T == type) {
+			return "r";
 		}
 
 		return null;
