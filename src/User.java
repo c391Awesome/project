@@ -2,6 +2,7 @@ package ca.awesome;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 
 
@@ -11,6 +12,7 @@ import java.util.Collection;
  *
  * TODO: user preparedStatements to avoid SQLInjection
  * 	attacks.
+ * TODO: close statements/results
  */
 public class User {
 	// different types (classes) of users
@@ -104,6 +106,114 @@ public class User {
 		return phone;
 	}
 
+	public boolean isPersonalInfoLoaded() {
+		return (phone != null)
+			&& (email != null)
+			&& (address != null)
+			&& (firstName != null)
+			&& (lastName != null);
+	}
+
+	public boolean put(DatabaseConnection connection) {
+		try {
+			connection.setAutoCommit(false);
+			connection.setAllowClose(false);
+			// TODO: lock tables?
+	
+			// check if user exists
+			boolean userExists = exists(connection);
+			// insert or update user
+			if (userExists) {
+				this.update(connection);
+			} else {
+				this.insert(connection);
+			}
+	
+			// insert or update personal info
+			if (isPersonalInfoLoaded()) {
+				// check if personal_info exists
+				boolean hasInfo = userExists && personalInfoExists(connection);
+				if (hasInfo) {
+					this.updatePersonalInfo(connection);
+				} else {
+					this.insertPersonalInfo(connection);
+				}
+			}
+	
+			connection.commit();
+			return true;
+		} catch(SQLException e) {
+			connection.rollback();
+			throw new RuntimeException("failed to put() user!", e);
+		} finally {
+			connection.setAllowClose(true);
+			connection.close();
+		}
+	}
+
+	private boolean exists(DatabaseConnection connection) {
+		ResultSet results = null;
+		PreparedStatement statement = null;
+		try {
+			statement = connection.prepareStatement(
+				"select COUNT(*) from users where user_name=?"
+			);
+			statement.setString(1, userName);
+			if (results == null || !results.next()) {
+				return false;
+			}
+
+			return results.getInt(1) == 1;
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to check for existence", e);
+		} finally {
+			connection.close();
+		}
+	}
+
+	private boolean personalInfoExists(DatabaseConnection connection) {
+		ResultSet results = null;
+		PreparedStatement statement = null;
+		try {
+			statement = connection.prepareStatement(
+				"select COUNT(*) from personal_info where user_name=?"
+			);
+			statement.setString(1, userName);
+			
+			if (results == null || !results.next()) {
+				return false;
+			}
+
+			return results.getInt(1) == 1;
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to check for personal info", e);
+		} finally {
+			connection.close();
+		}
+	}
+
+	public boolean update(DatabaseConnection connection) {
+		PreparedStatement statement = null;
+		ResultSet results = null;
+
+		try {
+			statement = connection.prepareStatement(
+				"UPDATE users SET "
+				+ "password=?, class=?, date_registered=?"
+				+ " WHERE user_name=?"
+			);
+			statement.setString(1, getPassword());
+			statement.setString(2, getStringFromType(getType()));
+			statement.setDate(3, getDateRegistered());
+			statement.setString(4, getUserName());
+			return (statement.executeUpdate() == 1);
+		} catch (SQLException e) {
+			throw new RuntimeException("failed User.update()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
 	public boolean insert(DatabaseConnection connection) {
 		PreparedStatement statement = null;
 		try {
@@ -118,13 +228,13 @@ public class User {
 			statement.setDate(4, getDateRegistered());
 			return (statement.executeUpdate() == 1);
 		} catch (SQLException e) {
-			throw new RuntimeException("failed to findUsersByType()", e);
+			throw new RuntimeException("failed User.insert()", e);
 		} finally {
 			connection.close();
 		}
 	}
 
-	public void loadPersonalInfo(DatabaseConnection connection) {
+	public boolean loadPersonalInfo(DatabaseConnection connection) {
 		ResultSet results = null;
 		Statement statement = null;
 		try {
@@ -135,7 +245,7 @@ public class User {
 			);
 			
 			if (results == null || !results.next()) {
-				throw new RuntimeException("failed to loadPersonalInfo()");
+				return false;
 			}
 
 			this.firstName = results.getString(1);
@@ -144,6 +254,7 @@ public class User {
 			this.email = results.getString(4);
 			this.phone = results.getString(5);
 
+			return true;
 		} catch (SQLException e) {
 			throw new RuntimeException("failed to loadPersonalInfo()", e);
 		} finally {
@@ -151,42 +262,111 @@ public class User {
 		}
 	}
 
+	public void addPersonalInfo(String newFirstName, String newLastName,
+		String newAddress, String newEmail, String newPhone) {
+
+		this.firstName = newFirstName;
+		this.lastName = newLastName;
+		this.address = newAddress;
+		this.email = newEmail;
+		this.phone = newPhone;
+	}
+
 	/*
 	 * Updates info for this user in the persons table.
-	 *
-	 * TODO: handle inserts also.
 	 */
 	public boolean updatePersonalInfo(String newFirstName, String newLastName,
 		String newAddress, String newEmail, String newPhone,
 		DatabaseConnection connection) {
+	
+		addPersonalInfo(newFirstName, newLastName, newAddress, newEmail,
+			newPhone);
+		return updatePersonalInfo(connection);
+	}
 
+	/*
+	 * Updates info for this user in the persons table.
+	 */
+	public boolean updatePersonalInfo(DatabaseConnection connection) {
 		// TODO: handle duplicate email problems.
 		Statement statement = null;
 		try {
 			statement = connection.createStatement();
 			int modified = statement.executeUpdate(
 				"UPDATE persons SET"
-				+ " first_name = '" + newFirstName + "',"
-				+ " last_name = '" + newLastName + "',"
-				+ " address = '" + newAddress + "',"
-				+ " email = '" + newEmail + "',"
+				+ " first_name = '" + firstName + "',"
+				+ " last_name = '" + lastName + "',"
+				+ " address = '" + address + "',"
+				+ " email = '" + email + "',"
 				+ " phone = '" + phone + "'"
 				+ " where user_name = '" + getUserName() + "'"
 			);
 			
 			if (modified == 0) {
 				throw new RuntimeException("no result from update!");
-			} else {
-				firstName = newFirstName;
-				lastName = newLastName;
-				address = newAddress;
-				email = newEmail;
-				phone = newPhone;
 			}
 
 			return true;
 		} catch (SQLException e) {
 			throw new RuntimeException("failed to updatePersonalInfo()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
+	public boolean insertPersonalInfo(DatabaseConnection connection) {
+		// TODO: handle duplicate email problems.
+		PreparedStatement statement = null;
+		try {
+			statement = connection.prepareStatement(
+				"INSERT INTO persons "
+				+ "(first_name, last_name, address, email, phone, user_name)"
+				+ " VALUES (?, ?, ?, ?, ?, ?)"
+			);
+
+			statement.setString(1, firstName);
+			statement.setString(2, lastName);
+			statement.setString(3, address);
+			statement.setString(4, email);
+			statement.setString(5, phone);
+			statement.setString(6, userName);
+			
+			if (statement.executeUpdate() == 0) {
+				throw new RuntimeException("no result from insert!");
+			}
+
+			return true;
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to insertPersonalInfo()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
+	/*
+	 * Returns a collection of User records with only their user name
+	 * present.
+	 */
+	static public Collection<User> findAllUserNames(DatabaseConnection connection) {
+		ResultSet results = null;
+		PreparedStatement statement = null;
+		try {
+			statement = connection.prepareStatement(
+				"select user_name from users"
+			);
+			results = statement.executeQuery();
+			
+			ArrayList<User> users = new ArrayList<User>();
+
+			while (results != null && results.next()) {
+				String userName = results.getString(1);
+
+				users.add(new User(userName, null, null, null));
+			}
+
+			return users;
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to findAllUserNames()", e);
 		} finally {
 			connection.close();
 		}
@@ -278,6 +458,30 @@ public class User {
 			connection.close();
 		}
 	}
+
+	/*
+	 * Create a user where all fields are at their default
+	 * values.
+	 */
+	public static User getEmptyUser() {
+		Date registered = new Date(Calendar.getInstance().getTimeInMillis());
+		User user = new User("", "", new Integer(PATIENT_T), registered);
+		user.addEmptyPersonalInfo();
+		return user;
+	}
+
+	/*
+	 * Replaces all personal info with empty strings,
+	 * making it safe to call these getters.
+	 */
+	public void addEmptyPersonalInfo() {
+		this.firstName = "";
+		this.lastName = "";
+		this.address = "";
+		this.email = "";
+		this.phone = "";
+	}
+
 
 	/*
 	 * Translate a string (from the db) into a user type.
