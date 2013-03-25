@@ -30,6 +30,22 @@
 
 <BODY>
 	<p><b>Report Generating Module</b></p><p><hr>
+<%@ page import="java.sql.*,ca.awesome.*" %>
+<%
+	ReportGenController controller = new ReportGenController(
+		getServletContext(), request, response, session);
+	if (!controller.requireAdmin()) {
+		return;
+	}
+	if (controller.requestIsPost()) {
+		if (controller.getReport()) {
+//display report
+		}else{
+		
+		}
+	}
+
+%>
 	<FORM NAME="reportGen" ACTION="reportGen.jsp" METHOD="post" >
 	<P><li>to get the list of all patients with a specified diagnosis for a given time period :</P>
 	<fieldset><legend>Report Searching Information:</legend>
