@@ -92,9 +92,7 @@ public class Controller {
 
 	public String formatDate(java.util.Date date) {
 		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-		StringBuffer buffer = new StringBuffer();
-		format.format(date, buffer, null);
-		return buffer.toString();
+		return format.format(date);
 	}
 
 	public Date parseDate(String text) {
