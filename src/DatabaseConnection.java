@@ -25,8 +25,9 @@ public class DatabaseConnection {
 	private static String userName = null;
 	private static String password = null;
 
+	private boolean allowClose = true;
+	private Connection connection = null;
 
-	private Connection connection;
 
 	public DatabaseConnection()
 	{
@@ -76,9 +77,17 @@ public class DatabaseConnection {
 		return true;
 	}
 
+	public void setAutoCommit(boolean autoCommit) throws SQLException {
+		connection.setAutoCommit(autoCommit);
+	}
+
+	public void setAllowClose(boolean allowClose) {
+		this.allowClose = allowClose;
+	}
+
 	public void close()
 	{
-		if (connection == null) {
+		if (!allowClose || connection == null) {
 			return;
 		}
 
@@ -89,6 +98,21 @@ public class DatabaseConnection {
 			// TODO
 		}
 		connection = null;
+	}
+
+	public void commit() throws SQLException
+	{
+		connection.commit();
+	}
+
+	public boolean rollback()
+	{
+		try {
+			connection.rollback();
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
 	}
 
 	public Statement createStatement() throws SQLException
