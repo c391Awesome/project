@@ -4,6 +4,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.*;
+import java.text.*;
 
 
 public class Controller {
@@ -31,6 +32,10 @@ public class Controller {
 
 	public boolean userIsLoggedIn() {
 		return this.user != null;
+	}
+
+	public boolean userIsAdmin() {
+		return user.getType() == User.ADMINISTRATOR_T;
 	}
 		
 	/*
@@ -61,7 +66,7 @@ public class Controller {
 			return false;
 		}
 
-		if (user.getType() != User.ADMINISTRATOR_T) {
+		if (!userIsAdmin()) {
 			userIsForbidden();
 			return false;
 		}
@@ -83,6 +88,18 @@ public class Controller {
 
 	public boolean requestIsPost() {
 		return "POST".equalsIgnoreCase(request.getMethod());
+	}
+
+	public String formatDate(java.util.Date date) {
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+		StringBuffer buffer = new StringBuffer();
+		format.format(date, buffer, null);
+		return buffer.toString();
+	}
+
+	public Date parseDate(String text) {
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+		return new Date(format.parse(text, new ParsePosition(0)).getTime());
 	}
 
 	protected boolean validateStringLength(String input, String name, int len) {
