@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+
 //import oracle.sql.*;
 //import oracle.jdbc.*;
 
@@ -90,10 +94,9 @@ public class RecordController extends Controller {
 	    		while (i.hasNext() && item.isFormField()) {
 				item = (FileItem) i.next();
 	    		}
-			// Get the image stream
-			InputStream instream = item.getInputStream();
 
-			// TODO: insert image		
+			// insert image
+			Record.insertImage(record_id, item, connection);	
 
 			connection.commit();
 			return true;
@@ -105,5 +108,6 @@ public class RecordController extends Controller {
 			connection.close();
 		}
 	}
+	
 	
 }

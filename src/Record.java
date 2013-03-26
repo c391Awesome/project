@@ -6,6 +6,13 @@ import java.util.Collection;
 import java.util.Calendar;
 //import java.util.Date;
 
+import oracle.sql.*;
+import oracle.jdbc.*;
+
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+
 public class Record {
 	
 	private int record_id;
@@ -17,11 +24,12 @@ public class Record {
 	private Date test_date;
 	private String diagnosis;
 	private String description;
-	//private ArrayList<int> image_id;
+
+	private ArrayList<Integer> image_id;
 
 	public Record (int id, String patient, String doctor, String radiologist,
 			String test_type, Date prescribing, Date test_date,
-			String diagnosis, String description) {
+			String diagnosis, String description, ArrayList<Integer> image_id) {
 		this.record_id = id;
 		this.patient_name = patient;
 		this.doctor_name = doctor;
@@ -31,6 +39,7 @@ public class Record {
 		this.test_date = test_date;
 		this.diagnosis = diagnosis;
 		this.description = description;
+		this.image_id = image_id;
 	}
 
 	public int getRecordId() {
@@ -96,6 +105,13 @@ public class Record {
 		return description;
 	}
 
+	public ArrayList<Integer> getImage_id() {
+		if (image_id.isEmpty()) {
+			throw new MissingFieldException("image_id", this);
+		}
+		return image_id;
+	}
+
 	public boolean insert(DatabaseConnection connection) {
 		PreparedStatement statement = null;
 		try {
@@ -123,10 +139,75 @@ public class Record {
 		}
 	}
 
+
+	/*  TODO: also need to create a sequence using the following 
+	 *  SQL statement to automatically generate a unique image_id:
+      	 *
+      	 *   CREATE SEQUENCE image_id_sequence;
+      	 *
+      	 */
+	public boolean insertImage(int record_id, FileItem item, 
+		DatabaseConnection connection) {
+
+		int image_id;
+	    	try {
+			// Get the image stream
+			InputStream instream = item.getInputStream();
+			BufferedImage full = ImageIO.read(instream);
+			BufferedImage regular = shrink(img, 5);
+	    		BufferedImage thumbnail = shrink(img, 10);
+
+			// to generate a unique image_id using an SQL sequence
+			ResultSet results = null;
+			Statement statement = null;
+			statement = connection.createStatement();
+			results = statement.executeQuery(
+				"SELECT image_id_sequence.nextval from dual"
+				// dual?
+			);
+			results.next();
+			image_id = results.getInt(1);
+	
+			//Insert an empty blob into the table first. Note that you have to 
+	    		//use the Oracle specific function empty_blob() to create an empty blob
+	    		statement.execute(
+				"INSERT INTO pacs_images VALUES( "+record_id+", "
+				+image_id+", empty_blob(), empty_blob() ,empty_blob())"
+			);
+	
+			// to retrieve the lob_locator 
+	    		// use "FOR UPDATE" in the select statement
+	    		String cmd = "SELECT full_size, regular_size, thumbnail"
+				+ "FROM pacs_images WHERE image_id = "+image_id+" FOR UPDATE";
+	    		results = statement.executeQuery(cmd);
+	    		results.next();
+	    		BLOB fullBlob = ((OracleResultSet)results).getBLOB(1);
+			BLOB regularBlob = ((OracleResultSet)results).getBLOB(2);
+			BLOB thumbnailBlob = ((OracleResultSet)results).getBLOB(3);
+			
+			//Write the image to the blob object
+	    		OutputStream outstream1 = fullBlob.getBinaryOutputStream();
+	    		ImageIO.write(full, "jpg", outstream1);
+			OutputStream outstream2 = regularBlob.getBinaryOutputStream();
+	    		ImageIO.write(regular, "jpg", outstream2);
+			OutputStream outstream3 = thumbnailBlob.getBinaryOutputStream();
+	    		ImageIO.write(thumbnail, "jpg", outstream3);	
+
+			instream.close();
+	    		outstream1.close();
+			outstream2.close();
+			outstream3.close();
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to insertImage()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
 	/*
 	 * Find a record from the database with the record_id provided.
 	 */
-	static public Record findRecordById(int record_id,
+	public static Record findRecordById(int record_id,
 		DatabaseConnection connection) {
 
 		ResultSet results = null;
@@ -151,11 +232,40 @@ public class Record {
 			String diagnosis = results.getString(7);
 			String description = results.getString(8);
 
+			ArrayList<Integer> image_id = new ArrayList<Integer>();
+			image_id = findImageIdByRecordId(record_id, connection);
+
 			return new Record(id, patient, doctor, radiologist,
 					test_type, prescribing, test_date,
-					diagnosis, description);
+					diagnosis, description, image_id);
 		} catch (SQLException e) {
 			throw new RuntimeException("failed to findRecordById()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
+	/*
+	 * Find the list of image ids from the database with the record_id provided.
+	 */
+	public static ArrayList<Integer> findImageIdByRecordId (int record_id,
+		DatabaseConnection connection) {
+		
+		ResultSet results = null;
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			results = statement.executeQuery(
+				"select image_id from pacs_images where"
+				+ " record_id = " + record_id
+			);
+			ArrayList<Integer> image_id = new ArrayList<Integer>();
+			while (results != null && results.next()) {
+				image_id.add(results.getInt(1));
+			}
+			return image_id;
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to findImageIdByRecordId()", e);
 		} finally {
 			connection.close();
 		}
@@ -165,7 +275,7 @@ public class Record {
 	 * Find a list of record from the database with diagnosis
 	 * and time period provided.
 	 */
-	static Collection<Record> findRecordByDiagnosisAndTime(String diagnosis,
+	public static Collection<Record> findRecordByDiagnosisAndTime(String diagnosis,
 			Date start, Date end, DatabaseConnection connection) {
 		ResultSet results = null;
 		PreparedStatement statement = null;
@@ -213,10 +323,26 @@ public class Record {
 	public static Record getEmptyRecord() {
 		Date prescribing = new Date(Calendar.getInstance().getTimeInMillis());
 		Date test = new Date(Calendar.getInstance().getTimeInMillis());
+		ArrayList<Integer> image = new ArrayList<Integer>();
 		Record record = new Record(0, "", "", "", ""
-			, prescribing, test, "", "");
+			, prescribing, test, "", "", image);
 		return record;
 	}
+
+	//shrink image by a factor of n, and return the shrinked image
+    	public static BufferedImage shrink(BufferedImage image, int n) {
+        	int w = image.getWidth() / n;
+        	int h = image.getHeight() / n;
+
+        	BufferedImage shrunkImage =
+        	    new BufferedImage(w, h, image.getType());
+        	for (int y=0; y < h; ++y)
+        		for (int x=0; x < w; ++x)
+                		shrunkImage.setRGB(x, y, image.getRGB(x*n, y*n));
+
+        	return shrunkImage;
+    	}
+
 
 
 }

@@ -6,7 +6,7 @@
 <BODY>
 	<p><b>Uploading Module</b></p><p><hr>
 	<form name="imageUpload" method="POST" enctype="multipart/form-data" action="servlet/UploadImage">
-	<p><li>Please enter a radiology record then input or select the path of the image!</P>
+	<p><li>Please enter a radiology record then input or select the path of the image</P>
 	<table>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B>record id:</B></TD><TD>
 	<INPUT TYPE="text"NAME="RECORD_ID" VALUE="record_id"><BR></TD></TR>
