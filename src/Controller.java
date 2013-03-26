@@ -37,6 +37,10 @@ public class Controller {
 	public boolean userIsAdmin() {
 		return user.getType() == User.ADMINISTRATOR_T;
 	}
+
+	public boolean userIsRadiologist() {
+		return user.getType() == User.RADIOLOGIST_T;
+	}
 		
 	/*
 	 * Checks whether a users is logged in,
@@ -72,6 +76,24 @@ public class Controller {
 		}
 		return true;
 	}
+
+	/*
+	 * Checks whether a user is logged in as Radiologist.
+	 * If not, gives 403 forbidden error.
+	 * returns true if the user is logged in as admin.
+	 */
+	public boolean requireRadiologist() {
+		if (!requireLogin()) {
+			return false;
+		}
+
+		if (!userIsRadiologist()) {
+			userIsForbidden();
+			return false;
+		}
+		return true;
+	}
+
 
 	public void userIsForbidden() {
 		try {

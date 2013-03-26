@@ -3,6 +3,7 @@ package ca.awesome;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Calendar;
 //import java.util.Date;
 
 public class Record {
@@ -32,7 +33,7 @@ public class Record {
 	}
 
 	public int getRecordId() {
-		if (Integer.parseInt(record_id) == null) {
+		if (record_id == 0) {
 			throw new MissingFieldException("record_id", this);
 		}
 		return record_id;
@@ -163,7 +164,14 @@ public class Record {
 		}
 	}
 
-	
-	
+
+	public static Record getEmptyRecord() {
+		Date prescribing = new Date(Calendar.getInstance().getTimeInMillis());
+		Date test = new Date(Calendar.getInstance().getTimeInMillis());
+		Record record = new Record(0, "", "", "", ""
+			, prescribing, test, "", "");
+		return record;
+	}
+
 
 }
