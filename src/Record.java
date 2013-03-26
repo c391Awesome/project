@@ -304,9 +304,12 @@ public class Record {
 				Date test_date = results.getDate(7);
 				String description = results.getString(8);
 
+				ArrayList<Integer> image_id = new ArrayList<Integer>();
+				image_id = findImageIdByRecordId(id, connection);
+
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
-						diagnosis, description));
+						diagnosis, description, image_id));
 			}
 
 			return record;
@@ -346,9 +349,12 @@ public class Record {
 				String diagnosis = results.getString(8);
 				String description = results.getString(9);
 
+				ArrayList<Integer> image_id = new ArrayList<Integer>();
+				image_id = findImageIdByRecordId(id, connection);
+
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
-						diagnosis, description));
+						diagnosis, description, image_id));
 			}
 
 			return record;
@@ -388,9 +394,12 @@ public class Record {
 				String diagnosis = results.getString(8);
 				String description = results.getString(9);
 
+				ArrayList<Integer> image_id = new ArrayList<Integer>();
+				image_id = findImageIdByRecordId(id, connection);
+
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
-						diagnosis, description));
+						diagnosis, description, image_id));
 			}
 
 			return record;
@@ -431,14 +440,60 @@ public class Record {
 				String diagnosis = results.getString(8);
 				String description = results.getString(9);
 
+				ArrayList<Integer> image_id = new ArrayList<Integer>();
+				image_id = findImageIdByRecordId(id, connection);
+
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
-						diagnosis, description));
+						diagnosis, description, image_id));
 			}
 
 			return record;
 		} catch (SQLException e) {
 			throw new RuntimeException("failed to findRecordByRadiologist()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
+	/*
+	 * Get a list of all records from the database.
+	 */
+	public static Collection<Record> getAllRecord(DatabaseConnection connection) {
+		ResultSet results = null;
+		Statement statement = null;
+		try {
+			results = statement.executeQuery(
+				"select record_id, patient_name, doctor_name,"
+				+ " radiologist_name, test_type, prescribing_date,"
+				+ " test_date, diagnosis, description"
+				+ " from radiology_record"
+			);
+			
+			ArrayList<Record> record = new ArrayList<Record>();
+
+			while (results != null && results.next()) {
+				int id = results.getInt(1);
+				String patient = results.getString(2);
+				String doctor = results.getString(3);
+				String radiologist = results.getString(4);
+				String test_type = results.getString(5);
+				Date prescribing = results.getDate(6);
+				Date test_date = results.getDate(7);
+				String diagnosis = results.getString(8);
+				String description = results.getString(9);
+
+				ArrayList<Integer> image_id = new ArrayList<Integer>();
+				image_id = findImageIdByRecordId(id, connection);
+
+				record.add(new Record(id, patient, doctor, radiologist,
+						test_type, prescribing, test_date,
+						diagnosis, description, image_id));
+			}
+
+			return record;
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to getAllRecord()", e);
 		} finally {
 			connection.close();
 		}
