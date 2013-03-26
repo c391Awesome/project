@@ -318,6 +318,134 @@ public class Record {
 	}
 
 	/*
+	 * Find a list of record from the database with patient name provided.
+	 */
+	public static Collection<Record> findRecordByPatient(String patient,
+			DatabaseConnection connection) {
+		ResultSet results = null;
+		PreparedStatement statement = null;
+		try {
+			statement = connection.prepareStatement(
+				"select record_id, patient_name, doctor_name,"
+				+ " radiologist_name, test_type, prescribing_date,"
+				+ " test_date, diagnosis, description"
+				+ " from radiology_record where patient_name=?"
+			);
+			statement.setString(1, patient);
+			results = statement.executeQuery();
+			
+			ArrayList<Record> record = new ArrayList<Record>();
+
+			while (results != null && results.next()) {
+				int id = results.getInt(1);
+				String doctor = results.getString(3);
+				String radiologist = results.getString(4);
+				String test_type = results.getString(5);
+				Date prescribing = results.getDate(6);
+				Date test_date = results.getDate(7);
+				String diagnosis = results.getString(8);
+				String description = results.getString(9);
+
+				record.add(new Record(id, patient, doctor, radiologist,
+						test_type, prescribing, test_date,
+						diagnosis, description));
+			}
+
+			return record;
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to findRecordByPatient()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
+	/*
+	 * Find a list of record from the database with doctor name provided.
+	 */
+	public static Collection<Record> findRecordByDoctor(String doctor,
+			DatabaseConnection connection) {
+		ResultSet results = null;
+		PreparedStatement statement = null;
+		try {
+			statement = connection.prepareStatement(
+				"select record_id, patient_name, doctor_name,"
+				+ " radiologist_name, test_type, prescribing_date,"
+				+ " test_date, diagnosis, description"
+				+ " from radiology_record where doctor_name=?"
+			);
+			statement.setString(1, doctor);
+			results = statement.executeQuery();
+			
+			ArrayList<Record> record = new ArrayList<Record>();
+
+			while (results != null && results.next()) {
+				int id = results.getInt(1);
+				String patient = results.getString(2);
+				String radiologist = results.getString(4);
+				String test_type = results.getString(5);
+				Date prescribing = results.getDate(6);
+				Date test_date = results.getDate(7);
+				String diagnosis = results.getString(8);
+				String description = results.getString(9);
+
+				record.add(new Record(id, patient, doctor, radiologist,
+						test_type, prescribing, test_date,
+						diagnosis, description));
+			}
+
+			return record;
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to findRecordByDoctor()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
+
+	/*
+	 * Find a list of record from the database with radiologist name provided.
+	 */
+	public static Collection<Record> findRecordByRadiologist(String radiologist,
+			DatabaseConnection connection) {
+		ResultSet results = null;
+		PreparedStatement statement = null;
+		try {
+			statement = connection.prepareStatement(
+				"select record_id, patient_name, doctor_name,"
+				+ " radiologist_name, test_type, prescribing_date,"
+				+ " test_date, diagnosis, description"
+				+ " from radiology_record where radiologist_name=?"
+			);
+			statement.setString(1, radiologist);
+			results = statement.executeQuery();
+			
+			ArrayList<Record> record = new ArrayList<Record>();
+
+			while (results != null && results.next()) {
+				int id = results.getInt(1);
+				String patient = results.getString(2);
+				String doctor = results.getString(3);
+				String test_type = results.getString(5);
+				Date prescribing = results.getDate(6);
+				Date test_date = results.getDate(7);
+				String diagnosis = results.getString(8);
+				String description = results.getString(9);
+
+				record.add(new Record(id, patient, doctor, radiologist,
+						test_type, prescribing, test_date,
+						diagnosis, description));
+			}
+
+			return record;
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to findRecordByRadiologist()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
+
+	/*
 	 * Create a record where all fields are at default values.
 	 */
 	public static Record getEmptyRecord() {
