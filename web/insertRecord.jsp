@@ -29,7 +29,7 @@
 </HEAD>
 
 <BODY>
-	<p><b>Report Generating Module (insert new record)</b></p><p><hr>
+	<p><b>Uploading module (insert new record)</b></p><p><hr>
 
 	<P><li>to insert a new radiology record :</P>
 	<FORM NAME="insertRecord" ACTION="manage.jsp" METHOD="post" >

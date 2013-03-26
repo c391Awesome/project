@@ -17,6 +17,7 @@ public class Record {
 	private Date test_date;
 	private String diagnosis;
 	private String description;
+	//private ArrayList<int> image_id;
 
 	public Record (int id, String patient, String doctor, String radiologist,
 			String test_type, Date prescribing, Date test_date,
@@ -99,7 +100,7 @@ public class Record {
 		PreparedStatement statement = null;
 		try {
 			statement = connection.prepareStatement(
-				"insert into record"
+				"insert into radiology_record"
 				+ " (record_id, patient_name, doctor_name, radiologist_name,"
 				+ " test_type, prescribing_date, test_date, diagnosis, description)"
 				+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)"
@@ -122,6 +123,48 @@ public class Record {
 		}
 	}
 
+	/*
+	 * Find a record from the database with the record_id provided.
+	 */
+	static public Record findRecordById(int record_id,
+		DatabaseConnection connection) {
+
+		ResultSet results = null;
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			results = statement.executeQuery(
+				"select patient_name, doctor_name, radiologist_name,"
+				+ " test_type, prescribing_date, test_date, diagnosis, description"
+				+ " from radiology_record where record_id = " + record_id
+			);
+			
+			if (results == null || !results.next()) {
+				return null;
+			}
+			String patient = results.getString(1);
+			String doctor = results.getString(2);
+			String radiologist = results.getString(3);
+			String test_type = results.getString(4);
+			Date prescribing = results.getDate(5);
+			Date test_date = results.getDate(6);
+			String diagnosis = results.getString(7);
+			String description = results.getString(8);
+
+			return new Record(id, patient, doctor, radiologist,
+					test_type, prescribing, test_date,
+					diagnosis, description);
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to findRecordById()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
+	/*
+	 * Find a list of record from the database with diagnosis
+	 * and time period provided.
+	 */
 	static Collection<Record> findRecordByDiagnosisAndTime(String diagnosis,
 			Date start, Date end, DatabaseConnection connection) {
 		ResultSet results = null;
@@ -164,7 +207,9 @@ public class Record {
 		}
 	}
 
-
+	/*
+	 * Create a record where all fields are at default values.
+	 */
 	public static Record getEmptyRecord() {
 		Date prescribing = new Date(Calendar.getInstance().getTimeInMillis());
 		Date test = new Date(Calendar.getInstance().getTimeInMillis());

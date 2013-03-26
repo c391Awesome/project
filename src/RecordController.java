@@ -1,12 +1,18 @@
 package ca.awesome;
 
-import java.sql.Date;
+import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+
+//import oracle.sql.*;
+//import oracle.jdbc.*;
+
+import org.apache.commons.fileupload.DiskFileUpload;
+import org.apache.commons.fileupload.FileItem;
 
 public class RecordController extends Controller {
 	public static final String ID_FIELD = "RECORD_ID";
@@ -59,5 +65,45 @@ public class RecordController extends Controller {
 		}
 	}
 
+	// POST uploadImage.jsp
+	public boolean attemptUploadImage() {
+		
+		DatabaseConnection connection = getDatabaseConnection();
+		try {
+			connection.setAutoCommit(false);
+			connection.setAllowClose(false);
+
+			// find Record by id
+			int record_id = Integer.parseInt(request.getParameter(ID_FIELD));		
+			Record SelectedRecord = Record.findRecordById(record_id, connection);
+			if (SelectedRecord == null) {
+				return false;
+			}
+		
+			// Parse the HTTP request to get the image stream
+			DiskFileUpload fu = new DiskFileUpload();
+	    		List FileItems = fu.parseRequest(request.getParameter(UploadImage));
+
+			// Process the uploaded items, assuming only 1 image file uploaded
+			Iterator i = FileItems.iterator();
+	    		FileItem item = (FileItem) i.next();
+	    		while (i.hasNext() && item.isFormField()) {
+				item = (FileItem) i.next();
+	    		}
+			// Get the image stream
+			InputStream instream = item.getInputStream();
+
+			// TODO: insert image		
+
+			connection.commit();
+			return true;
+		} catch (Exception e) {
+			connection.rollback();
+			return false;
+		} finally {
+			connection.setAllowClose(true);
+			connection.close();
+		}
+	}
 	
 }
