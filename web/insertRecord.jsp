@@ -32,7 +32,7 @@
 	<p><b>Uploading module (insert new record)</b></p><p><hr>
 
 	<P><li>to insert a new radiology record :</P>
-	<FORM NAME="insertRecord" ACTION="manage.jsp" METHOD="post" >
+	<FORM NAME="insertRecord" ACTION="insertRecord.jsp" METHOD="post" >
 	<fieldset><legend>radiology record information:</legend>
 	<TABLE>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>record id:</I></B></TD><TD>
