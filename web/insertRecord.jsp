@@ -29,11 +29,23 @@
 
 	if (controller.requestIsPost()) {
 		if (controller.attemptInsertRecord()) {
-			%><span class="success">new record has been inserted</span><%
+			%><span class="success">new record has been inserted
+				<%= controller.patientName %>|<%= controller.doctorName %>|
+				<%= controller.radiologistName %>|<%= controller.testType %>|
+				<%= controller.diagnosis %>|<%= controller.description %>|
+				<%= controller.prescribing %>|<%= controller.testDate %>
+			</span><%
 		} else {
-			%><span class="error">failed to insert record</span><%
+			%><span class="error">failed to insert record
+				<%= controller.patientName %>|<%= controller.doctorName %>|
+				<%= controller.radiologistName %>|<%= controller.testType %>|
+				<%= controller.diagnosis %>|<%= controller.description %>|
+				<%= controller.prescribing %>|<%= controller.testDate %>
+			</span><%
 		}
 	}
+
+	controller.getInsertRecord();
 
 %>
 	<p><b>Uploading module (insert new record)</b></p><p><hr>
@@ -42,20 +54,33 @@
 	<FORM NAME="insertRecord" ACTION="insertRecord.jsp" METHOD="post" >
 	<fieldset><legend>radiology record information:</legend>
 	<TABLE>
-	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>record id:</I></B></TD><TD>
+<!--	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>record id:</I></B></TD><TD>
 	<INPUT TYPE="text"NAME="RECORD_ID" VALUE="record_id"><BR></TD></TR>
+-->
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>patient name:</I></B></TD><TD>
-<!--	<select NAME=" <%= RecordController.PATIENT_FIELD%>">
-		<% for (Record patient: controller.
-<!--	<INPUT TYPE="text"NAME="PATIENT" VALUE="patient_name"><BR></TD></TR>
--->
+	<select NAME=" <%= RecordController.PATIENT_FIELD%>">
+		<% for (User patient: controller.patients) { %>
+			<option value="<%= patient.getUserName() %>">
+				<%= patient.getUserName() %>
+			</option>
+		<% } %>
+	</select><BR></TD></TR>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>doctor name:</I></B></TD><TD>
-
-<!--	<INPUT TYPE="text"NAME="DOCTOR" VALUE="doctor_name"><BR></TD></TR>
--->
+	<select NAME=" <%= RecordController.DOCTOR_FIELD%>">
+		<% for (User doctor: controller.doctors) { %>
+			<option value="<%= doctor.getUserName() %>">
+				<%= doctor.getUserName() %>
+			</option>
+		<% } %>
+	</select><BR></TD></TR>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>radiologist name:</I></B></TD><TD>
-<!--	<INPUT TYPE="text"NAME="RADIOLOGIST" VALUE="radiologist name"><BR></TD></TR>
--->
+	<select NAME=" <%= RecordController.RADIOLOGIST_FIELD%>">
+		<% for (User radiologist: controller.radiologists) { %>
+			<option value="<%= radiologist.getUserName() %>">
+				<%= radiologist.getUserName() %>
+			</option>
+		<% } %>
+	</select><BR></TD></TR>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>test_type:</I></B></TD><TD>
 	<INPUT TYPE="text"NAME="TESTTYPE" VALUE="test_type"><BR></TD></TR>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>prescribing date:</I></B></TD><TD>

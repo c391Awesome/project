@@ -31,8 +31,20 @@ public class RecordController extends Controller {
 	public static final String PRESCRIBINGDATE_FIELD = "PRESCRIBINGDATE";
 	public static final String TESTDATE_FIELD = "TESTDATE";
 
-	//public Collection<Record> records = new ArrayList<Record>();
-	//public Record newRecord = Record.getEmptyRecord();
+	// list of User
+	public Collection<User> patients = new ArrayList<User>();
+	public Collection<User> doctors = new ArrayList<User>();
+	public Collection<User> radiologists = new ArrayList<User>();
+
+	public String doctorName = "";
+	public String patientName = "";
+	public String radiologistName = "";
+	public String testType = "";
+	public String diagnosis = "";
+	public String description = "";
+	public Date prescribing = null;
+	public Date testDate = null;
+	
 
 	public RecordController(ServletContext context,
 			HttpServletRequest request, HttpServletResponse response,
@@ -40,23 +52,46 @@ public class RecordController extends Controller {
 		super(context, request, response, session);
 	}
 
+	// GET insertRecord.jsp
+	public void getInsertRecord() {
+		patients = User.findUsersByType(User.PATIENT_T,
+					getDatabaseConnection(context));
+		doctors = User.findUsersByType(User.DOCTOR_T,
+					getDatabaseConnection(context));
+		radiologists = User.findUsersByType(User.RADIOLOGIST_T,
+					getDatabaseConnection(context));
+	}
+
 	// POST insertRecord.jsp
 	public boolean attemptInsertRecord() {
-		Record newRecord = new Record(
-			Integer.parseInt(request.getParameter(ID_FIELD)),
-			request.getParameter(PATIENT_FIELD),
-			request.getParameter(DOCTOR_FIELD),
-			request.getParameter(RADIOLOGIST_FIELD),
-			request.getParameter(TESTTYPE_FIELD),
-			parseDate(request.getParameter(PRESCRIBINGDATE_FIELD)),
-			parseDate(request.getParameter(TESTDATE_FIELD)),
-			request.getParameter(DIAGNOSIS_FIELD),
-			request.getParameter(DESCRIPTION_FIELD)			
-		);	
 		DatabaseConnection connection = getDatabaseConnection();
 		try {
 			connection.setAutoCommit(false);
 			connection.setAllowClose(false);
+
+			// to generate a unique record_id using an SQL sequence
+			ResultSet results = null;
+			Statement statement = null;
+			statement = connection.createStatement();
+			results = statement.executeQuery(
+				"SELECT record_id_sequence.nextval from dual"
+			);
+			results.next();
+			int record_id = results.getInt(1);
+
+			patientName = request.getParameter(PATIENT_FIELD);
+			doctorName = request.getParameter(DOCTOR_FIELD);
+			radiologistName = request.getParameter(RADIOLOGIST_FIELD);
+			testType = request.getParameter(TESTTYPE_FIELD);
+			diagnosis = request.getParameter(DIAGNOSIS_FIELD);
+			description = request.getParameter(DESCRIPTION_FIELD);
+			prescribing = parseDate(request.getParameter(PRESCRIBINGDATE_FIELD));
+			testDate = parseDate(request.getParameter(TESTDATE_FIELD));
+	
+			Record newRecord = new Record(
+				record_id, patientName, doctorName, radiologistName ,
+				testType, prescribing, testDate, diagnosis, description
+			);
 
 			newRecord.insert(connection);
 
