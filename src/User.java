@@ -288,15 +288,28 @@ public class User {
 
 		try {
 			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			connection.setAutoCommit(false);
 			connection.setAllowClose(false);
 		
-			if (!personalInfoExists(connection)) {
-				return insertPersonalInfo(connection);
+			boolean success = false;
+			if (personalInfoExists(connection)) {
+				success = updatePersonalInfo(connection);
 			} else {
-				return updatePersonalInfo(connection);
+				success = insertPersonalInfo(connection);
 			}
+
+			if (success) {
+				connection.commit();
+			} else {
+				connection.rollback();
+			}
+			return success;
+		} catch (RuntimeException e) {
+			connection.rollback();
+			return false;
 		} catch (SQLException e) {
-			throw new RuntimeException("failed attemptUpdateInfo()");
+			connection.rollback();
+			return false;
 		} finally {
 			connection.setAllowClose(true);
 			connection.close();
