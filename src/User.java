@@ -9,8 +9,11 @@ import java.util.Collection;
 /*
  * methods like findBy____() get users from the DB.
  * methods like update____() update data in the DB.
+ * methods like upsert____() insert or update data in the DB,
+ * 								depending on whether the row to update
+ *								exists.
  *
- * TODO: user preparedStatements to avoid SQLInjection
+ * TODO: use preparedStatements to avoid SQLInjection
  * 	attacks.
  * TODO: close statements/results
  */
@@ -270,6 +273,33 @@ public class User {
 		this.address = newAddress;
 		this.email = newEmail;
 		this.phone = newPhone;
+	}
+
+	/*
+	 * Update personal info if it exists already, otherwise insert.
+	 */
+	public boolean upsertPersonalInfo(String newFirstName, String newLastName,
+		String newAddress, String newEmail, String newPhone,
+		DatabaseConnection connection) {
+
+		addPersonalInfo(newFirstName, newLastName, newAddress,
+			newEmail, newPhone);
+
+		try {
+			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			connection.setAllowClose(false);
+		
+			if (!personalInfoExists(connection)) {
+				return insertPersonalInfo(connection);
+			} else {
+				return updatePersonalInfo(connection);
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException("failed attemptUpdateInfo()");
+		} finally {
+			connection.setAllowClose(true);
+			connection.close();
+		}
 	}
 
 	/*
