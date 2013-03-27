@@ -5,8 +5,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Iterator;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -46,17 +48,17 @@ public class RecordController extends Controller {
 			request.getParameter(DOCTOR_FIELD),
 			request.getParameter(RADIOLOGIST_FIELD),
 			request.getParameter(TESTTYPE_FIELD),
-			request.getParameter(PRESCRIBINGDATE_FIELD),
-			request.getParameter(TESTDATE_FIELD),
+			parseDate(request.getParameter(PRESCRIBINGDATE_FIELD)),
+			parseDate(request.getParameter(TESTDATE_FIELD)),
 			request.getParameter(DIAGNOSIS_FIELD),
-			request.getParameter(DESCRIPTION_FIELD)
+			request.getParameter(DESCRIPTION_FIELD)			
 		);	
 		DatabaseConnection connection = getDatabaseConnection();
 		try {
 			connection.setAutoCommit(false);
 			connection.setAllowClose(false);
 
-			Record.insert(connection);
+			newRecord.insert(connection);
 
 			connection.commit();
 			return true;
@@ -86,10 +88,12 @@ public class RecordController extends Controller {
 		
 			// Parse the HTTP request to get the image stream
 			DiskFileUpload fu = new DiskFileUpload();
-	    		List FileItems = fu.parseRequest(request.getParameter(UploadImage));
+	    		// ???  List FileItems = fu.parseRequest(request.getParameter("UploadImage"));
 
 			// Process the uploaded items, assuming only 1 image file uploaded
-			Iterator i = FileItems.iterator();
+
+			/* What is FileItem?
+			Iterator i = FileItem.iterator();
 	    		FileItem item = (FileItem) i.next();
 	    		while (i.hasNext() && item.isFormField()) {
 				item = (FileItem) i.next();
@@ -97,7 +101,7 @@ public class RecordController extends Controller {
 
 			// insert image
 			Record.insertImage(record_id, item, connection);	
-
+			*/
 			connection.commit();
 			return true;
 		} catch (Exception e) {

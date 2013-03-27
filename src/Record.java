@@ -12,6 +12,8 @@ import oracle.jdbc.*;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import org.apache.commons.fileupload.*;
+import java.io.*;
 
 public class Record {
 	
@@ -29,7 +31,7 @@ public class Record {
 
 	public Record (int id, String patient, String doctor, String radiologist,
 			String test_type, Date prescribing, Date test_date,
-			String diagnosis, String description, ArrayList<Integer> image_id) {
+			String diagnosis, String description) {
 		this.record_id = id;
 		this.patient_name = patient;
 		this.doctor_name = doctor;
@@ -39,7 +41,7 @@ public class Record {
 		this.test_date = test_date;
 		this.diagnosis = diagnosis;
 		this.description = description;
-		this.image_id = image_id;
+		//this.image_id = image_id;
 	}
 
 	public int getRecordId() {
@@ -147,15 +149,15 @@ public class Record {
       	 *
       	 */
 	public boolean insertImage(int record_id, FileItem item, 
-		DatabaseConnection connection) {
+		DatabaseConnection connection) throws IOException{
 
 		int image_id;
 	    	try {
 			// Get the image stream
 			InputStream instream = item.getInputStream();
 			BufferedImage full = ImageIO.read(instream);
-			BufferedImage regular = shrink(img, 5);
-	    		BufferedImage thumbnail = shrink(img, 10);
+			BufferedImage regular = shrink(full, 5);
+	    		BufferedImage thumbnail = shrink(full, 10);
 
 			// to generate a unique image_id using an SQL sequence
 			ResultSet results = null;
@@ -197,6 +199,7 @@ public class Record {
 	    		outstream1.close();
 			outstream2.close();
 			outstream3.close();
+			return true;
 		} catch (SQLException e) {
 			throw new RuntimeException("failed to insertImage()", e);
 		} finally {
@@ -235,9 +238,9 @@ public class Record {
 			ArrayList<Integer> image_id = new ArrayList<Integer>();
 			image_id = findImageIdByRecordId(record_id, connection);
 
-			return new Record(id, patient, doctor, radiologist,
+			return new Record(record_id, patient, doctor, radiologist,
 					test_type, prescribing, test_date,
-					diagnosis, description, image_id);
+					diagnosis, description);
 		} catch (SQLException e) {
 			throw new RuntimeException("failed to findRecordById()", e);
 		} finally {
@@ -309,7 +312,7 @@ public class Record {
 
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
-						diagnosis, description, image_id));
+						diagnosis, description));
 			}
 
 			return record;
@@ -354,7 +357,7 @@ public class Record {
 
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
-						diagnosis, description, image_id));
+						diagnosis, description));
 			}
 
 			return record;
@@ -399,7 +402,7 @@ public class Record {
 
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
-						diagnosis, description, image_id));
+						diagnosis, description));
 			}
 
 			return record;
@@ -445,7 +448,7 @@ public class Record {
 
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
-						diagnosis, description, image_id));
+						diagnosis, description));
 			}
 
 			return record;
@@ -488,7 +491,7 @@ public class Record {
 
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
-						diagnosis, description, image_id));
+						diagnosis, description));
 			}
 
 			return record;
@@ -506,9 +509,9 @@ public class Record {
 	public static Record getEmptyRecord() {
 		Date prescribing = new Date(Calendar.getInstance().getTimeInMillis());
 		Date test = new Date(Calendar.getInstance().getTimeInMillis());
-		ArrayList<Integer> image = new ArrayList<Integer>();
+		//ArrayList<Integer> image = new ArrayList<Integer>();
 		Record record = new Record(0, "", "", "", ""
-			, prescribing, test, "", "", image);
+			, prescribing, test, "", "");
 		return record;
 	}
 

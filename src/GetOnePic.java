@@ -5,6 +5,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
 
+
 /**
  *  This servlet sends one picture stored in the table below to the client 
  *  who requested the servlet.
@@ -56,7 +57,7 @@ public class GetOnePic extends HttpServlet
 	/*
 	 *   to execute the given query
 	 */
-	DatabaseConnection conn = getDatabaseConnection();
+	DatabaseConnection conn = new DatabaseConnection();
 	try {
 	    Statement stmt = conn.createStatement();
 	    ResultSet rset = stmt.executeQuery(query);
@@ -77,11 +78,14 @@ public class GetOnePic extends HttpServlet
 	}
 	// to close the connection
 	finally {
+		conn.close();
+		/*
 	    try {
 		conn.close();
 	    } catch ( SQLException ex) {
 		out.println( ex.getMessage() );
 	    }
+		*/
 	}
     }
 }

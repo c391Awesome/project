@@ -50,7 +50,7 @@ public class GetBigPic extends HttpServlet
 	/*
 	 *   to execute the given query
 	 */
-	DatabaseConnection conn = getDatabaseConnection();
+	DatabaseConnection conn = new DatabaseConnection(); 
 	try {
 	    Statement stmt = conn.createStatement();
 	    ResultSet rset = stmt.executeQuery(query);
@@ -59,7 +59,7 @@ public class GetBigPic extends HttpServlet
 	    if ( rset.next() ) {
                 out.println(
 			"<html><head><title>"
-			+title+ "</title>+</head>" 
+			+id_string+ "</title>+</head>" 
 			+"<body bgcolor=\"#000000\" text=\"#cccccc\">"
 			+"<center><img src = \"GetOnePic?"+id_string
 			+"\">" +"<h3>" + id_string + " </h3>" 
@@ -73,11 +73,14 @@ public class GetBigPic extends HttpServlet
 	}
 	// to close the connection
 	finally {
+		conn.close();
+		/*
 	    try {
 		conn.close();
 	    } catch ( SQLException ex) {
 		out.println( ex.getMessage() );
 	    }
+		*/
 	}
     }
 }
