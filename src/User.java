@@ -116,64 +116,6 @@ public class User {
 			&& (firstName != null)
 			&& (lastName != null);
 	}
-
-	public boolean put(DatabaseConnection connection) {
-		try {
-			connection.setAutoCommit(false);
-			connection.setAllowClose(false);
-			// TODO: lock tables?
-	
-			// check if user exists
-			boolean userExists = exists(connection);
-			// insert or update user
-			if (userExists) {
-				this.update(connection);
-			} else {
-				this.insert(connection);
-			}
-	
-			// insert or update personal info
-			if (isPersonalInfoLoaded()) {
-				// check if personal_info exists
-				boolean hasInfo = userExists && personalInfoExists(connection);
-				if (hasInfo) {
-					this.updatePersonalInfo(connection);
-				} else {
-					this.insertPersonalInfo(connection);
-				}
-			}
-	
-			connection.commit();
-			return true;
-		} catch(SQLException e) {
-			connection.rollback();
-			throw new RuntimeException("failed to put() user!", e);
-		} finally {
-			connection.setAllowClose(true);
-			connection.close();
-		}
-	}
-
-	private boolean exists(DatabaseConnection connection) {
-		ResultSet results = null;
-		PreparedStatement statement = null;
-		try {
-			statement = connection.prepareStatement(
-				"select COUNT(*) from users where user_name=?"
-			);
-			statement.setString(1, userName);
-			if (results == null || !results.next()) {
-				return false;
-			}
-
-			return results.getInt(1) == 1;
-		} catch (SQLException e) {
-			throw new RuntimeException("failed to check for existence", e);
-		} finally {
-			connection.close();
-		}
-	}
-
 	private boolean personalInfoExists(DatabaseConnection connection) {
 		ResultSet results = null;
 		PreparedStatement statement = null;
