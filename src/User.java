@@ -179,9 +179,10 @@ public class User {
 		PreparedStatement statement = null;
 		try {
 			statement = connection.prepareStatement(
-				"select COUNT(*) from personal_info where user_name=?"
+				"select COUNT(*) from persons where user_name=?"
 			);
 			statement.setString(1, userName);
+			results = statement.executeQuery();
 			
 			if (results == null || !results.next()) {
 				return false;
