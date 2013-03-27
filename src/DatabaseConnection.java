@@ -77,6 +77,10 @@ public class DatabaseConnection {
 		return true;
 	}
 
+	public void setTransactionIsolation(int level) throws SQLException {
+		connection.setTransactionIsolation(level);
+	}
+
 	public void setAutoCommit(boolean autoCommit) throws SQLException {
 		connection.setAutoCommit(autoCommit);
 	}
