@@ -30,7 +30,6 @@ public class LoginController extends Controller {
 
 		if (foundUser != null && foundUser.getPassword().equals(password)) {
 			user = foundUser;
-			user.loadPersonalInfo(getDatabaseConnection(context));
 			session.setAttribute("user", user);
 			return true;
 		}
@@ -57,6 +56,13 @@ public class LoginController extends Controller {
 		return true;
 	}
 
+	// GET editPersonalInfo.jsp
+	public void getUpdateInfo() {
+		if (!user.loadPersonalInfo(getDatabaseConnection())) {
+			user.addEmptyPersonalInfo();
+		}
+	}
+
 	public boolean attemptUpdateInfo() {
 		String firstName = request.getParameter(FIRST_NAME).trim();
 		String lastName = request.getParameter(LAST_NAME).trim();
@@ -76,7 +82,7 @@ public class LoginController extends Controller {
 			return false;
 		}
 
-		return user.updatePersonalInfo(firstName, lastName, address, email, phone,
-			getDatabaseConnection(context));
+		return user.upsertPersonalInfo(firstName, lastName, address, email,
+			phone, getDatabaseConnection());
 	}
 };

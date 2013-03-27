@@ -15,8 +15,10 @@
 	}
 
 	if (controller.requestIsPost() && controller.attemptUpdateInfo()) {
+		// request is post
 		%><span class="success">Information changed!</span><%
 	} else {
+		controller.getUpdateInfo();
 		if (controller.hasError()) {
 			%><span class="error"><%=controller.error%></span><%
 		}
