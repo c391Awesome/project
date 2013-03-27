@@ -10,6 +10,7 @@
   <property name="webinf.home"      value="${basedir}/WEB-INF"/>
   <property name="catalina.home"  value="${user.home}/catalina/webapps/proj1"/>
 
+
   <target name="help">
     <echo>You can use the following targets:</echo>
     <echo> </echo>
@@ -34,6 +35,10 @@
     </fileset>
 	<pathelement location="${jdbc.home}"/>
     <fileset dir="${jdbc.home}/lib">
+      <include name="*.jar"/>
+    </fileset>
+	<pathelement location="${webinf.home}"/>
+    <fileset dir="${webinf.home}/lib">
       <include name="*.jar"/>
     </fileset>
   </path>
@@ -66,6 +71,9 @@
           destdir="${work.home}/WEB-INF/classes" debug="true">
         <classpath refid="compile.classpath"/>
     </javac>
+    <copy  todir="${work.home}/WEB-INF/lib">
+      <fileset dir="${webinf.home}/lib" excludes="**/*.java"/>
+    </copy>
     <copy  todir="${work.home}/WEB-INF/classes">
       <fileset dir="${src.home}" excludes="**/*.java"/>
     </copy>

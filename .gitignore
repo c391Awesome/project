@@ -13,3 +13,6 @@ work/
 *.jar
 *.war
 *.ear
+
+# don't ignore .jar files in WEB-INF/lib
+!WEB-INF/lib/*.jar
