@@ -18,12 +18,17 @@
 
 	if (controller.userIsLoggedIn()) {
 		%>
-			Hello, <%= controller.user.getFirstName() %>
-					<%= controller.user.getLastName() %>.
+			<% if (controller.user.isPersonalInfoLoaded()) { %>
+				Hello, <%= controller.user.getFirstName() %>
+						<%= controller.user.getLastName() %>.
+			<% } else { %>
+				Hello, <%= controller.user.getUserName() %>.
+			<% } %>
+
 			<ul>
 				<li><a href="logout.jsp">logout</a></li>
 				<li><a href="changePassword.jsp">change password</a></li>
-				<li><a href="editPersonalInfo.jsp">editPersonalInfo</a></li>
+				<li><a href="editPersonalInfo.jsp">edit personal info</a></li>
 				<% if (controller.userIsAdmin()) { %>
 					<li><a href="userManagementConsole.jsp">
 						manage users
