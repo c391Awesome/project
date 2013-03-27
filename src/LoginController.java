@@ -82,7 +82,11 @@ public class LoginController extends Controller {
 			return false;
 		}
 
-		return user.upsertPersonalInfo(firstName, lastName, address, email,
-			phone, getDatabaseConnection());
+		if (!user.upsertPersonalInfo(firstName, lastName, address, email,
+				phone, getDatabaseConnection())) {
+			error = "Failed to edit personal info.";
+			return false;
+		}
+		return true;
 	}
 };
