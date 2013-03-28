@@ -102,10 +102,24 @@
 			<INPUT TYPE="submit" NAME="Submit" VALUE="Save">
 		</FORM>
 		
-	<%
-%>
-
-
+	<% if (selectedUser.getType() == User.PATIENT_T) { %>
+		<hr/>
+		<h4>Family Doctors</h4>
+		<ul>
+		<% for (User doctor: controller.doctors) { %>
+			<li><%= doctor.getUserName() %>
+		<% } %>
+		</ul>
+	
+		<form name="assignDoctorForm" action="assignDoctor.jsp" method="get">
+			<input type="hidden" name="PATIENT" value="<%=selectedUser.getUserName() %>"/>
+			<INPUT TYPE="submit" NAME="ASSIGN" VALUE="Add Doctor">
+		</form>
+		<form name="unassignDoctorForm" action="unassignDoctor.jsp" method="get">
+			<input type="hidden" name="PATIENT" value="<%= selectedUser.getUserName() %>"/>
+			<INPUT TYPE="submit" NAME="UNASSIGN" VALUE="Remove Doctor">
+		</form>
+	<% } %>
 
 </BODY>
 </HTML>

@@ -50,6 +50,8 @@ public class UserManagementController extends Controller {
 		if (!selectedUser.loadPersonalInfo(getDatabaseConnection())) {
 			selectedUser.addEmptyPersonalInfo();
 		}
+		doctors = FamilyDoctor.getDoctorNamesForPatient(userName,
+			getDatabaseConnection());
 	}
 
 	// POST editUser.jsp
@@ -129,16 +131,14 @@ public class UserManagementController extends Controller {
 
 	// GET assignDoctor.jsp
 	public void getAssignDoctor() {
-		patients = User.findUsersByType(User.PATIENT_T,
-					getDatabaseConnection(context));
-		doctors = User.findUsersByType(User.DOCTOR_T,
-					getDatabaseConnection(context));
+		userName = request.getParameter(PATIENT_FIELD);
+		patientName = userName;
+		doctors = FamilyDoctor.getAssignableDoctorsForPatient(userName,
+					getDatabaseConnection());
 	}
 
 	// POST assignDoctor.jsp
 	public boolean attemptAssignDoctor() {
-		// TODO: add triggers to make sure that we don't assign
-		// multiple doctors per patient
 		doctorName = request.getParameter(DOCTOR_FIELD);
 		patientName = request.getParameter(PATIENT_FIELD);
 
@@ -152,5 +152,25 @@ public class UserManagementController extends Controller {
 		familyDoctor.setPatient(patientName);
 
 		return familyDoctor.insert(getDatabaseConnection());
+	}
+
+	// GET unassignDoctor.jsp
+	public void getUnassignDoctor() {
+		patientName = request.getParameter(PATIENT_FIELD);
+		userName = patientName;
+		doctors = FamilyDoctor.getDoctorNamesForPatient(patientName,
+					getDatabaseConnection(context));
+	}
+
+	// POST unassignDoctor.jsp
+	public boolean attemptUnassignDoctor() {
+		patientName = request.getParameter(PATIENT_FIELD);
+		userName = patientName;
+		doctorName = request.getParameter(DOCTOR_FIELD);
+
+		FamilyDoctor assignment = new FamilyDoctor();
+		assignment.setDoctor(doctorName);
+		assignment.setPatient(patientName);
+		return assignment.delete(getDatabaseConnection());
 	}
 };

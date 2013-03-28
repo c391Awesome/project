@@ -31,21 +31,13 @@
 	controller.getAssignDoctor();
 
 	%>
+		<h4>Assign Doctor to <a href="editUser.jsp?USERNAME=<%= controller.patientName %>"><%= controller.patientName %></a></h4>
 		<FORM NAME="AssignDoctorForm" ACTION="assignDoctor.jsp" METHOD="post" >
 			<TABLE>
-				<TR VALIGN=TOP ALIGN=LEFT>
-					<TD><B><I>patient</I></B></TD>
-					<TD>
-						<select NAME="<%= UserManagementController.PATIENT_FIELD%>">
-							<% for(User patient: controller.patients) { %>
-								<option value="<%= patient.getUserName() %>">
-									<%= patient.getUserName() %>
-								</option>
-							<% } %>
-						</select>
-						<BR>
-					</TD>
-				</TR>
+				<input type="hidden"
+					NAME="<%= UserManagementController.PATIENT_FIELD%>"
+					VALUE="<%= controller.patientName %>"/>
+
 				<TR VALIGN=TOP ALIGN=LEFT>
 					<TD><B><I>doctor:</I></B></TD>
 					<TD>
