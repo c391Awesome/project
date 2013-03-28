@@ -36,6 +36,7 @@ public class RecordController extends Controller {
 	public Collection<User> doctors = new ArrayList<User>();
 	public Collection<User> radiologists = new ArrayList<User>();
 
+	public int record_id = 0;
 	public String doctorName = "";
 	public String patientName = "";
 	public String radiologistName = "";
@@ -77,7 +78,7 @@ public class RecordController extends Controller {
 				"SELECT record_id_sequence.nextval from dual"
 			);
 			results.next();
-			int record_id = results.getInt(1);
+			record_id = results.getInt(1);
 
 			patientName = request.getParameter(PATIENT_FIELD);
 			doctorName = request.getParameter(DOCTOR_FIELD);
@@ -115,7 +116,7 @@ public class RecordController extends Controller {
 			connection.setAllowClose(false);
 
 			// find Record by id
-			int record_id = Integer.parseInt(request.getParameter(ID_FIELD));		
+			record_id = Integer.parseInt(request.getParameter(ID_FIELD));		
 			Record SelectedRecord = Record.findRecordById(record_id, connection);
 			if (SelectedRecord == null) {
 				return false;

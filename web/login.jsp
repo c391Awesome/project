@@ -34,6 +34,11 @@
 						manage users
 					</a></li>
 				<% } %>
+				<% if (controller.userIsRadiologist()) { %>
+					<li><a href="insertRecord.jsp">
+						enter radiology record
+					</a></li>
+				<% } %>
 			</ul>
 		<%
 	} else {
