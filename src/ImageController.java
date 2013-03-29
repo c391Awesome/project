@@ -33,12 +33,19 @@ public class ImageController extends Controller {
 	public BufferedImage regular = null;
 	public BufferedImage thumbnail = null;
 
+	public Collection<Record> records = new ArrayList<Record>();
+
 	public ImageController(ServletContext context,
 			HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) {
 		super(context, request, response, session);
 	}
 	
+	// GET uploadImage.jsp
+	public void getUploadImage() {
+		records = Record.getAllRecord(getDatabaseConnection(context));
+	}
+
 	// POST uploadImage.jsp
 	public boolean attemptUploadImage() {
 		

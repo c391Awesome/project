@@ -108,7 +108,6 @@
 	</fieldset>
 	<INPUT TYPE="submit" NAME="InsertRecord" VALUE="submit new record">
 	</FORM>
-
 	<ul><hr><li><a href="logout.jsp">logout</a></li></ul>
 
 

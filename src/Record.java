@@ -169,40 +169,14 @@ public class Record {
 			String diagnosis = results.getString(7);
 			String description = results.getString(8);
 
-			ArrayList<Integer> image_id = new ArrayList<Integer>();
-			image_id = findImageIdByRecordId(record_id, connection);
+			//ArrayList<Integer> image_id = new ArrayList<Integer>();
+			//image_id = findImageIdByRecordId(record_id, connection);
 
 			return new Record(record_id, patient, doctor, radiologist,
 					test_type, prescribing, test_date,
 					diagnosis, description);
 		} catch (SQLException e) {
 			throw new RuntimeException("failed to findRecordById()", e);
-		} finally {
-			connection.close();
-		}
-	}
-
-	/*
-	 * Find the list of image ids from the database with the record_id provided.
-	 */
-	public static ArrayList<Integer> findImageIdByRecordId (int record_id,
-		DatabaseConnection connection) {
-		
-		ResultSet results = null;
-		Statement statement = null;
-		try {
-			statement = connection.createStatement();
-			results = statement.executeQuery(
-				"select image_id from pacs_images where"
-				+ " record_id = " + record_id
-			);
-			ArrayList<Integer> image_id = new ArrayList<Integer>();
-			while (results != null && results.next()) {
-				image_id.add(results.getInt(1));
-			}
-			return image_id;
-		} catch (SQLException e) {
-			throw new RuntimeException("failed to findImageIdByRecordId()", e);
 		} finally {
 			connection.close();
 		}
@@ -241,8 +215,8 @@ public class Record {
 				Date test_date = results.getDate(7);
 				String description = results.getString(8);
 
-				ArrayList<Integer> image_id = new ArrayList<Integer>();
-				image_id = findImageIdByRecordId(id, connection);
+				//ArrayList<Integer> image_id = new ArrayList<Integer>();
+				//image_id = findImageIdByRecordId(id, connection);
 
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
@@ -286,8 +260,8 @@ public class Record {
 				String diagnosis = results.getString(8);
 				String description = results.getString(9);
 
-				ArrayList<Integer> image_id = new ArrayList<Integer>();
-				image_id = findImageIdByRecordId(id, connection);
+				//ArrayList<Integer> image_id = new ArrayList<Integer>();
+				//image_id = findImageIdByRecordId(id, connection);
 
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
@@ -331,8 +305,8 @@ public class Record {
 				String diagnosis = results.getString(8);
 				String description = results.getString(9);
 
-				ArrayList<Integer> image_id = new ArrayList<Integer>();
-				image_id = findImageIdByRecordId(id, connection);
+				//ArrayList<Integer> image_id = new ArrayList<Integer>();
+				//image_id = findImageIdByRecordId(id, connection);
 
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
@@ -377,8 +351,8 @@ public class Record {
 				String diagnosis = results.getString(8);
 				String description = results.getString(9);
 
-				ArrayList<Integer> image_id = new ArrayList<Integer>();
-				image_id = findImageIdByRecordId(id, connection);
+				//ArrayList<Integer> image_id = new ArrayList<Integer>();
+				//image_id = findImageIdByRecordId(id, connection);
 
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,
@@ -400,6 +374,7 @@ public class Record {
 		ResultSet results = null;
 		Statement statement = null;
 		try {
+			statement = connection.createStatement();
 			results = statement.executeQuery(
 				"select record_id, patient_name, doctor_name,"
 				+ " radiologist_name, test_type, prescribing_date,"
@@ -420,8 +395,8 @@ public class Record {
 				String diagnosis = results.getString(8);
 				String description = results.getString(9);
 
-				ArrayList<Integer> image_id = new ArrayList<Integer>();
-				image_id = findImageIdByRecordId(id, connection);
+				//ArrayList<Integer> image_id = new ArrayList<Integer>();
+				//image_id = findImageIdByRecordId(id, connection);
 
 				record.add(new Record(id, patient, doctor, radiologist,
 						test_type, prescribing, test_date,

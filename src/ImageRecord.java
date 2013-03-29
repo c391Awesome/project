@@ -132,6 +132,32 @@ public class ImageRecord {
 		}
 	}
 
+	/*
+	 * Find the list of image ids from the database with the record_id provided.
+	 */
+	public static ArrayList<Integer> findImageIdByRecordId (int record_id,
+		DatabaseConnection connection) {
+		
+		ResultSet results = null;
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			results = statement.executeQuery(
+				"select image_id from pacs_images where"
+				+ " record_id = " + record_id
+			);
+			ArrayList<Integer> image_id = new ArrayList<Integer>();
+			while (results != null && results.next()) {
+				image_id.add(results.getInt(1));
+			}
+			return image_id;
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to findImageIdByRecordId()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
 }
 	
 	
