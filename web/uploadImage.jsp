@@ -30,8 +30,6 @@
 	<p><li>Please enter a radiology record then input or select the path of the image</P>
 	<table>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B>record id:</B></TD><TD>
-<!--	<INPUT TYPE="text"NAME="RECORD_ID" VALUE="record_id"><BR></TD></TR>
--->
 	<select NAME="RECORD_ID">
 		<% for (Record record: controller.records) { %>
 			<option value="<%= record.getRecordId() %>">
