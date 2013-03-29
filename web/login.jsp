@@ -38,6 +38,9 @@
 					<li><a href="insertRecord.jsp">
 						enter radiology record
 					</a></li>
+					<li><a href="uploadImage.jsp">
+						upload image
+					</a></li>
 				<% } %>
 			</ul>
 		<%

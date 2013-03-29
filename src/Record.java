@@ -141,72 +141,6 @@ public class Record {
 		}
 	}
 
-
-	/*  TODO: also need to create a sequence using the following 
-	 *  SQL statement to automatically generate a unique image_id:
-      	 *
-      	 *   CREATE SEQUENCE image_id_sequence;
-      	 *
-      	 */
-	public boolean insertImage(int record_id, FileItem item, 
-		DatabaseConnection connection) throws IOException{
-
-		int image_id;
-	    	try {
-			// Get the image stream
-			InputStream instream = item.getInputStream();
-			BufferedImage full = ImageIO.read(instream);
-			BufferedImage regular = shrink(full, 5);
-	    		BufferedImage thumbnail = shrink(full, 10);
-
-			// to generate a unique image_id using an SQL sequence
-			ResultSet results = null;
-			Statement statement = null;
-			statement = connection.createStatement();
-			results = statement.executeQuery(
-				"SELECT image_id_sequence.nextval from dual"
-				// dual?
-			);
-			results.next();
-			image_id = results.getInt(1);
-	
-			//Insert an empty blob into the table first. Note that you have to 
-	    		//use the Oracle specific function empty_blob() to create an empty blob
-	    		statement.execute(
-				"INSERT INTO pacs_images VALUES( "+record_id+", "
-				+image_id+", empty_blob(), empty_blob() ,empty_blob())"
-			);
-	
-			// to retrieve the lob_locator 
-	    		// use "FOR UPDATE" in the select statement
-	    		String cmd = "SELECT full_size, regular_size, thumbnail"
-				+ "FROM pacs_images WHERE image_id = "+image_id+" FOR UPDATE";
-	    		results = statement.executeQuery(cmd);
-	    		results.next();
-	    		BLOB fullBlob = ((OracleResultSet)results).getBLOB(1);
-			BLOB regularBlob = ((OracleResultSet)results).getBLOB(2);
-			BLOB thumbnailBlob = ((OracleResultSet)results).getBLOB(3);
-			
-			//Write the image to the blob object
-	    		OutputStream outstream1 = fullBlob.getBinaryOutputStream();
-	    		ImageIO.write(full, "jpg", outstream1);
-			OutputStream outstream2 = regularBlob.getBinaryOutputStream();
-	    		ImageIO.write(regular, "jpg", outstream2);
-			OutputStream outstream3 = thumbnailBlob.getBinaryOutputStream();
-	    		ImageIO.write(thumbnail, "jpg", outstream3);	
-
-			instream.close();
-	    		outstream1.close();
-			outstream2.close();
-			outstream3.close();
-			return true;
-		} catch (SQLException e) {
-			throw new RuntimeException("failed to insertImage()", e);
-		} finally {
-			connection.close();
-		}
-	}
-
 	/*
 	 * Find a record from the database with the record_id provided.
 	 */
@@ -514,21 +448,6 @@ public class Record {
 			, prescribing, test, "", "");
 		return record;
 	}
-
-	//shrink image by a factor of n, and return the shrinked image
-    	public static BufferedImage shrink(BufferedImage image, int n) {
-        	int w = image.getWidth() / n;
-        	int h = image.getHeight() / n;
-
-        	BufferedImage shrunkImage =
-        	    new BufferedImage(w, h, image.getType());
-        	for (int y=0; y < h; ++y)
-        		for (int x=0; x < w; ++x)
-                		shrunkImage.setRGB(x, y, image.getRGB(x*n, y*n));
-
-        	return shrunkImage;
-    	}
-
 
 
 }

@@ -105,49 +105,6 @@ public class RecordController extends Controller {
 			connection.setAllowClose(true);
 			connection.close();
 		}
-	}
-
-	// POST uploadImage.jsp
-	public boolean attemptUploadImage() {
-		
-		DatabaseConnection connection = getDatabaseConnection();
-		try {
-			connection.setAutoCommit(false);
-			connection.setAllowClose(false);
-
-			// find Record by id
-			record_id = Integer.parseInt(request.getParameter(ID_FIELD));		
-			Record SelectedRecord = Record.findRecordById(record_id, connection);
-			if (SelectedRecord == null) {
-				return false;
-			}
-		
-			// Parse the HTTP request to get the image stream
-			DiskFileUpload fu = new DiskFileUpload();
-	    		// ???  List FileItems = fu.parseRequest(request.getParameter("UploadImage"));
-
-			// Process the uploaded items, assuming only 1 image file uploaded
-
-			/* What is FileItem?
-			Iterator i = FileItem.iterator();
-	    		FileItem item = (FileItem) i.next();
-	    		while (i.hasNext() && item.isFormField()) {
-				item = (FileItem) i.next();
-	    		}
-
-			// insert image
-			Record.insertImage(record_id, item, connection);	
-			*/
-			connection.commit();
-			return true;
-		} catch (Exception e) {
-			connection.rollback();
-			return false;
-		} finally {
-			connection.setAllowClose(true);
-			connection.close();
-		}
-	}
-	
+	}	
 	
 }
