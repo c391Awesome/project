@@ -59,8 +59,6 @@ public class RecordController extends Controller {
 					getDatabaseConnection(context));
 		doctors = User.findUsersByType(User.DOCTOR_T,
 					getDatabaseConnection(context));
-		//radiologists = User.findUsersByType(User.RADIOLOGIST_T,
-		//			getDatabaseConnection(context));
 	}
 
 	// POST insertRecord.jsp

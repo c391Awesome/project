@@ -10,15 +10,15 @@
 	<fieldset><legend>select one or more:</legend>
 	<TABLE>
 	<TR VALIGN=TOP ALIGN=LEFT>
-	<TD><input type="checkbox" name="columns" value="patient_name"><B>for each patient</B></TD><TR>
+	<TD><input type="checkbox" name="PATIENT_BOX" value="PATIENT"><B>for each patient</B></TD><TR>
 	<TR VALIGN=TOP ALIGN=LEFT>
-	<TD><input type="checkbox" name="columns" value="test_type"><B>for each test type</B></TD><TR>
+	<TD><input type="checkbox" name="TYPE_BOX" value="TESTTYPE"><B>for each test type</B></TD><TR>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B> period of time:</B></TD><TD>
-	<select name="period">
-	<option value="none" selected>none</option>
-	<option value="weekly">weekly</option>
-	<option value="monthly">monthly</option>
-	<option value="yearly">yearly</option>
+	<select name="PERIOD">
+	<option value="NONE" selected>none</option>
+	<option value="WEEKLY">weekly</option>
+	<option value="MONTHLY">monthly</option>
+	<option value="YEARLY">yearly</option>
 	</select></TD></TR>
 	</TABLE>
 	</fieldset>
@@ -27,7 +27,21 @@
 
 <%@ page import="java.sql.*,ca.awesome.*" %>
 <%
-	
+	OLAPController controller = new RecordController(
+		getServletContext(), request, response, session);
+
+	if (!controller.requireRadiologist()) {
+			return;
+	}
+
+	if (controller.requestIsPost()) {
+		if (controller.attemptGetOLAP()) {
+
+		} else {
+			%><span class="error">failed to get OLAP report</span><%
+		}
+	}
+
 
 %>
 
