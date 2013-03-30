@@ -30,22 +30,8 @@
 
 <BODY>
 	<p><b>Report Generating Module</b></p><p><hr>
-<%@ page import="java.sql.*,ca.awesome.*" %>
-<%
-	ReportGenController controller = new ReportGenController(
-		getServletContext(), request, response, session);
-	if (!controller.requireAdmin()) {
-		return;
-	}
-	if (controller.requestIsPost()) {
-		if (controller.getReport()) {
-//display report
-		}else{
-		
-		}
-	}
 
-%>
+
 	<FORM NAME="reportGen" ACTION="reportGen.jsp" METHOD="post" >
 	<P><li>to get the list of all patients with a specified diagnosis for a given time period :</P>
 	<fieldset><legend>Report Searching Information:</legend>
@@ -61,46 +47,58 @@
 	<INPUT TYPE="submit" NAME="GenReport" VALUE="Generate Report">
 	</FORM>
 
-	<%@ page import="java.sql.*,ca.awesome.*" %>
-	<% 
 
-		ReportGen report = new ReportGen(request.getParameter("DIAGNOSIS"),
-										request.getParameter("TIME_FROM"),
-										request.getParameter("TIME_UNTIL"));
-		%>
-	<p><b>The following are the search result for <%=request.getParameter("DIAGNOSIS")%> 
-	between <%=request.getParameter("TIME_FROM")%> and <%=request.getParameter("TIME_UNTIL")%></b></p><br>
-
-	<TABLE border="1">
-		<TR VALIGN=TOP ALIGN=LEFT>
-			<TD><B><I>First Name</I></B></TD>
-			<TD><B><I>Last Name</I></B></TD>
-			<TD><B><I>Address</I></B></TD>
-			<TD><B><I>Phone Number</I></B></TD>
-			<TD><B><I>Test Date</I></B></TD>
-		</TR>
-	<%
-		DatabaseConnection dbc = new DatabaseConnection();
-		dbc.initialize(getServletContext());
-		dbc.connect();
-		if(report.getQueryResult(dbc)) {
-	%>
-		<TR VALIGN=TOP ALIGN=LEFT>
+		<%@ page import="java.sql.*,ca.awesome.*" %>
 		<%
-		for (String temp : report.getArrayList()) {
-		%>
-		
-			<TD><B><I><%=temp%></I></B></TD>
+			ReportGenController controller = new ReportGenController(
+				getServletContext(), request, response, session);
 
-		<%
-		}
+				if (!controller.requireAdmin()) {
+					return;
+				}
+
+			if (controller.requestIsPost()) {
+				controller.getParameters();
 		%>
-			</TR>
+			<p><b>The following are the search result for <%=request.getParameter("DIAGNOSIS")%> 
+			between <%=request.getParameter("TIME_FROM")%> and <%=request.getParameter("TIME_UNTIL")%></b></p><br>
+
+			<TABLE border="1">
+				<TR VALIGN=TOP ALIGN=LEFT>
+					<TD><B><I>First Name</I></B></TD>
+					<TD><B><I>Last Name</I></B></TD>
+					<TD><B><I>Address</I></B></TD>
+					<TD><B><I>Phone Number</I></B></TD>
+					<TD><B><I>Test Date</I></B></TD>
+				</TR>
+		<%
+				int index = 1;
+				for (String temp : controller.attemptGenerateReport()) {
+					System.out.println(temp);
+					if(index == 1){
+		%>
+					<TR VALIGN=TOP ALIGN=LEFT>
+					<TD><%=temp%></TD>
+		<%
+					}
+					else if(index == 5){
+						index = 0;
+		%>
+						<TD><%=temp%></TD>
+						</TR>
+		<%
+					}
+					else {
+		%>
+						<TD><%=temp%></TD>
+		<%
+						
+					}
+					index++;
+				}
+			}
+		%>
 			</TABLE>
-		<%
-		} else 
-		%>
-		<p><b>Result Not Found!</b></p>	
 
 
 </BODY>
