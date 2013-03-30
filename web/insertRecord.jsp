@@ -86,14 +86,6 @@
 			</option>
 		<% } %>
 	</select><BR></TD></TR>
-	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>radiologist name:</I></B></TD><TD>
-	<select NAME="RADIOLOGIST">
-		<% for (User radiologist: controller.radiologists) { %>
-			<option value="<%= radiologist.getUserName() %>">
-				<%= radiologist.getUserName() %>
-			</option>
-		<% } %>
-	</select><BR></TD></TR>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>test type:</I></B></TD><TD>
 	<INPUT TYPE="text"NAME="TESTTYPE" VALUE="test_type"><BR></TD></TR>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>prescribing date:</I></B></TD><TD>

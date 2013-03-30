@@ -34,7 +34,7 @@ public class RecordController extends Controller {
 	// list of User
 	public Collection<User> patients = new ArrayList<User>();
 	public Collection<User> doctors = new ArrayList<User>();
-	public Collection<User> radiologists = new ArrayList<User>();
+	//public Collection<User> radiologists = new ArrayList<User>();
 
 	public int record_id = 0;
 	public String doctorName = "";
@@ -59,8 +59,8 @@ public class RecordController extends Controller {
 					getDatabaseConnection(context));
 		doctors = User.findUsersByType(User.DOCTOR_T,
 					getDatabaseConnection(context));
-		radiologists = User.findUsersByType(User.RADIOLOGIST_T,
-					getDatabaseConnection(context));
+		//radiologists = User.findUsersByType(User.RADIOLOGIST_T,
+		//			getDatabaseConnection(context));
 	}
 
 	// POST insertRecord.jsp
@@ -82,7 +82,8 @@ public class RecordController extends Controller {
 
 			patientName = request.getParameter(PATIENT_FIELD);
 			doctorName = request.getParameter(DOCTOR_FIELD);
-			radiologistName = request.getParameter(RADIOLOGIST_FIELD);
+			//radiologistName = request.getParameter(RADIOLOGIST_FIELD);
+			radiologistName = ((User)session.getAttribute("user")).getUserName();
 			testType = request.getParameter(TESTTYPE_FIELD);
 			diagnosis = request.getParameter(DIAGNOSIS_FIELD);
 			description = request.getParameter(DESCRIPTION_FIELD);
