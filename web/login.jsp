@@ -27,6 +27,7 @@
 
 			<ul>
 				<li><a href="logout.jsp">logout</a></li>
+				<li><a href="search.jsp">search radiology records</a></li>
 				<li><a href="changePassword.jsp">change password</a></li>
 				<li><a href="editPersonalInfo.jsp">edit personal info</a></li>
 				<% if (controller.userIsAdmin()) { %>
