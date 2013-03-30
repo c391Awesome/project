@@ -31,7 +31,7 @@
 			</span><%
 		}
 	}
-	controller.getUploadImage();
+	controller.getUploadToRecord();
 %>
 	<p><b>Uploading Module</b></p><p><hr>
 	<form name="uploadToRecord" method="POST" action="uploadToRecord.jsp">

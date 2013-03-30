@@ -42,7 +42,7 @@ public class ImageController extends Controller {
 	}
 	
 	// GET uploadToRecord.jsp
-	public void getUploadImage() {
+	public void getUploadToRecord() {
 		records = Record.getAllRecord(getDatabaseConnection(context));
 	}
 
@@ -72,6 +72,11 @@ public class ImageController extends Controller {
 			connection.setAllowClose(true);
 			connection.close();
 		}
+	}
+
+	// GET uploadImage.jsp
+	public void getUploadImage() {
+		record_id = (Integer)session.getAttribute("record_id");
 	}
 	
 	// POST uploadImage.jsp

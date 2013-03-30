@@ -33,13 +33,14 @@
 			</span><%
 		}
 	}
+	controller.getUploadImage();
 %>
 
 	<p><b>Uploading Module</b></p><p><hr>
 	<form name="imageUpload" method="POST" enctype="multipart/form-data" action="uploadImage.jsp">
-	<p><li>Please select the path of the image</P>
+	<p><li>Please select the image upload to record <%= controller.record_id %></P>
 	<table>
-	<tr><th>select file: </th><td>
+	<tr><th>file path: </th><td>
 	<input type="file" name="UPLOADFILE" size="30" ></input></td></tr>
 	<tr><td ALIGN=CENTER COLSPAN="2">
 	<input type="submit" name="UPLOAD" value="upload"></td></tr>
