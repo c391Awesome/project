@@ -173,4 +173,22 @@ public class UserManagementController extends Controller {
 		assignment.setPatient(patientName);
 		return assignment.delete(getDatabaseConnection());
 	}
+
+
+	// helper methods
+
+	public String getSelectedUserClassName() {
+		switch (selectedUser.getType()) {
+			case User.DOCTOR_T:
+				return "doctor";
+			case User.PATIENT_T:
+				return "patient";
+			case User.RADIOLOGIST_T:
+				return "radiologist";
+			case User.ADMINISTRATOR_T:
+				return "administrator";
+			default:
+				throw new UnsupportedOperationException("Bad user type!");
+		}
+	}
 };

@@ -28,9 +28,10 @@
 
 	controller.getEditUser();
 	User selectedUser = controller.selectedUser;
-	
-	%>
-		<h4>Account details for <%= selectedUser.getUserName() %></h4>
+
+		%><h4>Account details for <%= controller.getSelectedUserClassName() %>
+			<%= selectedUser.getUserName() %>
+		</h4>
 
 		<FORM NAME="EditUserForm" ACTION="editUser.jsp" METHOD="post" >
 			<TABLE>
@@ -38,27 +39,13 @@
 						value="<%= controller.userName %>"/>
 				<input type="hidden" name="REGISTERED"
 						value="<%= controller.formatDate(selectedUser.getDateRegistered()) %>"/>
+				<input type="hidden" name="USER_TYPE"
+						value="<%= selectedUser.getType()%>"/>
+
 				<TR VALIGN=TOP ALIGN=LEFT>
 					<TD><B><I>password</I></B></TD>
 					<TD>
 						<input type="text" name="PASSWORD" value="<%= selectedUser.getPassword() %>">
-						<BR>
-					</TD>
-				</TR>
-				<TR VALIGN=TOP ALIGN=LEFT>
-					<TD><B><I>class</I></B></TD>
-					<TD>
-						<select name="USER_TYPE">
-							<option value="<%= User.PATIENT_T %>">
-								patient
-							</option>
-							<option value="<%= User.DOCTOR_T%>">
-								doctor
-							</option>
-							<option value="<%= User.RADIOLOGIST_T %>">
-								radiologist
-							</option>
-						</select>
 						<BR>
 					</TD>
 				</TR>
