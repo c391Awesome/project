@@ -69,7 +69,6 @@ public class ImageRecord {
 
 	public boolean insertImage(DatabaseConnection connection) {
 
-		//int image_id;
 	    	try {	
 			ResultSet results = null;
 
@@ -96,7 +95,7 @@ public class ImageRecord {
 			PreparedStatement statement2 = null;
 			statement2 = connection.prepareStatement(
 				"SELECT full_size, regular_size, thumbnail"
-				+ "FROM pacs_images WHERE image_id =? FOR UPDATE"
+				+ " FROM pacs_images WHERE image_id =? FOR UPDATE"
 			);
 			statement2.setInt(1, getImageId());
 			results = statement2.executeQuery();

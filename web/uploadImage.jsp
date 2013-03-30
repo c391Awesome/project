@@ -16,31 +16,33 @@
 
 	if (controller.requestIsPost()) {
 		if (controller.attemptUploadImage()) {
-			%><span class="success">image has been uploaded</span><%
+			%><span class="success">image has been uploaded
+			<br><TABLE border="1"><TR VALIGN=TOP ALIGN=LEFT>
+			<TD>record id</TD><TD>image id</TD></TR>
+			<TR VALIGN=TOP ALIGN=LEFT>
+			<TD><%= controller.record_id %></TD>
+			<TD><%= controller.image_id %></TD></TR></TABLE>
+			</span><%
 		} else {
-			%><span class="error">failed to upload image</span><%
+			%><span class="error">failed to upload image
+			<br><TABLE border="1"><TR VALIGN=TOP ALIGN=LEFT>
+			<TD>record id</TD><TD>image id</TD></TR>
+			<TR VALIGN=TOP ALIGN=LEFT>
+			<TD><%= controller.record_id %></TD>
+			<TD><%= controller.image_id %></TD></TR></TABLE>
+			</span><%
 		}
 	}
-
-	controller.getUploadImage();
 %>
 
 	<p><b>Uploading Module</b></p><p><hr>
 	<form name="imageUpload" method="POST" enctype="multipart/form-data" action="uploadImage.jsp">
-	<p><li>Please enter a radiology record then input or select the path of the image</P>
+	<p><li>Please select the path of the image</P>
 	<table>
-	<TR VALIGN=TOP ALIGN=LEFT><TD><B>record id:</B></TD><TD>
-	<select NAME="RECORD_ID">
-		<% for (Record record: controller.records) { %>
-			<option value="<%= record.getRecordId() %>">
-				<%= record.getRecordId() %>
-			</option>
-		<% } %>
-	</select><BR></TD></TR>
-	<tr><th>file path: </th>
-	<td><input name="file-path" type="file" size="30" ></input></td></tr>
+	<tr><th>select file: </th><td>
+	<input type="file" name="UPLOADFILE" size="30" ></input></td></tr>
 	<tr><td ALIGN=CENTER COLSPAN="2">
-	<input type="submit" name="IMAGEPATH" value="upload"></td></tr>
+	<input type="submit" name="UPLOAD" value="upload"></td></tr>
 	</table>
 	</form>
 	<ul><hr><li><a href="logout.jsp">logout</a></li></ul>

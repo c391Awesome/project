@@ -41,11 +41,39 @@ public class ImageController extends Controller {
 		super(context, request, response, session);
 	}
 	
-	// GET uploadImage.jsp
+	// GET uploadToRecord.jsp
 	public void getUploadImage() {
 		records = Record.getAllRecord(getDatabaseConnection(context));
 	}
 
+	// POST uploadToRecord.jsp
+	public boolean attemptSelectRecord() {
+		DatabaseConnection connection = getDatabaseConnection();
+		try {
+			connection.setAutoCommit(false);
+			connection.setAllowClose(false);
+
+			// find Record by id
+			record_id = Integer.parseInt(request.getParameter(RECORDID_FIELD));
+			if (record_id == 0) {
+				throw new RuntimeException("record_id not parsed");
+			}		
+			Record SelectedRecord = Record.findRecordById(record_id, connection);
+			if (SelectedRecord == null) {
+				return false;
+			}
+			connection.commit();
+			session.setAttribute("record_id", record_id);
+			return true;
+		} catch (Exception e) {
+			connection.rollback();
+			return false;
+		} finally {
+			connection.setAllowClose(true);
+			connection.close();
+		}
+	}
+	
 	// POST uploadImage.jsp
 	public boolean attemptUploadImage() {
 		
@@ -53,13 +81,6 @@ public class ImageController extends Controller {
 		try {
 			connection.setAutoCommit(false);
 			connection.setAllowClose(false);
-
-			// find Record by id
-			record_id = Integer.parseInt(request.getParameter(RECORDID_FIELD));		
-			Record SelectedRecord = Record.findRecordById(record_id, connection);
-			if (SelectedRecord == null) {
-				return false;
-			}
 		
 			// Parse the HTTP request to get the image stream
 			DiskFileUpload fileup = new DiskFileUpload();
@@ -88,6 +109,8 @@ public class ImageController extends Controller {
 			results.next();
 			image_id = results.getInt(1);
 
+			record_id = (Integer)session.getAttribute("record_id");
+
 			ImageRecord newImage = new ImageRecord(
 				record_id, image_id, full, regular, thumbnail);
 				
@@ -97,8 +120,10 @@ public class ImageController extends Controller {
 			instream.close();				
 			connection.commit();
 			return true;
+
 		} catch (Exception e) {
 			connection.rollback();
+			//throw new RuntimeException("upload failed", e);
 			return false;
 		} finally {
 			connection.setAllowClose(true);

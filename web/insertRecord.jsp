@@ -108,7 +108,7 @@
 	</fieldset>
 	<INPUT TYPE="submit" NAME="InsertRecord" VALUE="submit new record">
 	</FORM>
-	<ul><hr><li><a href="uploadImage.jsp">upload image to record</a></li>
+	<ul><hr><li><a href="uploadToRecord.jsp">upload image to record</a></li>
 	<li><a href="logout.jsp">logout</a></li></ul>
 
 
