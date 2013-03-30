@@ -33,6 +33,9 @@
 					<li><a href="userManagementConsole.jsp">
 						manage users
 					</a></li>
+					<li><a href="reportGen.jsp">
+						generate report
+					</a></li>
 				<% } %>
 				<% if (controller.userIsRadiologist()) { %>
 					<li><a href="insertRecord.jsp">
