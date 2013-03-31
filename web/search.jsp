@@ -85,7 +85,7 @@
 			<TD><B><I><%= result.getDescription() %></I></B></TD>
 			<TD><B><I>
 				<% for (int imageID: result.getImage_id()) { %>
-					<a href="GetBigPic?<%= imageID %>">
+					<a href="displayImage.jsp?<%= imageID %>">
 						<img src="GetOnePic?<%= imageID %>"/>
 					</a>
 				<% } %>

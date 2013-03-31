@@ -41,6 +41,11 @@ public class ImageController extends Controller {
 		super(context, request, response, session);
 	}
 	
+	// GET displayImage.jsp
+	public void getDisplayImage() {
+		image_id = Integer.parseInt(request.getQueryString());
+	}
+
 	// GET uploadToRecord.jsp
 	public void getUploadToRecord() {
 		records = Record.getAllRecord(getDatabaseConnection(context));

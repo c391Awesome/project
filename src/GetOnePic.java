@@ -21,15 +21,18 @@ import java.sql.*;
  *    );
  *
  *  The request must come with a query string as follows:
- *    GetOnePic?12:        sends the picture in thumnail with photo_id = 12
+ *    GetOnePic?12:        sends the picture in thumbnail with photo_id = 12
  *    GetOnePic?regular12: sends the picture in regular with photo_id = 12
+ *    GetOnePic?full12: sends the picture in full with photo_id = 12
  *
  *  @author  Li-Yan Yuan
  *  modified.
  *
  */
-public class GetOnePic extends HttpServlet 
-    implements SingleThreadModel {
+public class GetOnePic extends HttpServlet implements SingleThreadModel {
+
+	private String imageID;
+	private String size;
 
     /**
      *    This method first gets the query string indicating image_id,
@@ -41,51 +44,62 @@ public class GetOnePic extends HttpServlet
     public void doGet(HttpServletRequest request,
 		      HttpServletResponse response)
 	throws ServletException, IOException {
+		parseQueryString(request.getQueryString());
+		
 	
-	//  construct the query  from the client's QueryString
-	String id_string  = request.getQueryString();
-	String query;
-
-	if (id_string.startsWith("regular"))  
-		query = "select regular_size from pacs_images where image_id=" 
-			+ id_string.substring(7);
-	else
-	    query = "select thumbnail from pacs_images where image_id=" + id_string;
-
-	ServletOutputStream out = response.getOutputStream();
-
-	/*
-	 *   to execute the given query
-	 */
-	DatabaseConnection conn = new DatabaseConnection();
-	try {
-	    Statement stmt = conn.createStatement();
-	    ResultSet rset = stmt.executeQuery(query);
-
-	    if ( rset.next() ) {
-		response.setContentType("image/gif");
-		InputStream input = rset.getBinaryStream(1);	    
-		int imageByte;
-		while((imageByte = input.read()) != -1) {
-		    out.write(imageByte);
-		}
-		input.close();
-	    } 
-	    else 
-		out.println("no picture available");
-	} catch( Exception ex ) {
-	    out.println(ex.getMessage() );
-	}
-	// to close the connection
-	finally {
-		conn.close();
+		ServletOutputStream out = response.getOutputStream();
+	
 		/*
-	    try {
-		conn.close();
-	    } catch ( SQLException ex) {
-		out.println( ex.getMessage() );
+		 *   to execute the given query
+		 */
+		DatabaseConnection conn = new DatabaseConnection();
+		conn.initialize(getServletContext());
+		conn.connect();
+
+		try {
+		    PreparedStatement statement = conn.prepareStatement(
+				"select " + size + " from pacs_images where image_id=?"
+			);
+			statement.setString(1, imageID);
+
+		    ResultSet results = statement.executeQuery();
+	
+		    if (results.next()) {
+				response.setContentType("image/gif");
+				streamBytes(results.getBinaryStream(1), out);
+		   	} else {
+				out.println("no picture available");
+			}
+		} catch(Exception ex) {
+			throw new RuntimeException("failed to display image", ex);
+		} finally {
+			conn.close();
+			out.close();
 	    }
-		*/
 	}
-    }
+
+	private void streamBytes(InputStream input, OutputStream out) {
+		// stream blob byte by byte to output
+		try {
+			for (int b = input.read(); b != -1; b = input.read()) {
+				out.write(b);
+			}
+			input.close();
+		} catch (IOException e) {
+			// what is there to do here?
+		}
+	}
+
+	private void parseQueryString(String queryString) {
+		if (queryString.startsWith("regular")) {
+			size = "regular_size";
+			imageID = queryString.substring("regular".length());
+		} else if (queryString.startsWith("full")) {
+			size = "full_size";
+			imageID = queryString.substring("full".length());
+		} else {
+			size = "thumbnail";
+			imageID = queryString;
+		}
+	}
 }
