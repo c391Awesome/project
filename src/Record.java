@@ -108,10 +108,11 @@ public class Record {
 	}
 
 	public ArrayList<Integer> getImage_id() {
-		if (image_id.isEmpty()) {
+
+		if (image_id == null) {
 			throw new MissingFieldException("image_id", this);
 		}
-		return image_id;
+		return image_id;	
 	}
 
 	public boolean insert(DatabaseConnection connection) {
@@ -424,5 +425,29 @@ public class Record {
 		return record;
 	}
 
+	/*
+	 * Find the list of image ids from the database with the record_id provided.
+	 */
+	public boolean loadImageIds (DatabaseConnection connection) {
+		
+		ResultSet results = null;
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			results = statement.executeQuery(
+				"select image_id from pacs_images where"
+				+ " record_id = " + record_id
+			);
+			image_id = new ArrayList<Integer>();
+			while (results != null && results.next()) {
+				image_id.add(results.getInt(1));
+			}
+			return true;
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to findImageIdByRecordId()", e);
+		} finally {
+			connection.close();
+		}
+	}
 
 }
