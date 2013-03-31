@@ -27,6 +27,7 @@ public class SearchController extends Controller {
 			parseDateOrGetNull(request.getParameter(START_FIELD)),
 			parseDateOrGetNull(request.getParameter(END_FIELD)));
 
+		query.addClause(createSecurityConstraint());
 		results = query.executeSearch(getDatabaseConnection());
 		return true;
 	}
