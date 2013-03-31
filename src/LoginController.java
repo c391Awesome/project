@@ -58,7 +58,8 @@ public class LoginController extends Controller {
 
 	// GET editPersonalInfo.jsp
 	public void getUpdateInfo() {
-		if (!user.loadPersonalInfo(getDatabaseConnection())) {
+		user.loadPersonalInfo(getDatabaseConnection());
+		if (!user.isPersonalInfoLoaded()) {
 			user.addEmptyPersonalInfo();
 		}
 	}
