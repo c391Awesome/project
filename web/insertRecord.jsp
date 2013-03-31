@@ -41,9 +41,12 @@
 			<TD><%= controller.prescribing %></TD>
 			<TD><%= controller.testDate %></TD>
 			<TD><%= controller.diagnosis %></TD></TR></TABLE>
-			</span><%
-		} else {
-			%><span class="error">failed to insert record
+			</span>
+			<a
+				href="uploadImage.jsp?RECORD_ID=<%= controller.record_id %>">
+				upload an image to this record</a></li>
+		<% } else { %>
+			<span class="error">failed to insert record
 			<br><TABLE border="1"><TR VALIGN=TOP ALIGN=LEFT>
 			<TD>record id</TD><TD>patient name</TD><TD>doctor name</TD>
 			<TD>radiologist name</TD><TD>test type</TD><TD>prescribing date</TD>
@@ -100,7 +103,6 @@
 	</fieldset>
 	<INPUT TYPE="submit" NAME="InsertRecord" VALUE="submit new record">
 	</FORM>
-	<ul><hr><li><a href="uploadToRecord.jsp">upload image to record</a></li>
 	<li><a href="logout.jsp">logout</a></li></ul>
 
 
