@@ -41,7 +41,7 @@
 	}
 
 	if (controller.requestIsPost() && !controller.doSearch()) {
-		// TODO show error message
+		%><span class="error">Your search could not be completed.</span><%
 	}
 
 

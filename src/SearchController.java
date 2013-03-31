@@ -39,7 +39,11 @@ public class SearchController extends Controller {
 		}
 
 		query.addClause(createSecurityConstraint());
-		results = query.executeSearch(getDatabaseConnection());
+		try {
+			results = query.executeSearch(getDatabaseConnection());
+		} catch (Exception e) {
+			return false;
+		}
 		return true;
 	}
 
