@@ -39,8 +39,8 @@ public class ReportGenController extends Controller {
 	// GET reportGen.jsp
 	public void getParameters() {
 		diagnosis = request.getParameter(DIAGNOSIS_FIELD);
-		fromDate = parseDate(request.getParameter(FROM_FIELD));
-		toDate = parseDate(request.getParameter(TO_FIELD));
+		fromDate = parseDateOrGetNull(request.getParameter(FROM_FIELD));
+		toDate = parseDateOrGetNull(request.getParameter(TO_FIELD));
 	}
 
 	// POST reportGen.jsp
@@ -52,5 +52,13 @@ public class ReportGenController extends Controller {
 
 		return report.getArrayList();
 	}	
+
+	public Date parseDateOrGetNull(String date) {
+		try {
+			return parseDate(date);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 	
 }
