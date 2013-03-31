@@ -44,6 +44,7 @@
 		// TODO show error message
 	}
 
+
 %>
 	<FORM NAME="search" ACTION="search.jsp" METHOD="post" >
 	<fieldset><legend>Record Search:</legend>
@@ -55,12 +56,18 @@
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>End Date:</I></B></TD><TD>
 	<INPUT TYPE="text" id="to" NAME="TIME_UNTIL" VALUE="Select a Date"> (optional) <BR></TD></TR>
 	</TABLE>
+	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>Rank by</I></B></TD><TD>
+		<input type="radio" name="RANKING" value="DATE_ASC">most recent last</input>
+		<input type="radio" name="RANKING" value="DATE_DES">most recent first</input>
+		<input type="radio" name="RANKING" value="SCORE" checked>most relevant first</input>
 	</fieldset>
 	<INPUT TYPE="submit" NAME="Search" VALUE="Search">
 	</FORM>
 
 	<%@ page import="java.sql.*,ca.awesome.*" %>
 
+	<h5><%= controller.results.size() %>
+		record<%= (controller.results.size() == 1)? "" : "s" %> found</h5>
 	<TABLE border="1">
 		<TR VALIGN=TOP ALIGN=LEFT>
 			<TD><B><I>Patient</I></B></TD>

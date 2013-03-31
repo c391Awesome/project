@@ -12,8 +12,17 @@ public class SearchQuery {
 			throws SQLException;
 	}
 
+	public static final String RANK_BY_SCORE =
+		" ORDER BY 6*SCORE(1) + 3*SCORE(2) + SCORE(3)";
+	public static final String RANK_BY_DATE_ASC =
+		" ORDER BY prescribing_date ASC ";
+	public static final String RANK_BY_DATE_DES =
+		" ORDER BY prescribing_date DESC ";
+	
+
 	private String searchTerms;
 	private ArrayList<WhereClause> clauses;
+	private String orderByClause;
 
 
 	public SearchQuery(String terms, Date start, Date end) {
@@ -23,6 +32,11 @@ public class SearchQuery {
 			addClause(new PrescribedClause(start, ">="));
 		if (end != null)
 			addClause(new PrescribedClause(end, "<="));
+		orderByClause = RANK_BY_SCORE;
+	}
+
+	public void setRankingPolicy(String rankBy) {
+		orderByClause = rankBy;
 	}
 
 	public void addClause(WhereClause clause) {
@@ -33,6 +47,10 @@ public class SearchQuery {
 	}
 
 	public Collection<Record> executeSearch(DatabaseConnection connection) {
+		if (searchTerms == null || searchTerms.isEmpty()) {
+			return new ArrayList<Record>();
+		}
+
 		PreparedStatement statement;
 		ResultSet results;
 		connection.setAllowClose(false);
@@ -60,8 +78,7 @@ public class SearchQuery {
 
 			return records;
 		} catch (SQLException e) {
-			// throw new RuntimeException("Error occurred in search", e);
-			return new ArrayList<Record>();
+			throw new RuntimeException("Error occurred in search", e);
 		} finally {
 			connection.setAllowClose(true);
 			connection.close();
@@ -83,7 +100,7 @@ public class SearchQuery {
 			builder.append(clause.getClause());
 		}
 
-		builder.append(" ORDER BY 6*SCORE(1) + 3*SCORE(2) + SCORE(3)");
+		builder.append(orderByClause);
 
 		PreparedStatement statement = connection.prepareStatement(
 			builder.toString());

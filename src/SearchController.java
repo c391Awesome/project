@@ -11,6 +11,7 @@ public class SearchController extends Controller {
 	public static String QUERY_FIELD = "QUERY";
 	public static String START_FIELD = "TIME_FROM";
 	public static String END_FIELD = "TIME_UNTIL";
+	public static String RANKING_FIELD = "RANKING";
 
 	public Collection<Record> results;
 	public SearchQuery query;
@@ -26,6 +27,16 @@ public class SearchController extends Controller {
 		query = new SearchQuery(request.getParameter(QUERY_FIELD),
 			parseDateOrGetNull(request.getParameter(START_FIELD)),
 			parseDateOrGetNull(request.getParameter(END_FIELD)));
+
+		String rankBy = request.getParameter(RANKING_FIELD);
+
+		if (rankBy != null && rankBy.equals("DATE_ASC")) {
+			query.setRankingPolicy(SearchQuery.RANK_BY_DATE_ASC);
+		} else if (rankBy != null && rankBy.equals("DATE_DES")) {
+			query.setRankingPolicy(SearchQuery.RANK_BY_DATE_DES);
+		} else {
+			query.setRankingPolicy(SearchQuery.RANK_BY_SCORE);
+		}
 
 		query.addClause(createSecurityConstraint());
 		results = query.executeSearch(getDatabaseConnection());
