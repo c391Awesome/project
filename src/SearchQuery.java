@@ -55,18 +55,18 @@ public class SearchQuery {
 				"SELECT record_id, patient_name, doctor_name,"
 				+ " radiologist_name, test_type, prescribing_date,"
 				+ " test_date, diagnosis, description FROM radiology_record "
-				+ " WHERE ? <= prescribing_date AND prescribing_date >= ? "
-				+ " AND (CONTAINS(patient_name, ?, 1) > 0"
-				+ " OR CONTAINS(diagnosis, ? , 2) > 0"
-				+ " OR CONTAINS(description, ? , 3) > 0)"
-				+ " ORDER BY 6*SCORE(1) + 3*SCORE(2) + SCORE(3);"
+				+ " WHERE ? <= prescribing_date AND prescribing_date <= ? "
+				//+ " AND (CONTAINS(patient_name, ?, 1) > 0"
+				//+ " OR CONTAINS(diagnosis, ? , 2) > 0"
+				//+ " OR CONTAINS(description, ? , 3) > 0)"
+				//+ " ORDER BY 6*SCORE(1) + 3*SCORE(2) + SCORE(3)"
 			);
 
 			statement.setDate(1, start);
 			statement.setDate(2, end);
-			statement.setString(3, searchTerms);
-			statement.setString(4, searchTerms);
-			statement.setString(5, searchTerms);
+			//statement.setString(3, searchTerms);
+			//statement.setString(4, searchTerms);
+			//statement.setString(5, searchTerms);
 
 			results = statement.executeQuery();
 
