@@ -6,6 +6,7 @@
 
 <BODY>
 	<h1>Create User</h1>
+	<h5><a href="userManagementConsole.jsp">return to user management</a><h5>
 <%@ page import="java.sql.*,ca.awesome.*" %>
 <% 
 
