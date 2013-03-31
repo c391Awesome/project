@@ -47,7 +47,8 @@ public class UserManagementController extends Controller {
 	public void getEditUser() {
 		userName = request.getParameter(USERNAME_FIELD);
 		selectedUser = User.findUserByName(userName, getDatabaseConnection());
-		if (!selectedUser.loadPersonalInfo(getDatabaseConnection())) {
+		selectedUser.loadPersonalInfo(getDatabaseConnection());
+		if (!selectedUser.isPersonalInfoLoaded()) {
 			selectedUser.addEmptyPersonalInfo();
 		}
 		doctors = FamilyDoctor.getDoctorNamesForPatient(userName,
