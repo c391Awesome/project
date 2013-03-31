@@ -51,9 +51,9 @@
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>Search Terms:</I></B></TD><TD>
 	<INPUT TYPE="text" size=50 NAME="QUERY" ><BR></TD></TR>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>Start Date:</I></B></TD><TD>
-	<INPUT TYPE="text" id="from" NAME="TIME_FROM" VALUE="Select a Date"><BR></TD></TR>
+	<INPUT TYPE="text" id="from" NAME="TIME_FROM" VALUE="Select a Date"> (optional) <BR></TD></TR>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B><I>End Date:</I></B></TD><TD>
-	<INPUT TYPE="text" id="to" NAME="TIME_UNTIL" VALUE="Select a Date"><BR></TD></TR>
+	<INPUT TYPE="text" id="to" NAME="TIME_UNTIL" VALUE="Select a Date"> (optional) <BR></TD></TR>
 	</TABLE>
 	</fieldset>
 	<INPUT TYPE="submit" NAME="Search" VALUE="Search">
@@ -92,7 +92,6 @@
 			</I></B></TD>
 		</TR>
 	<% } %>
-
 </BODY>
 
 </HTML>

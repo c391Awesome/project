@@ -6,43 +6,30 @@ import java.sql.*;
 
 
 public class SearchQuery {
-	interface ResultFilter {
-		boolean allow(Record record);
+	interface WhereClause {
+		public String getClause();
+		public int addData(PreparedStatement s, int position)
+			throws SQLException;
 	}
 
 	private String searchTerms;
-	private Date start = null;
-	private Date end = null;
-	private ResultFilter filter;
+	private ArrayList<WhereClause> clauses;
 
-
-	public SearchQuery(String terms) {
-		this(terms, null, null);
-	}
 
 	public SearchQuery(String terms, Date start, Date end) {
 		searchTerms = terms;
-		filter = new AllowAllFilter();
+		clauses = new ArrayList<WhereClause>();
+		if (start != null)
+			addClause(new PrescribedClause(start, ">="));
+		if (end != null)
+			addClause(new PrescribedClause(end, "<="));
 	}
 
-	public void setStart(Date start) {
-		this.start = start;
-	}
-
-	public void setEnd(Date end) {
-		this.end = end;
-	}
-
-	public void setFilter(ResultFilter filter) {
-		this.filter = filter;
-	}
-
-	public void setSearchTerm(String term) {
-		// split terms on whitespace using a regexp
-		// String splitTerms[] = terms.split("\s+");
-		// searchTerms.addAll(splitTerms);
-
-		searchTerms = term;
+	public void addClause(WhereClause clause) {
+		if (clause == null) {
+			return;
+		}
+		this.clauses.add(clause);
 	}
 
 	public Collection<Record> executeSearch(DatabaseConnection connection) {
@@ -50,24 +37,7 @@ public class SearchQuery {
 		ResultSet results;
 		connection.setAllowClose(false);
 		try {
-			// TODO: don't use dates in query if dates are null
-			statement = connection.prepareStatement(
-				"SELECT record_id, patient_name, doctor_name,"
-				+ " radiologist_name, test_type, prescribing_date,"
-				+ " test_date, diagnosis, description FROM radiology_record "
-				+ " WHERE ? <= prescribing_date AND prescribing_date <= ? "
-				+ " AND (CONTAINS(patient_name, ?, 1) > 0"
-				+ " OR CONTAINS(diagnosis, ? , 2) > 0"
-				+ " OR CONTAINS(description, ? , 3) > 0)"
-				+ " ORDER BY 6*SCORE(1) + 3*SCORE(2) + SCORE(3)"
-			);
-
-			statement.setDate(1, start);
-			statement.setDate(2, end);
-			statement.setString(3, searchTerms);
-			statement.setString(4, searchTerms);
-			statement.setString(5, searchTerms);
-
+			statement = buildStatement(connection);
 			results = statement.executeQuery();
 
 			ArrayList<Record> records = new ArrayList<Record>();
@@ -84,25 +54,71 @@ public class SearchQuery {
 					results.getString(9)
 				);
 
-				if (this.filter.allow(record)) {
-					record.loadImageIds(connection);
-					records.add(record);
-				}
+				record.loadImageIds(connection);
+				records.add(record);
 			}
 
 			return records;
 		} catch (SQLException e) {
-			throw new RuntimeException("Error occurred in search", e);
+			// throw new RuntimeException("Error occurred in search", e);
+			return new ArrayList<Record>();
 		} finally {
 			connection.setAllowClose(true);
 			connection.close();
 		}
 	}
 
-	private class AllowAllFilter implements ResultFilter {
+	private PreparedStatement buildStatement(DatabaseConnection connection)
+			throws SQLException {
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT record_id, patient_name, doctor_name,")
+			.append(" radiologist_name, test_type, prescribing_date,")
+			.append(" test_date, diagnosis, description FROM radiology_record ")
+			.append(" WHERE (CONTAINS(patient_name, ?, 1) > 0")
+			.append(" OR CONTAINS(diagnosis, ? , 2) > 0")
+			.append(" OR CONTAINS(description, ? , 3) > 0)");
+
+		for (WhereClause clause: clauses) {
+			builder.append(clause.getClause());
+		}
+
+		builder.append(" ORDER BY 6*SCORE(1) + 3*SCORE(2) + SCORE(3)");
+
+		PreparedStatement statement = connection.prepareStatement(
+			builder.toString());
+
+		int position = 1;
+		statement.setString(position++, searchTerms);
+		statement.setString(position++, searchTerms);
+		statement.setString(position++, searchTerms);
+
+		for (WhereClause clause: clauses) {
+			position += clause.addData(statement, position);
+		}
+
+		return statement;
+	}
+	
+	public static class PrescribedClause implements WhereClause {
+		public Date date;
+		public String comparator;
+
+		public PrescribedClause(Date date, String comparator) {
+			this.date = date;
+			this.comparator = comparator;
+		}
+
 		@Override
-		public boolean allow(Record record) {
-			return true;
+		public String getClause() {
+			return " AND prescribing_date " + comparator + " ? ";
+		}
+
+		@Override
+		public int addData(PreparedStatement s, int position)
+			throws SQLException {
+			s.setDate(position, this.date);
+			return 1;
 		}
 	}
 };

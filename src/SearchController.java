@@ -23,12 +23,11 @@ public class SearchController extends Controller {
 	}
 
 	public boolean doSearch() {
-		query = new SearchQuery(request.getParameter(QUERY_FIELD));
-		query.setStart(parseDateOrGetNull(request.getParameter(START_FIELD)));
-		query.setEnd(parseDateOrGetNull(request.getParameter(END_FIELD)));
+		query = new SearchQuery(request.getParameter(QUERY_FIELD),
+			parseDateOrGetNull(request.getParameter(START_FIELD)),
+			parseDateOrGetNull(request.getParameter(END_FIELD)));
 
 		results = query.executeSearch(getDatabaseConnection());
-
 		return true;
 	}
 
@@ -37,6 +36,45 @@ public class SearchController extends Controller {
 			return parseDate(date);
 		} catch (Exception e) {
 			return null;
+		}
+	}
+
+	public SearchQuery.WhereClause createSecurityConstraint() {
+		switch (user.getType()) {
+			case User.PATIENT_T:
+				return new ColumnEqualsClause("patient_name",
+					user.getUserName());
+			case User.DOCTOR_T:
+				return new ColumnEqualsClause("doctor_name",
+					user.getUserName());
+			case User.RADIOLOGIST_T:
+				return new ColumnEqualsClause("radiologist_name",
+					user.getUserName());
+			// admin
+			default:
+				return null;
+		}
+	}
+
+	public static class ColumnEqualsClause implements SearchQuery.WhereClause {
+		String column;
+		String value;
+
+		ColumnEqualsClause(String column, String value) {
+			this.column = column;
+			this.value = value;
+		}
+
+		@Override
+		public String getClause() {
+			return " AND " + column + " = ? ";
+		}
+
+		@Override
+		public int addData(PreparedStatement s, int position)
+			throws SQLException {
+			s.setString(position, value);
+			return 1;
 		}
 	}
 }
