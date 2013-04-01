@@ -51,12 +51,23 @@ public class ImageController extends Controller {
 		records = Record.getAllRecord(getDatabaseConnection(context));
 	}
 
+	// POST uploadToRecord.jsp
+	public boolean attemptSelectRecord() {
+		try {
+			record_id = Integer.parseInt(request.getParameter(RECORDID_FIELD));
+			if (record_id == 0) {
+				throw new RuntimeException("record_id not parsed");
+			}
+			session.setAttribute("record_id", record_id);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}		
+	}
+
 	// GET uploadImage.jsp
 	public void getUploadImage() {
-		record_id = Integer.parseInt(request.getParameter(RECORDID_FIELD));
-		if (record_id == 0) {
-			throw new RuntimeException("record_id not parsed");
-		}		
+		record_id = (Integer)session.getAttribute("record_id"); 		
 	}
 	
 	// POST uploadImage.jsp

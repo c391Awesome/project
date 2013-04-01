@@ -14,6 +14,26 @@
 		return;
 	}
 
+	if (controller.requestIsGet()) { 
+		controller.attemptSelectRecord();
+	}
+
+	controller.getUploadImage();
+%>
+
+	<p><b>Uploading Module</b></p><p><hr>
+	<form name="imageUpload" method="POST" enctype="multipart/form-data" action="uploadImage.jsp">
+	<p><li>Please select the image upload to record <%= controller.record_id %></P>
+	<table>
+	<tr><th>file path: </th><td>
+	<input type="file" name="UPLOADFILE" size="30" ></input></td></tr>
+	<tr><td ALIGN=CENTER COLSPAN="2">
+	<input type="submit" name="UPLOAD" value="upload"></td></tr>
+	</table>
+	</form>
+	<p><hr>
+
+<%
 	if (controller.requestIsPost()) {
 		if (controller.attemptUploadImage()) {
 			%><span class="success">image has been uploaded
@@ -33,23 +53,9 @@
 			</span><%
 		}
 	}
-	
-	//if (!controller.requestIsPost()) {
-		controller.getUploadImage();
-	//}
 %>
-
-	<p><b>Uploading Module</b></p><p><hr>
-	<form name="imageUpload" method="POST" enctype="multipart/form-data" action="uploadImage.jsp">
-	<p><li>Please select the image upload to record <%= controller.record_id %></P>
-	<table>
-	<tr><th>file path: </th><td>
-	<input type="file" name="UPLOADFILE" size="30" ></input></td></tr>
-	<tr><td ALIGN=CENTER COLSPAN="2">
-	<input type="submit" name="UPLOAD" value="upload"></td></tr>
-	</table>
-	</form>
-	<p><hr><li><a href="logout.jsp">logout</a></li>
+	<p><li><a href="uploadToRecord.jsp">back to choose record</a></li>
+	<li><a href="logout.jsp">logout</a></li>
 
 </BODY>
 </HTML>

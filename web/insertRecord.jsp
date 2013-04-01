@@ -24,46 +24,6 @@
 	if (!controller.requireRadiologist()) {
 			return;
 	}
-
-	if (controller.requestIsPost()) {
-		if (controller.attemptInsertRecord()) {
-			%><span class="success">new record has been inserted 
-			<br><TABLE border="1"><TR VALIGN=TOP ALIGN=LEFT>
-			<TD>record id</TD><TD>patient name</TD><TD>doctor name</TD>
-			<TD>radiologist name</TD><TD>test type</TD><TD>prescribing date</TD>
-			<TD>test date</TD><TD>diagnosis</TD></TR>
-			<TR VALIGN=TOP ALIGN=LEFT>
-			<TD><%= controller.record_id %></TD>
-			<TD><%= controller.patientName %></TD>
-			<TD><%= controller.doctorName %></TD>
-			<TD><%= controller.radiologistName %></TD>
-			<TD><%= controller.testType %></TD>
-			<TD><%= controller.prescribing %></TD>
-			<TD><%= controller.testDate %></TD>
-			<TD><%= controller.diagnosis %></TD></TR></TABLE>
-			</span>
-			<a
-				href="uploadImage.jsp?RECORD_ID=<%= controller.record_id %>">
-				upload an image to this record</a></li>
-		<% } else { %>
-			<span class="error">failed to insert record
-			<br><TABLE border="1"><TR VALIGN=TOP ALIGN=LEFT>
-			<TD>record id</TD><TD>patient name</TD><TD>doctor name</TD>
-			<TD>radiologist name</TD><TD>test type</TD><TD>prescribing date</TD>
-			<TD>test date</TD><TD>diagnosis</TD></TR>
-			<TR VALIGN=TOP ALIGN=LEFT>
-			<TD><%= controller.record_id %></TD>
-			<TD><%= controller.patientName %></TD>
-			<TD><%= controller.doctorName %></TD>
-			<TD><%= controller.radiologistName %></TD>
-			<TD><%= controller.testType %></TD>
-			<TD><%= controller.prescribing %></TD>
-			<TD><%= controller.testDate %></TD>
-			<TD><%= controller.diagnosis %></TD></TR></TABLE>
-			</span><%
-		}
-	}
-
 	controller.getInsertRecord();
 
 %>
@@ -103,7 +63,47 @@
 	</fieldset>
 	<INPUT TYPE="submit" NAME="InsertRecord" VALUE="submit new record">
 	</FORM>
-	<li><a href="logout.jsp">logout</a></li></ul>
+<%
+	if (controller.requestIsPost()) {
+		if (controller.attemptInsertRecord()) {
+			%><span class="success">new record has been inserted 
+			<br><TABLE border="1"><TR VALIGN=TOP ALIGN=LEFT>
+			<TD>record id</TD><TD>patient name</TD><TD>doctor name</TD>
+			<TD>radiologist name</TD><TD>test type</TD><TD>prescribing date</TD>
+			<TD>test date</TD><TD>diagnosis</TD></TR>
+			<TR VALIGN=TOP ALIGN=LEFT>
+			<TD><%= controller.record_id %></TD>
+			<TD><%= controller.patientName %></TD>
+			<TD><%= controller.doctorName %></TD>
+			<TD><%= controller.radiologistName %></TD>
+			<TD><%= controller.testType %></TD>
+			<TD><%= controller.prescribing %></TD>
+			<TD><%= controller.testDate %></TD>
+			<TD><%= controller.diagnosis %></TD></TR></TABLE>
+			</span>
+			<a
+				href="uploadImage.jsp?RECORD_ID=<%= controller.record_id %>">
+				upload an image to this record</a></li>
+		<% } else { %>
+			<span class="error">failed to insert record
+			<br><TABLE border="1"><TR VALIGN=TOP ALIGN=LEFT>
+			<TD>record id</TD><TD>patient name</TD><TD>doctor name</TD>
+			<TD>radiologist name</TD><TD>test type</TD><TD>prescribing date</TD>
+			<TD>test date</TD><TD>diagnosis</TD></TR>
+			<TR VALIGN=TOP ALIGN=LEFT>
+			<TD><%= controller.record_id %></TD>
+			<TD><%= controller.patientName %></TD>
+			<TD><%= controller.doctorName %></TD>
+			<TD><%= controller.radiologistName %></TD>
+			<TD><%= controller.testType %></TD>
+			<TD><%= controller.prescribing %></TD>
+			<TD><%= controller.testDate %></TD>
+			<TD><%= controller.diagnosis %></TD></TR></TABLE>
+			</span><%
+		}
+	}
+%>
+	<p><hr><li><a href="logout.jsp">logout</a></li></ul>
 
 
 

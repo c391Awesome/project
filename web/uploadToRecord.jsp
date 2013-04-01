@@ -14,6 +14,10 @@
 		return;
 	}
 
+	if (controller.requestIsGet()) { 
+		controller.attemptSelectRecord();
+	}
+
 	controller.getUploadToRecord();
 %>
 	<p><b>Uploading Module</b></p><p><hr>

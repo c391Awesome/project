@@ -112,6 +112,10 @@ public class Controller {
 		return "POST".equalsIgnoreCase(request.getMethod());
 	}
 
+	public boolean requestIsGet() {
+		return "GET".equalsIgnoreCase(request.getMethod());
+	}
+
 	public String formatDate(java.util.Date date) {
 		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 		return format.format(date);
