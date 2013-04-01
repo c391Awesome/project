@@ -90,15 +90,15 @@ public class OLAPOperation {
 			
 			while (results != null && results.next()) {
 				//year
-				table.add("");
+				table.add(" ");
 				//month
-				table.add("");
+				table.add(" ");
 				//week
-				table.add("");
+				table.add(" ");
 				//patient
 				table.add(results.getString(1));
 				//test type
-				table.add("");
+				table.add(" ");
 				//image count
 				table.add(String.valueOf(results.getInt(2)));
 			}
@@ -127,13 +127,13 @@ public class OLAPOperation {
 				//year
 				table.add(String.valueOf(results.getInt(1)));
 				//month
-				table.add("");
+				table.add(" ");
 				//week
-				table.add("");
+				table.add(" ");
 				//patient
 				table.add(results.getString(2));
 				//test type
-				table.add("");
+				table.add(" ");
 				//image count
 				table.add(String.valueOf(results.getInt(3)));
 			}
@@ -164,11 +164,11 @@ public class OLAPOperation {
 				//month
 				table.add(String.valueOf(results.getInt(2)));
 				//week
-				table.add("");
+				table.add(" ");
 				//patient
 				table.add(results.getString(3));
 				//test type
-				table.add("");
+				table.add(" ");
 				//image count
 				table.add(String.valueOf(results.getInt(4)));
 			}
@@ -204,7 +204,7 @@ public class OLAPOperation {
 				//patient
 				table.add(results.getString(4));
 				//test type
-				table.add("");
+				table.add(" ");
 				//image count
 				table.add(String.valueOf(results.getInt(5)));
 			}
@@ -231,13 +231,13 @@ public class OLAPOperation {
 			
 			while (results != null && results.next()) {
 				//year
-				table.add("");
+				table.add(" ");
 				//month
-				table.add("");
+				table.add(" ");
 				//week
-				table.add("");
+				table.add(" ");
 				//patient name				
-				table.add("");
+				table.add(" ");
 				//test type
 				table.add(results.getString(1));
 				//image count
@@ -268,11 +268,11 @@ public class OLAPOperation {
 				//year
 				table.add(String.valueOf(results.getInt(1)));
 				//month
-				table.add("");
+				table.add(" ");
 				//week
-				table.add("");
+				table.add(" ");
 				//patient name				
-				table.add("");
+				table.add(" ");
 				//test type
 				table.add(results.getString(2));
 				//image count
@@ -305,9 +305,9 @@ public class OLAPOperation {
 				//month
 				table.add(String.valueOf(results.getInt(2)));
 				//week
-				table.add("");
+				table.add(" ");
 				//patient name				
-				table.add("");
+				table.add(" ");
 				//test type
 				table.add(results.getString(3));
 				//image count
@@ -343,7 +343,7 @@ public class OLAPOperation {
 				//week
 				table.add(String.valueOf(results.getInt(3)));
 				//patient name				
-				table.add("");
+				table.add(" ");
 				//test type
 				table.add(results.getString(4));
 				//image count
@@ -372,11 +372,11 @@ public class OLAPOperation {
 			
 			while (results != null && results.next()) {
 				//year
-				table.add("");				
+				table.add(" ");				
 				//month
-				table.add("");
+				table.add(" ");
 				//week
-				table.add("");
+				table.add(" ");
 				//patient name
 				table.add(results.getString(1));
 				//test type
@@ -409,9 +409,9 @@ public class OLAPOperation {
 				//year
 				table.add(String.valueOf(results.getInt(1)));
 				//month
-				table.add("");
+				table.add(" ");
 				//week
-				table.add("");
+				table.add(" ");
 				//patient name
 				table.add(results.getString(2));
 				//test type
@@ -447,7 +447,7 @@ public class OLAPOperation {
 				//month
 				table.add(String.valueOf(results.getInt(2)));
 				//week
-				table.add("");
+				table.add(" ");
 				//patient name
 				table.add(results.getString(3));
 				//test type
@@ -515,13 +515,13 @@ public class OLAPOperation {
 				//year
 				table.add(String.valueOf(results.getInt(1)));
 				//month
-				table.add("");
+				table.add(" ");
 				//week
-				table.add("");
+				table.add(" ");
 				//patient name
-				table.add("");
+				table.add(" ");
 				//test type
-				table.add("");
+				table.add(" ");
 				//image count
 				table.add(String.valueOf(results.getInt(2)));
 			}
@@ -552,11 +552,11 @@ public class OLAPOperation {
 				//month
 				table.add(String.valueOf(results.getInt(2)));
 				//week
-				table.add("");
+				table.add(" ");
 				//patient name
-				table.add("");
+				table.add(" ");
 				//test type
-				table.add("");
+				table.add(" ");
 				//image count
 				table.add(String.valueOf(results.getInt(3)));
 			}
@@ -589,9 +589,9 @@ public class OLAPOperation {
 				//week
 				table.add(String.valueOf(results.getInt(3)));
 				//patient name
-				table.add("");
+				table.add(" ");
 				//test type
-				table.add("");
+				table.add(" ");
 				//image count
 				table.add(String.valueOf(results.getInt(4)));
 			}

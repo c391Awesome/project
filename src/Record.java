@@ -412,6 +412,32 @@ public class Record {
 		}
 	}
 
+	/*
+	 * Get a list of all test type from the database.
+	 */
+	public static ArrayList<String> getAllTestType(DatabaseConnection connection) {
+		ResultSet results = null;
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			results = statement.executeQuery(
+				"select distinct test_type from radiology_record"
+			);
+			
+			ArrayList<String> types = new ArrayList<String>();
+
+			while (results != null && results.next()) {
+				types.add(results.getString(1));
+			}
+
+			return types;
+		} catch (SQLException e) {
+			throw new RuntimeException("failed to getAllTestType()", e);
+		} finally {
+			connection.close();
+		}
+	}
+
 
 	/*
 	 * Create a record where all fields are at default values.
