@@ -62,10 +62,6 @@
 	<TR VALIGN=TOP ALIGN=LEFT>
 		<TD><B>TOTAL</B></TD>
 		<TD><B><%= controller.totalImageCount%></B></TD></TR>
-	<TR VALIGN=TOP ALIGN=LEFT>
-		<TD><B><%= controller.patientBox%></B></TD>
-		<TD><B><%= controller.testTypeBox%></B></TD>
-		<TD><B><%= controller.timeBox%></B></TD></TR>
 </TABLE>
 <%
 	}

@@ -51,53 +51,65 @@ public class OLAPController extends Controller {
 			OLAP.setCubeTable(connection);
 			totalImageCount = OLAP.getTotal(connection);
 			
-			if (patientBox != "" && testTypeBox == "" && timeBox == ALL_PERIOD) {
+			if (patientBox != null && testTypeBox == null && timeBox.equals(ALL_PERIOD)) {
 			// for each patient, all type, all time
 				OLAP.setQueryResult(OLAP.byPatient(connection));
 
-			} else if (patientBox != "" && testTypeBox == "" && timeBox == YEARLY_PERIOD) {
+			} else if (patientBox != null && testTypeBox == null && timeBox.equals(YEARLY_PERIOD)) {
 			// for each patient, all type, drill down to year
 				OLAP.setQueryResult(OLAP.byPatientYear(connection));
 
-			} else if (patientBox != "" && testTypeBox == "" && timeBox == MONTHLY_PERIOD) {
+			} else if (patientBox != null && testTypeBox == null && timeBox.equals(MONTHLY_PERIOD)) {
 			// for each patient, all type, drill down to month
 				OLAP.setQueryResult(OLAP.byPatientMonth(connection));
 
-			} else if (patientBox != "" && testTypeBox == "" && timeBox == WEEKLY_PERIOD) {
+			} else if (patientBox != null && testTypeBox == null && timeBox.equals(WEEKLY_PERIOD)) {
 			// for each patient, all type, drill down to week
 				OLAP.setQueryResult(OLAP.byPatientWeek(connection));
 
-			} else if (patientBox == "" && testTypeBox != "" && timeBox == ALL_PERIOD) {
+			} else if (patientBox == null && testTypeBox != null && timeBox.equals(ALL_PERIOD)) {
 			// for each test type, all patient, all time
 				OLAP.setQueryResult(OLAP.byTestType(connection));
 
-			} else if (patientBox == "" && testTypeBox != "" && timeBox == YEARLY_PERIOD) {
+			} else if (patientBox == null && testTypeBox != null && timeBox.equals(YEARLY_PERIOD)) {
 			// for each test type, all patient, drill down to year
 				OLAP.setQueryResult(OLAP.byTestTypeYear(connection));
 
-			} else if (patientBox == "" && testTypeBox != "" && timeBox == MONTHLY_PERIOD) {
+			} else if (patientBox == null && testTypeBox != null && timeBox.equals(MONTHLY_PERIOD)) {
 			// for each test type, all patient, drill down to month
 				OLAP.setQueryResult(OLAP.byTestTypeMonth(connection));
 
-			} else if (patientBox == "" && testTypeBox != "" && timeBox == WEEKLY_PERIOD) {
+			} else if (patientBox == null && testTypeBox != null && timeBox.equals(WEEKLY_PERIOD)) {
 			// for each test type, all patient, drill down to week
 				OLAP.setQueryResult(OLAP.byTestTypeWeek(connection));
 
-			} if (patientBox != "" && testTypeBox != "" && timeBox == ALL_PERIOD) {
+			} if (patientBox != null && testTypeBox != null && timeBox.equals(ALL_PERIOD)) {
 			// for each patient and test type, all time
 				OLAP.setQueryResult(OLAP.byBoth(connection));
 
-			} else if (patientBox != "" && testTypeBox != "" && timeBox == YEARLY_PERIOD) {
+			} else if (patientBox != null && testTypeBox != null && timeBox.equals(YEARLY_PERIOD)) {
 			// for each patient and test type, drill down to year
 				OLAP.setQueryResult(OLAP.byBothYear(connection));
 
-			} else if (patientBox != "" && testTypeBox != "" && timeBox == MONTHLY_PERIOD) {
+			} else if (patientBox != null && testTypeBox != null && timeBox.equals(MONTHLY_PERIOD)) {
 			// for each patient and test type, drill down to month
 				OLAP.setQueryResult(OLAP.byBothMonth(connection));
 
-			} else if (patientBox != "" && testTypeBox != "" && timeBox == WEEKLY_PERIOD) {
+			} else if (patientBox != null && testTypeBox != null && timeBox.equals(WEEKLY_PERIOD)) {
 			// for each patient and test type, drill down to week
 				OLAP.setQueryResult(OLAP.byBothWeek(connection));
+
+			} else if (patientBox == null && testTypeBox == null && timeBox.equals(YEARLY_PERIOD)) {
+			// all patient and test type, drill down to year
+				OLAP.setQueryResult(OLAP.byYear(connection));
+
+			} else if (patientBox == null && testTypeBox == null && timeBox.equals(MONTHLY_PERIOD)) {
+			// all patient and test type, drill down to month
+				OLAP.setQueryResult(OLAP.byMonth(connection));
+
+			} else if (patientBox == null && testTypeBox == null && timeBox.equals(WEEKLY_PERIOD)) {
+			// all patient and test type, drill down to week
+				OLAP.setQueryResult(OLAP.byWeek(connection));
 			}
 			return OLAP.getQueryResult();
 		} catch (Exception e) {
