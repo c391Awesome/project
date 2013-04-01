@@ -33,7 +33,10 @@
 			</span><%
 		}
 	}
-	controller.getUploadImage();
+	
+	//if (!controller.requestIsPost()) {
+		controller.getUploadImage();
+	//}
 %>
 
 	<p><b>Uploading Module</b></p><p><hr>
@@ -46,7 +49,7 @@
 	<input type="submit" name="UPLOAD" value="upload"></td></tr>
 	</table>
 	</form>
-	<ul><hr><li><a href="logout.jsp">logout</a></li></ul>
+	<p><hr><li><a href="logout.jsp">logout</a></li>
 
 </BODY>
 </HTML>

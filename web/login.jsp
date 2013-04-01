@@ -22,7 +22,7 @@
 				Hello, <%= controller.user.getFirstName() %>
 						<%= controller.user.getLastName() %>.
 			<% } else { %>
-				Hello, <%= controller.user.getUserName() %>.
+				Hello, <%= controller.user.getUserType() %> <%= controller.user.getUserName() %>.
 			<% } %>
 
 			<ul>

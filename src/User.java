@@ -65,6 +65,10 @@ public class User {
 		return type.intValue();
 	}
 
+	public String getUserType() {
+		return getFullStringFromType(getType());
+	}
+
 	public Date getDateRegistered() {
 		if (dateRegistered == null) {
 			throw new MissingFieldException("dateRegistered", this);
@@ -495,6 +499,20 @@ public class User {
 			return "d";
 		} else if (RADIOLOGIST_T == type) {
 			return "r";
+		}
+
+		return null;
+	}
+
+	private static String getFullStringFromType(int type) {
+		if (ADMINISTRATOR_T == type) {
+			return "administrator";
+		} else if (PATIENT_T == type) {
+			return "patient";
+		} else if (DOCTOR_T == type) {
+			return "doctor";
+		} else if (RADIOLOGIST_T == type) {
+			return "radiologist";
 		}
 
 		return null;

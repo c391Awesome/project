@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-	<TITLE>Data analysis module</TITLE>
+	<TITLE>Data Analysis Module</TITLE>
 </HEAD>
 
 <BODY>
@@ -13,7 +13,7 @@
 	<TD><input type="checkbox" name="PATIENT_BOX" value="PATIENT"><B>for each patient</B></TD><TR>
 	<TR VALIGN=TOP ALIGN=LEFT>
 	<TD><input type="checkbox" name="TYPE_BOX" value="TESTTYPE"><B>for each test type</B></TD><TR>
-	<TR VALIGN=TOP ALIGN=LEFT><TD><B> period of time:</B></TD><TD>
+	<TR VALIGN=TOP ALIGN=LEFT><TD><B>period of time <I>(drill down / roll up)</I>:</B></TD><TD>
 	<select name="PERIOD">
 	<option value="NONE" selected>none</option>
 	<option value="YEARLY">yearly</option>
