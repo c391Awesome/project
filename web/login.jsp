@@ -37,6 +37,9 @@
 					<li><a href="reportGen.jsp">
 						generate report
 					</a></li>
+					<li><a href="analysisInput.jsp">
+						analysis on OLAP report
+					</a></li>
 				<% } %>
 				<% if (controller.userIsRadiologist()) { %>
 					<li><a href="insertRecord.jsp">
