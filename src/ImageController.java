@@ -48,7 +48,10 @@ public class ImageController extends Controller {
 
 	// GET uploadToRecord.jsp
 	public void getUploadToRecord() {
-		records = Record.getAllRecord(getDatabaseConnection(context));
+		//records = Record.getAllRecord(getDatabaseConnection(context));
+		String radiologist = user.getUserName();
+		records = Record.findRecordByRadiologist(
+			radiologist, getDatabaseConnection(context));
 	}
 
 	// POST uploadToRecord.jsp
