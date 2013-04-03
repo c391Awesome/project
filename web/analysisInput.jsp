@@ -92,7 +92,7 @@
 <%		}
 	}
 %>
-<p><hr><li><a href="logout.jsp">logout</a></li>
+<p><hr><li><a href="login.jsp">back</a></li>
 
 </BODY>
 </HTML>

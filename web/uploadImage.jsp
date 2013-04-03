@@ -55,7 +55,6 @@
 	}
 %>
 	<p><li><a href="uploadToRecord.jsp">back to choose record</a></li>
-	<li><a href="logout.jsp">logout</a></li>
 
 </BODY>
 </HTML>

@@ -35,6 +35,7 @@
 	<tr><TD><input type="submit" name="SUBMIT" value="select"></td></tr>
 	</table>
 	</form>
+	<p><hr><li><a href="login.jsp">back</a></li>
 
 </BODY>
 </HTML>

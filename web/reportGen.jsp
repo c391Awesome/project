@@ -61,8 +61,7 @@
 				controller.getParameters();
 		%>
 			<p><b>The following are the search result for <%=request.getParameter("DIAGNOSIS")%> 
-			between <%=request.getParameter("TIME_FROM")%> and <%=request.getParameter("TIME_UNTIL")%></b></p><br>
-
+			between <%=request.getParameter("TIME_FROM")%> and <%=request.getParameter("TIME_UNTIL")%></b></p>
 			<TABLE border="1">
 				<TR VALIGN=TOP ALIGN=LEFT>
 					<TD><B><I>First Name</I></B></TD>
@@ -99,6 +98,7 @@
 			}
 		%>
 			</TABLE>
+	<p><hr><li><a href="login.jsp">back</a></li>
 
 
 </BODY>

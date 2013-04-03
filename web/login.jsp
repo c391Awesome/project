@@ -17,19 +17,22 @@
 
 
 	if (controller.userIsLoggedIn()) {
-		%>
+		%>	<p><b>Radiology Information System</b></p><p>
 			<% if (controller.user.isPersonalInfoLoaded()) { %>
-				Hello, <%= controller.user.getFirstName() %>
+				Hello, <%= controller.user.getUserType() %> <%= controller.user.getFirstName() %>
 						<%= controller.user.getLastName() %>.
 			<% } else { %>
 				Hello, <%= controller.user.getUserType() %> <%= controller.user.getUserName() %>.
 			<% } %>
-
+			<hr>
+			<p><b>User Informations</b>
 			<ul>
-				<li><a href="logout.jsp">logout</a></li>
-				<li><a href="search.jsp">search radiology records</a></li>
 				<li><a href="changePassword.jsp">change password</a></li>
 				<li><a href="editPersonalInfo.jsp">edit personal info</a></li>
+			</ul>
+			<p><b>System Modules</b>
+			<ul>
+				<li><a href="search.jsp">search radiology records</a></li>
 				<% if (controller.userIsAdmin()) { %>
 					<li><a href="userManagementConsole.jsp">
 						manage users
@@ -50,6 +53,7 @@
 					</a></li>
 				<% } %>
 			</ul>
+			<p><hr><li><a href="logout.jsp">logout</a></li>
 		<%
 	} else {
 		%>

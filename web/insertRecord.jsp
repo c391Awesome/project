@@ -27,7 +27,7 @@
 	controller.getInsertRecord();
 
 %>
-	<p><b>Uploading module (insert new record)</b></p><p><hr>
+	<p><b>Enter Radiology Record</b></p><p><hr>
 
 	<P><li>to insert a new radiology record :</P>
 	<FORM NAME="insertRecord" ACTION="insertRecord.jsp" METHOD="post" >
@@ -103,7 +103,7 @@
 		}
 	}
 %>
-	<p><hr><li><a href="logout.jsp">logout</a></li></ul>
+	<p><hr><li><a href="login.jsp">back</a></li>
 
 
 

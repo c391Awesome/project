@@ -99,6 +99,8 @@
 			</I></B></TD>
 		</TR>
 	<% } %>
+	</TABLE>
+	<p><hr><li><a href="login.jsp">back</a></li>
 </BODY>
 
 </HTML>

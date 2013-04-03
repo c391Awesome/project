@@ -16,7 +16,8 @@
 
 	if (controller.requestIsPost() && controller.attemptUpdateInfo()) {
 		// request is post
-		%><span class="success">Information changed!</span><%
+		%><span class="success">Information changed!</span>
+		<p><hr><li><a href="login.jsp">back</a></li><%
 	} else {
 		controller.getUpdateInfo();
 		if (controller.hasError()) {
@@ -24,6 +25,8 @@
 		}
 
 		%>
+		<p><b>Edit Personal Information</b></p><p><hr>
+
 		<FORM NAME="ChangePasswordForm" ACTION="editPersonalInfo.jsp" METHOD="post" >
 			
 			<P>Update your personal information below</P>
@@ -54,6 +57,7 @@
 
 			<INPUT TYPE="submit" NAME="Submit" VALUE="Submit">
 		</FORM>
+		<p><hr><li><a href="login.jsp">back</a></li>
 		<%
 	}
 %>
