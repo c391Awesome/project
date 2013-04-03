@@ -20,12 +20,12 @@ public class SearchQuery {
 		" ORDER BY prescribing_date DESC ";
 	
 
-	private String searchTerms;
+	private String[] searchTerms;
 	private ArrayList<WhereClause> clauses;
 	private String orderByClause;
 
 
-	public SearchQuery(String terms, Date start, Date end) {
+	public SearchQuery(String[] terms, Date start, Date end) {
 		searchTerms = terms;
 		clauses = new ArrayList<WhereClause>();
 		if (start != null)
@@ -47,7 +47,7 @@ public class SearchQuery {
 	}
 
 	public Collection<Record> executeSearch(DatabaseConnection connection) {
-		if (searchTerms == null || searchTerms.isEmpty()) {
+		if (searchTerms == null || searchTerms.length == 0) {
 			return new ArrayList<Record>();
 		}
 
@@ -106,9 +106,10 @@ public class SearchQuery {
 			builder.toString());
 
 		int position = 1;
-		statement.setString(position++, searchTerms);
-		statement.setString(position++, searchTerms);
-		statement.setString(position++, searchTerms);
+		String containsParameter = createContainsParameter();
+		statement.setString(position++, containsParameter);
+		statement.setString(position++, containsParameter);
+		statement.setString(position++, containsParameter);
 
 		for (WhereClause clause: clauses) {
 			position += clause.addData(statement, position);
@@ -117,6 +118,19 @@ public class SearchQuery {
 		return statement;
 	}
 	
+	private String createContainsParameter() {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < searchTerms.length - 1; i++) {
+			builder.append(searchTerms[i]);
+			builder.append(" OR ");
+		}
+
+		if (searchTerms.length > 0) {
+			builder.append(searchTerms[searchTerms.length - 1]);
+		}
+		return builder.toString();
+	}
+
 	public static class PrescribedClause implements WhereClause {
 		public Date date;
 		public String comparator;

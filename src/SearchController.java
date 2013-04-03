@@ -24,7 +24,7 @@ public class SearchController extends Controller {
 	}
 
 	public boolean doSearch() {
-		query = new SearchQuery(request.getParameter(QUERY_FIELD),
+		query = new SearchQuery(splitSearchTerms(),
 			parseDateOrGetNull(request.getParameter(START_FIELD)),
 			parseDateOrGetNull(request.getParameter(END_FIELD)));
 
@@ -53,6 +53,23 @@ public class SearchController extends Controller {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	// split search terms on , and remove empty terms
+	private String[] splitSearchTerms() {
+		ArrayList<String> validTerms = new ArrayList<String>();
+
+		String terms[] = request.getParameter(QUERY_FIELD).split(",");
+		for (int i = 0; i < terms.length; i++) {
+			String term = terms[i].trim();
+			if (term.length() > 0) {
+				validTerms.add(term);
+			}
+		}
+
+		terms = new String[validTerms.size()];
+		validTerms.toArray(terms);
+		return terms;
 	}
 
 	public SearchQuery.WhereClause createSecurityConstraint() {
