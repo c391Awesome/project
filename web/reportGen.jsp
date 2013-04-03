@@ -73,7 +73,6 @@
 		<%
 				int index = 1;
 				for (String temp : controller.attemptGenerateReport()) {
-					System.out.println(temp);
 					if(index == 1){
 		%>
 					<TR VALIGN=TOP ALIGN=LEFT>
