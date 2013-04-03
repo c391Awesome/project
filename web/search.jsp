@@ -96,6 +96,12 @@
 						<img src="GetOnePic?<%= imageID %>"/>
 					</a>
 				<% } %>
+
+				<% if (controller.userIsRadiologist()
+					&& result.getRadiologist().equals(
+						controller.user.getUserName())) { %>
+					<a href="uploadImage.jsp?RECORD_ID=<%= result.getRecordId() %>">add an image to this record</a>
+				<% } %>
 			</I></B></TD>
 		</TR>
 	<% } %>
