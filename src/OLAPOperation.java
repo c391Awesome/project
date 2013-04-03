@@ -23,14 +23,13 @@ public class OLAPOperation {
 	
 	public boolean setCubeTable (DatabaseConnection connection) {
 		Statement statement = null;
+
 		try {
 			statement = connection.createStatement();
-			statement.executeUpdate(
-				"drop table temp"
-			);
-			statement.executeUpdate(
-				"drop table OLAPcube"
-			);
+
+			dropTable(statement, "temp");
+			dropTable(statement, "OLAPcube");
+
 			statement.executeUpdate(
 				"create table temp as select R.patient_name, R.test_type,"
 				+" to_char(R.test_date, 'yyyy') as year,"
@@ -602,6 +601,23 @@ public class OLAPOperation {
 			connection.close();
 		}
 	}
-	
+
+	/*
+	 * Drop a table, but don't throw an exception if the
+	 * table doesn't exist.
+	 */
+	private void dropTable(Statement statement, String table)
+			throws SQLException {
+		statement.executeUpdate(
+			"BEGIN " +
+			"	EXECUTE IMMEDIATE 'DROP TABLE " + table + "'; " +
+			"EXCEPTION " +
+			"	WHEN OTHERS THEN " +
+			"	IF SQLCODE != -942 THEN " +
+			"		RAISE; " +
+			"	END IF; " +
+			"END; "
+		);
+	}
 }
 
