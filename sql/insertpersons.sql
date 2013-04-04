@@ -6,5 +6,6 @@ insert into persons values('name5', 'name', 'five', '123 fake street', 'five@coo
 insert into persons values('name6', 'name', 'six', '123 fake street', 'six@cool.com', '1234567890');
 insert into persons values('name7', 'name', 'seven', '123 fake street', 'seven@cool.com', '1234567890');
 insert into persons values('name8', 'name', 'eight', '123 fake street', 'eight@cool.com', '1234567890');
+insert into persons values('name9', 'name', 'nine', '123 fake street', 'nine@cool.com', '1234567890');
 commit;
 
