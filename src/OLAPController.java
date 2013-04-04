@@ -249,9 +249,12 @@ public class OLAPController extends Controller {
 			} else if (patientBox.equals(ALL_PATIENT) && testTypeBox.equals(ALL_TYPE) && timeBox.equals(WEEKLY_PERIOD)) {
 			// all patient and test type, drill down to week
 				OLAP.setQueryResult(OLAP.byWeek(connection));
-			}
 
-//			resultSize = queryResultFilter(OLAP.getQueryResult()).size();
+			} else if (patientBox.equals(ALL_PATIENT) && testTypeBox.equals(ALL_TYPE) && timeBox.equals(NONE)) {
+			// all patient and test type, all time
+				totalImageCount = OLAP.getTotal(connection);
+				return new ArrayList<String>();
+			}
 
 			return queryResultFilter(OLAP.getQueryResult());
 			//return OLAP.getQueryResult();
