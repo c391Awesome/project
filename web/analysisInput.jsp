@@ -37,7 +37,7 @@
 		<% } %>
 	</select></TD>
 	<TD><input type="radio" name="PATIENT_BOX" value="ALL_PATIENT" <%=controller.allPatientChoosen()%>>
-		<B>all patient</B></TD></TR>
+		<B>all patients</B></TD></TR>
 
 	<TR VALIGN=TOP ALIGN=LEFT>
 	<TD><input type="radio" name="TYPE_BOX" value="EACH_TYPE" <%=controller.eachTypeChoosen()%>>
@@ -53,8 +53,9 @@
 		<% } %>
 	</select></TD>
 	<TD><input type="radio" name="TYPE_BOX" value="ALL_TYPE" <%=controller.allTypeChoosen()%>>
-		<B>all test type</B></TD></TR>
-
+		<B>all test types</B></TD></TR>
+	</TABLE>
+	<TABLE>
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B>period of time <I>(drill down / roll up)</I>:</B></TD>
 	<TD><select name="PERIOD">
 	<option value="NONE" selected>all time</option>
