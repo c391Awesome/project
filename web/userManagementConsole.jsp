@@ -41,7 +41,10 @@
 		</fieldset>
 		<INPUT TYPE="submit" NAME="edit" VALUE="edit">
 	</FORM>
-	<p><hr><h4><a href="login.jsp">back</a></h4>
+	<ul class="nav">
+		<li><a href="login.jsp">back</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/User-management">help</a></li>
+	</ul>
 </BODY>
 </HTML>
 

@@ -58,7 +58,10 @@
 		
 	<%
 %>
-	<p><hr><h4><a href="userManagementConsole.jsp">return to user management</a></h4>
+	<ul class="nav">
+		<li><a href="userManagementConsole.jsp">return to user management</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/User-management#assign-or-remove-doctors-for-a-patient">help</a></li>
+	</ul>
 
 
 </BODY>

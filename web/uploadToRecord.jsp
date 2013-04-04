@@ -1,5 +1,6 @@
 <HTML>
 <HEAD>
+	<link rel="stylesheet" href="style/style.css"/>
 	<TITLE>Uploading Module</TITLE>
 </HEAD>
 
@@ -35,7 +36,10 @@
 	<tr><TD><input type="submit" name="SUBMIT" value="select"></td></tr>
 	</table>
 	</form>
-	<p><hr><h4><a href="login.jsp">back</a></h4>
+	<ul class="nav">
+		<li><a href="login.jsp">back</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/Image-uploading#creating-a-radiology-record">help</a></li>
+	</ul>
 
 </BODY>
 </HTML>

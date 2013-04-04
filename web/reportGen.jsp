@@ -97,7 +97,10 @@
 			}
 		%>
 			</TABLE>
-	<p><hr><h4><a href="login.jsp">back</a></h4>
+	<ul class="nav">
+		<li><a href="login.jsp">back</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/Report-generation">help</a></li>
+	</ul>
 
 
 </BODY>

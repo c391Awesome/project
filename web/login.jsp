@@ -17,7 +17,7 @@
 
 
 	if (controller.userIsLoggedIn()) {
-		%>	<p><h1>Radiology Information System</h1></p><p>
+		%>	<h1>Radiology Information System</h1>
 			<% if (controller.user.isPersonalInfoLoaded()) { %>
 				Hello, <%= controller.user.getUserType() %> <%= controller.user.getFirstName() %>
 						<%= controller.user.getLastName() %>.
@@ -25,7 +25,7 @@
 				Hello, <%= controller.user.getUserType() %> <%= controller.user.getUserName() %>.
 			<% } %>
 			<hr>
-			<p><b>User Informations</b>
+			<p><b>User Information</b>
 			<ul>
 				<li><a href="changePassword.jsp">change password</a></li>
 				<li><a href="editPersonalInfo.jsp">edit personal info</a></li>
@@ -53,7 +53,10 @@
 					</a></li>
 				<% } %>
 			</ul>
-			<p><hr><h4><a href="logout.jsp">logout</a></h4>
+			<ul class="nav">
+				<li><a href="logout.jsp">logout</a></li>
+				<li><a href="https://github.com/c391Awesome/project/wiki/Help">help</a></li>
+			</ul>
 		<%
 	} else {
 		%>
@@ -80,8 +83,6 @@
 		<%
 	}
 %>
-
-
 
 </BODY>
 </HTML>

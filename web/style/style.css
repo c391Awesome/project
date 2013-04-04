@@ -1,7 +1,46 @@
+html {
+	padding: 0;
+	margin: 0;
+	background-image: url(agsquare.png);
+}
+
+body {
+	margin: 3em;
+	padding: 0.2em;
+	background-color: white;
+}
+
 .error {
 	color: red;
 }
 
 .success {
 	color: green;
+}
+
+h1 {
+	width: 100%;
+	border-bottom: thin solid #BBB492;
+	color: #A19D86;
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+
+hr {
+	border: thin solid #7EA1A1;
+	padding-top: 0;
+	margin-top: 0;
+}
+
+.nav {
+	background-color: #D1EEEE;
+	width: 100%;
+	padding: 0.5em 0;
+	border-top: thin solid #7EA1A1;
+}
+
+.nav li {
+	display: inline;
+	list-style: none;
+	margin-left: 1em;
 }

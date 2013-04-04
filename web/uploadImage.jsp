@@ -1,5 +1,6 @@
 <HTML>
 <HEAD>
+	<link rel="stylesheet" href="style/style.css"/>
 	<TITLE>Uploading Module</TITLE>
 </HEAD>
 
@@ -54,7 +55,11 @@
 		}
 	}
 %>
-	<p><h4><a href="uploadToRecord.jsp">back to choose record</a></h4>
+	<ul class="nav">
+		<li><a href="login.jsp">back</a></li>
+		<li><a href="uploadToRecord.jsp">upload to a different record</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/Image-uploading#creating-a-radiology-record">help</a></li>
+	</ul>
 
 </BODY>
 </HTML>

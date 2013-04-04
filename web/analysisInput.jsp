@@ -1,6 +1,7 @@
 <HTML>
 <HEAD>
 	<TITLE>Data Analysis Module</TITLE>
+	<link rel="stylesheet" href="style/style.css"/>
 </HEAD>
 
 <BODY>
@@ -19,7 +20,7 @@
 %>
 
 <FORM NAME="analysis" ACTION="analysisInput.jsp" METHOD="post" >
-	<P><li>to generate the OLAB report on number of radiology record images:</P>
+	<P><li>to generate the OLAP report on number of radiology record images:</P>
 	<fieldset><legend>select one or more:</legend>
 	<TABLE>
 
@@ -105,7 +106,11 @@
 <%		}
 	}
 %>
-<p><hr><h4><a href="login.jsp">back</a></h4>
+
+	<ul class="nav">
+		<li><a href="login.jsp">back</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/Data-analysis">help</a></li>
+	</ul>
 
 </BODY>
 </HTML>
