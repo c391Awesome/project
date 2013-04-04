@@ -67,3 +67,10 @@ CREATE TABLE pacs_images (
    PRIMARY KEY(record_id,image_id),
    FOREIGN KEY(record_id) REFERENCES radiology_record
 );
+
+@insertuser.sql
+@insertpersons.sql
+@insertrecord.sql
+@insertdoctor.sql
+@createIndices.sql
+@createSequence.sql
