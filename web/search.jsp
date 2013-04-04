@@ -29,7 +29,7 @@
 </HEAD>
 
 <BODY>
-	<p><b>Radiology Record Search</b></p><p><hr>
+	<p><h1>Radiology Record Search</h1></p><p><hr>
 
 <%@ page import="java.sql.*,ca.awesome.*" %>
 <%
@@ -92,7 +92,7 @@
 			<TD><B><I><%= result.getDescription() %></I></B></TD>
 			<TD><B><I>
 				<% for (int imageID: result.getImage_id()) { %>
-					<a href="displayImage.jsp?<%= imageID %>">
+					<a href="displayImage.jsp?<%= imageID %>" target="_blank">
 						<img src="GetOnePic?<%= imageID %>"/>
 					</a>
 				<% } %>
@@ -106,7 +106,7 @@
 		</TR>
 	<% } %>
 	</TABLE>
-	<p><hr><li><a href="login.jsp">back</a></li>
+	<p><hr><h4><a href="login.jsp">back</a></h4>
 </BODY>
 
 </HTML>

@@ -5,7 +5,8 @@
 </HEAD>
 
 <BODY>
-	<h1>Remove Family Doctor</h1>
+	<p><h1>Remove Family Doctor</h1></p><p><hr>
+	
 <%@ page import="java.sql.*,ca.awesome.*" %>
 <% 
 
@@ -31,7 +32,7 @@
 	controller.getUnassignDoctor();
 
 	%>
-		<h4>Remove doctor from <a href="editUser.jsp?USERNAME=<%= controller.patientName %>"><%= controller.patientName %></a></h4>
+		<b>Remove doctor from <a href="editUser.jsp?USERNAME=<%= controller.patientName %>"><%= controller.patientName %></a></b>
 		<FORM NAME="UnassignDoctorForm" ACTION="unassignDoctor.jsp" METHOD="post" >
 			<TABLE>
 				<input type="hidden"
@@ -57,7 +58,7 @@
 		
 	<%
 %>
-
+	<p><hr><h4><a href="userManagementConsole.jsp">return to user management</a></h4>
 
 
 </BODY>

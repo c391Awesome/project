@@ -16,14 +16,14 @@
 
 	if (controller.requestIsPost() && controller.attemptChangePassword()) {
 		%><span class="success">Password changed!</span>
-		<p><hr><li><a href="login.jsp">back</a></li><%
+		<p><hr><h4><a href="login.jsp">back</a></h4><%
 	} else {
 		if (controller.hasError()) {
 			%><span class="error"><%=controller.error%></span><%
 		}
 
 		%>
-		<p><b>Change Password</b></p><p><hr>
+		<p><h1>Change Password</h1></p><p><hr>
 		
 		<FORM NAME="ChangePasswordForm" ACTION="changePassword.jsp" METHOD="post" >
 			
@@ -43,7 +43,7 @@
 
 			<INPUT TYPE="submit" NAME="Submit" VALUE="Change Password">
 		</FORM>
-		<p><hr><li><a href="login.jsp">back</a></li>
+		<p><hr><h4><a href="login.jsp">back</a></h4>
 		<%
 	}
 %>

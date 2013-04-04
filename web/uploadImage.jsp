@@ -21,7 +21,7 @@
 	controller.getUploadImage();
 %>
 
-	<p><b>Uploading Module</b></p><p><hr>
+	<p><h1>Uploading Module</h1></p><p><hr>
 	<form name="imageUpload" method="POST" enctype="multipart/form-data" action="uploadImage.jsp">
 	<p><li>Please select the image upload to record <%= controller.record_id %></P>
 	<table>
@@ -54,7 +54,7 @@
 		}
 	}
 %>
-	<p><li><a href="uploadToRecord.jsp">back to choose record</a></li>
+	<p><h4><a href="uploadToRecord.jsp">back to choose record</a></h4>
 
 </BODY>
 </HTML>

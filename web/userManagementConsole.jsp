@@ -19,7 +19,7 @@
 	controller.getManagementConsole();
 
 	%>
-	<p><b>Create User / Edit User</b></p><p><hr>
+	<p><h1>Create User / Edit User</h1></p><p><hr>
 	<li><a href="createUser.jsp"><b>create a user</b></a></li><br>
 	<fieldset><legend><b>edit a user:</b></legend>
 	<FORM NAME="editUserForm" ACTION="editUser.jsp" METHOD="get" >
@@ -41,7 +41,7 @@
 		</fieldset>
 		<INPUT TYPE="submit" NAME="edit" VALUE="edit">
 	</FORM>
-	<p><hr><li><a href="login.jsp">back</a></li>
+	<p><hr><h4><a href="login.jsp">back</a></h4>
 </BODY>
 </HTML>
 

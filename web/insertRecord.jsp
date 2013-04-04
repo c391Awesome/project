@@ -27,7 +27,7 @@
 	controller.getInsertRecord();
 
 %>
-	<p><b>Enter Radiology Record</b></p><p><hr>
+	<p><h1>Enter Radiology Record</h1></p><p><hr>
 
 	<P><li>to insert a new radiology record :</P>
 	<FORM NAME="insertRecord" ACTION="insertRecord.jsp" METHOD="post" >
@@ -81,9 +81,8 @@
 			<TD><%= controller.testDate %></TD>
 			<TD><%= controller.diagnosis %></TD></TR></TABLE>
 			</span>
-			<a
-				href="uploadImage.jsp?RECORD_ID=<%= controller.record_id %>">
-				upload an image to this record</a></li>
+				<h4><a href="uploadImage.jsp?RECORD_ID=<%= controller.record_id %>">
+				upload an image to this record</a></h4>
 		<% } else { %>
 			<span class="error">failed to insert record
 			<br><TABLE border="1"><TR VALIGN=TOP ALIGN=LEFT>
@@ -103,7 +102,7 @@
 		}
 	}
 %>
-	<p><hr><li><a href="login.jsp">back</a></li>
+	<p><hr><h4><a href="login.jsp">back</a></h4>
 
 
 

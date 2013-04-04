@@ -5,8 +5,7 @@
 </HEAD>
 
 <BODY>
-	<h1>Edit User<h1>
-	<h5><a href="userManagementConsole.jsp">return to user management</a><h5>
+	<p><h1>Edit User</h1></p><p><hr>
 <%@ page import="java.sql.*,ca.awesome.*" %>
 <% 
 
@@ -108,6 +107,8 @@
 			<INPUT TYPE="submit" NAME="UNASSIGN" VALUE="Remove Doctor">
 		</form>
 	<% } %>
+
+	<p><hr><h4><a href="userManagementConsole.jsp">return to user management</a></h4>
 
 </BODY>
 </HTML>

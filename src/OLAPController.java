@@ -12,8 +12,14 @@ import java.util.Iterator;
 
 public class OLAPController extends Controller {
 
-	public static final String PATIENT_FIELD = "PATIENT_BOX";
-	public static final String TESTTYPE_FIELD = "TYPE_BOX";
+	public static final String PATIENT_RADIO = "PATIENT_BOX";
+	public static final String ALL_PATIENT = "ALL_PATIENT";
+	public static final String EACH_PATIENT = "EACH_PATIENT";
+	public static final String A_PATIENT = "A_PATIENT";
+	public static final String TESTTYPE_RADIO = "TYPE_BOX";
+	public static final String ALL_TYPE = "ALL_TYPE";
+	public static final String EACH_TYPE = "EACH_TYPE";
+	public static final String A_TYPE = "A_TYPE";
 	public static final String TIMEPERIOD_FIELD = "PERIOD";
 	public static final String NONE = "NONE";
 	public static final String YEARLY_PERIOD = "YEARLY";
@@ -53,25 +59,122 @@ public class OLAPController extends Controller {
 	// can not choose all patient and one specific patient at the same time
 	// and can not choose all test type and one specific test type at the same time
 	public boolean getInput() {
-		patientBox = request.getParameter(PATIENT_FIELD);
-		testTypeBox = request.getParameter(TESTTYPE_FIELD);
-		timeBox = request.getParameter(TIMEPERIOD_FIELD);
-		onePatient = request.getParameter(ONE_PATIENT);
-		oneTestType = request.getParameter(ONE_TESTTYPE);
+		readParameters();
+		if (patientBox.equals(ALL_PATIENT) && !onePatient.equals(NONE)) {
+			return false;
+		}
+		if (patientBox.equals(EACH_PATIENT) && !onePatient.equals(NONE)) {
+			return false;
+		}
+		if (testTypeBox.equals(ALL_TYPE) && !oneTestType.equals(NONE)) {
+			return false;
+		}
+		if (testTypeBox.equals(EACH_TYPE) && !oneTestType.equals(NONE)) {
+			return false;
+		}
+		if (patientBox.equals(A_PATIENT) && onePatient.equals(NONE)) {
+			return false;
+		}
+		if (testTypeBox.equals(A_TYPE) && oneTestType.equals(NONE)) {
+			return false;
+		}
 
-		if (patientBox != null && !onePatient.equals(NONE)) {
-			return false;
-		}
-		if (testTypeBox != null && !oneTestType.equals(NONE)) {
-			return false;
-		}
 		if (!onePatient.equals(NONE)) {
-			patientBox = PATIENT_FIELD;	
+			patientBox = EACH_PATIENT;	
 		}
 		if (!oneTestType.equals(NONE)) {
-			testTypeBox = TESTTYPE_FIELD;	
+			testTypeBox = EACH_TYPE;	
 		}
+
 		return true;
+	}
+
+	public void readParameters() {
+		patientBox = request.getParameter(PATIENT_RADIO);
+		patientBox = (patientBox == null) ? "" : patientBox;
+
+		testTypeBox = request.getParameter(TESTTYPE_RADIO);
+		testTypeBox = (testTypeBox == null) ? "" : testTypeBox;
+
+		timeBox = request.getParameter(TIMEPERIOD_FIELD);
+		timeBox = (timeBox == null) ? "" : timeBox;
+
+		onePatient = request.getParameter(ONE_PATIENT);
+		onePatient = (onePatient == null) ? "" : onePatient;
+
+		oneTestType = request.getParameter(ONE_TESTTYPE);
+		oneTestType = (oneTestType == null) ? "" : oneTestType;
+		
+	}
+
+	public String eachPatientChoosen(){
+		if (onePatient.equals(NONE) && !patientBox.equals(ALL_PATIENT)) {
+			return "checked";
+		}
+		return "";
+	}
+
+	public String aPatientChoosen(){
+		if (patientBox.equals(A_PATIENT)) {
+			return "checked";
+		}
+		return "";
+	}
+
+	public String allPatientChoosen(){
+		if (patientBox.isEmpty() || patientBox.equals(ALL_PATIENT)) {
+			return "checked";
+		}
+		return "";
+	}
+
+	public String eachTypeChoosen(){
+		if (oneTestType.equals(NONE) && !testTypeBox.equals(ALL_TYPE)) {
+			return "checked";
+		}
+		return "";
+	}
+
+	public String aTypeChoosen(){
+		if (testTypeBox.equals(A_TYPE)) {
+			return "checked";
+		}
+		return "";
+	}
+
+	public String allTypeChoosen(){
+		if (testTypeBox.isEmpty() || testTypeBox.equals(ALL_TYPE)) {
+			return "checked";
+		}
+		return "";
+	}
+
+	public String onePatientSelected(String patient) {
+		if (patient.equals(onePatient)) {
+			return "selected";
+		}
+		return "";
+	}
+	
+	public String noPatientSelected() {
+		if (onePatient.isEmpty() || !patientBox.equals(A_PATIENT)) {
+			return "selected";
+		}
+		return "";
+	}
+
+	public String oneTypeSelected(String type) {
+		if (type.equals(oneTestType)) {
+			return "selected";
+		}
+		return "";
+	}
+
+	public String noTypeSelected() {
+		if (oneTestType.isEmpty() || testTypeBox.equals(A_TYPE)) {
+			return "selected";
+		}
+		return "";
 	}
 
 	// POST analysisInput.jsp
@@ -87,63 +190,63 @@ public class OLAPController extends Controller {
 
 			//totalImageCount = OLAP.getTotal(connection);
 			
-			if (patientBox != null && testTypeBox == null && timeBox.equals(NONE)) {
+			if (patientBox.equals(EACH_PATIENT) && testTypeBox.equals(ALL_TYPE) && timeBox.equals(NONE)) {
 			// for each patient, all type, all time
 				OLAP.setQueryResult(OLAP.byPatient(connection));
 
-			} else if (patientBox != null && testTypeBox == null && timeBox.equals(YEARLY_PERIOD)) {
+			} else if (patientBox.equals(EACH_PATIENT) && testTypeBox.equals(ALL_TYPE) && timeBox.equals(YEARLY_PERIOD)) {
 			// for each patient, all type, drill down to year
 				OLAP.setQueryResult(OLAP.byPatientYear(connection));
 
-			} else if (patientBox != null && testTypeBox == null && timeBox.equals(MONTHLY_PERIOD)) {
+			} else if (patientBox.equals(EACH_PATIENT) && testTypeBox.equals(ALL_TYPE) && timeBox.equals(MONTHLY_PERIOD)) {
 			// for each patient, all type, drill down to month
 				OLAP.setQueryResult(OLAP.byPatientMonth(connection));
 
-			} else if (patientBox != null && testTypeBox == null && timeBox.equals(WEEKLY_PERIOD)) {
+			} else if (patientBox.equals(EACH_PATIENT) && testTypeBox.equals(ALL_TYPE) && timeBox.equals(WEEKLY_PERIOD)) {
 			// for each patient, all type, drill down to week
 				OLAP.setQueryResult(OLAP.byPatientWeek(connection));
 
-			} else if (patientBox == null && testTypeBox != null && timeBox.equals(NONE)) {
+			} else if (patientBox.equals(ALL_PATIENT) && testTypeBox.equals(EACH_TYPE) && timeBox.equals(NONE)) {
 			// for each test type, all patient, all time
 				OLAP.setQueryResult(OLAP.byTestType(connection));
 
-			} else if (patientBox == null && testTypeBox != null && timeBox.equals(YEARLY_PERIOD)) {
+			} else if (patientBox.equals(ALL_PATIENT) && testTypeBox.equals(EACH_TYPE) && timeBox.equals(YEARLY_PERIOD)) {
 			// for each test type, all patient, drill down to year
 				OLAP.setQueryResult(OLAP.byTestTypeYear(connection));
 
-			} else if (patientBox == null && testTypeBox != null && timeBox.equals(MONTHLY_PERIOD)) {
+			} else if (patientBox.equals(ALL_PATIENT) && testTypeBox.equals(EACH_TYPE) && timeBox.equals(MONTHLY_PERIOD)) {
 			// for each test type, all patient, drill down to month
 				OLAP.setQueryResult(OLAP.byTestTypeMonth(connection));
 
-			} else if (patientBox == null && testTypeBox != null && timeBox.equals(WEEKLY_PERIOD)) {
+			} else if (patientBox.equals(ALL_PATIENT) && testTypeBox.equals(EACH_TYPE) && timeBox.equals(WEEKLY_PERIOD)) {
 			// for each test type, all patient, drill down to week
 				OLAP.setQueryResult(OLAP.byTestTypeWeek(connection));
 
-			} if (patientBox != null && testTypeBox != null && timeBox.equals(NONE)) {
+			} if (patientBox.equals(EACH_PATIENT) && testTypeBox.equals(EACH_TYPE) && timeBox.equals(NONE)) {
 			// for each patient and test type, all time
 				OLAP.setQueryResult(OLAP.byBoth(connection));
 
-			} else if (patientBox != null && testTypeBox != null && timeBox.equals(YEARLY_PERIOD)) {
+			} else if (patientBox.equals(EACH_PATIENT) && testTypeBox.equals(EACH_TYPE) && timeBox.equals(YEARLY_PERIOD)) {
 			// for each patient and test type, drill down to year
 				OLAP.setQueryResult(OLAP.byBothYear(connection));
 
-			} else if (patientBox != null && testTypeBox != null && timeBox.equals(MONTHLY_PERIOD)) {
+			} else if (patientBox.equals(EACH_PATIENT) && testTypeBox.equals(EACH_TYPE) && timeBox.equals(MONTHLY_PERIOD)) {
 			// for each patient and test type, drill down to month
 				OLAP.setQueryResult(OLAP.byBothMonth(connection));
 
-			} else if (patientBox != null && testTypeBox != null && timeBox.equals(WEEKLY_PERIOD)) {
+			} else if (patientBox.equals(EACH_PATIENT) && testTypeBox.equals(EACH_TYPE) && timeBox.equals(WEEKLY_PERIOD)) {
 			// for each patient and test type, drill down to week
 				OLAP.setQueryResult(OLAP.byBothWeek(connection));
 
-			} else if (patientBox == null && testTypeBox == null && timeBox.equals(YEARLY_PERIOD)) {
+			} else if (patientBox.equals(ALL_PATIENT) && testTypeBox.equals(ALL_TYPE) && timeBox.equals(YEARLY_PERIOD)) {
 			// all patient and test type, drill down to year
 				OLAP.setQueryResult(OLAP.byYear(connection));
 
-			} else if (patientBox == null && testTypeBox == null && timeBox.equals(MONTHLY_PERIOD)) {
+			} else if (patientBox.equals(ALL_PATIENT) && testTypeBox.equals(ALL_TYPE) && timeBox.equals(MONTHLY_PERIOD)) {
 			// all patient and test type, drill down to month
 				OLAP.setQueryResult(OLAP.byMonth(connection));
 
-			} else if (patientBox == null && testTypeBox == null && timeBox.equals(WEEKLY_PERIOD)) {
+			} else if (patientBox.equals(ALL_PATIENT) && testTypeBox.equals(ALL_TYPE) && timeBox.equals(WEEKLY_PERIOD)) {
 			// all patient and test type, drill down to week
 				OLAP.setQueryResult(OLAP.byWeek(connection));
 			}

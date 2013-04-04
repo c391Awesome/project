@@ -5,7 +5,7 @@
 </HEAD>
 
 <BODY>
-	<h1>Assign Family Doctor</h1>
+	<p><h1>Assign Family Doctor</h1></p><p><hr>
 <%@ page import="java.sql.*,ca.awesome.*" %>
 <% 
 
@@ -57,7 +57,7 @@
 		
 	<%
 %>
-
+	<p><hr><h4><a href="userManagementConsole.jsp">return to user management</a></h4>
 
 
 </BODY>

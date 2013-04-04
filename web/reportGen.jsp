@@ -29,7 +29,7 @@
 </HEAD>
 
 <BODY>
-	<p><b>Report Generating Module</b></p><p><hr>
+	<p><h1>Report Generating Module</h1></p><p><hr>
 
 
 	<FORM NAME="reportGen" ACTION="reportGen.jsp" METHOD="post" >
@@ -97,7 +97,7 @@
 			}
 		%>
 			</TABLE>
-	<p><hr><li><a href="login.jsp">back</a></li>
+	<p><hr><h4><a href="login.jsp">back</a></h4>
 
 
 </BODY>

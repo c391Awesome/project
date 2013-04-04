@@ -20,7 +20,7 @@
 
 	controller.getUploadToRecord();
 %>
-	<p><b>Uploading Module</b></p><p><hr>
+	<p><h1>Uploading Module</h1></p><p><hr>
 	<form name="uploadToRecord" method="GET" action="uploadImage.jsp">
 	<p><li>Please enter a radiology record then input or select the path of the image</P>
 	<table>
@@ -35,7 +35,7 @@
 	<tr><TD><input type="submit" name="SUBMIT" value="select"></td></tr>
 	</table>
 	</form>
-	<p><hr><li><a href="login.jsp">back</a></li>
+	<p><hr><h4><a href="login.jsp">back</a></h4>
 
 </BODY>
 </HTML>

@@ -4,7 +4,7 @@
 </HEAD>
 
 <BODY>
-	<p><b>Data analysis module</b></p><p><hr>
+	<p><h1>Data analysis module</h1></p><p><hr>
 
 <%@ page import="java.sql.*,ca.awesome.*" %>
 <%
@@ -15,37 +15,49 @@
 			return;
 	}
 	controller.setDropBoxValue();
+	controller.readParameters();
 %>
 
 <FORM NAME="analysis" ACTION="analysisInput.jsp" METHOD="post" >
 	<P><li>to generate the OLAB report on number of radiology record images:</P>
 	<fieldset><legend>select one or more:</legend>
 	<TABLE>
+
 	<TR VALIGN=TOP ALIGN=LEFT>
-	<TD><input type="checkbox" name="PATIENT_BOX" value="PATIENT"><B>for each patient</B></TD>
-	<TD><B><I>OR</I> choose a specific patient :</B></TD>
+	<TD><input type="radio" name="PATIENT_BOX" value="EACH_PATIENT" <%=controller.eachPatientChoosen()%>>
+		<B>each patient</B></TD>
+	<TD><input type="radio" name="PATIENT_BOX" value="A_PATIENT" <%=controller.aPatientChoosen()%>>
+		<B>one patient</B></TD>
 	<TD><select NAME="ONE_PATIENT">
-		<option value="NONE" selected>none</option>
+		<option value="NONE" <%=controller.noPatientSelected()%>>none</option>
 		<% for (User patient: controller.patients) { %>
-			<option value="<%= patient.getUserName() %>">
+			<option value="<%= patient.getUserName() %>" <%=controller.onePatientSelected(patient.getUserName())%>>
 				<%= patient.getUserName() %>
 			</option>
 		<% } %>
-	</select><BR></TD></TR>
+	</select></TD>
+	<TD><input type="radio" name="PATIENT_BOX" value="ALL_PATIENT" <%=controller.allPatientChoosen()%>>
+		<B>all patient</B></TD></TR>
+
 	<TR VALIGN=TOP ALIGN=LEFT>
-	<TD><input type="checkbox" name="TYPE_BOX" value="TESTTYPE"><B>for each test type</B></TD>
-	<TD><B><I>OR</I> choose a specific test type :</B></TD>
+	<TD><input type="radio" name="TYPE_BOX" value="EACH_TYPE" <%=controller.eachTypeChoosen()%>>
+		<B>each test type</B></TD>
+	<TD><input type="radio" name="TYPE_BOX" value="A_TYPE" <%=controller.aTypeChoosen()%>>
+		<B>one test type</B></TD>
 	<TD><select NAME="ONE_TYPE">
-		<option value="NONE" selected>none</option>
+		<option value="NONE" <%=controller.noTypeSelected()%>>none</option>
 		<% for (String type: controller.testTypes) { %>
-			<option value="<%= type%>">
+			<option value="<%= type%>" <%=controller.oneTypeSelected(type)%>>
 				<%= type%>
 			</option>
 		<% } %>
-	</select><BR></TD></TR>
+	</select></TD>
+	<TD><input type="radio" name="TYPE_BOX" value="ALL_TYPE" <%=controller.allTypeChoosen()%>>
+		<B>all test type</B></TD></TR>
+
 	<TR VALIGN=TOP ALIGN=LEFT><TD><B>period of time <I>(drill down / roll up)</I>:</B></TD>
 	<TD><select name="PERIOD">
-	<option value="NONE" selected>none</option>
+	<option value="NONE" selected>all time</option>
 	<option value="YEARLY">yearly</option>
 	<option value="MONTHLY">monthly</option>
 	<option value="WEEKLY">weekly</option>
@@ -92,7 +104,7 @@
 <%		}
 	}
 %>
-<p><hr><li><a href="login.jsp">back</a></li>
+<p><hr><h4><a href="login.jsp">back</a></h4>
 
 </BODY>
 </HTML>

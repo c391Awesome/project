@@ -17,7 +17,7 @@
 
 
 	if (controller.userIsLoggedIn()) {
-		%>	<p><b>Radiology Information System</b></p><p>
+		%>	<p><h1>Radiology Information System</h1></p><p>
 			<% if (controller.user.isPersonalInfoLoaded()) { %>
 				Hello, <%= controller.user.getUserType() %> <%= controller.user.getFirstName() %>
 						<%= controller.user.getLastName() %>.
@@ -53,7 +53,7 @@
 					</a></li>
 				<% } %>
 			</ul>
-			<p><hr><li><a href="logout.jsp">logout</a></li>
+			<p><hr><h4><a href="logout.jsp">logout</a></h4>
 		<%
 	} else {
 		%>
