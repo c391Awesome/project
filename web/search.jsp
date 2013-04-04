@@ -90,7 +90,7 @@
 			<TD><B><I><%= controller.formatDate(result.getTestDate()) %></I></B></TD>
 			<TD><B><I><%= result.getDiagnosis() %></I></B></TD>
 			<TD><B><I><%= result.getDescription() %></I></B></TD>
-			<TD><B><I>
+			<TD ALIGN=RIGHT><B><I>
 				<% for (int imageID: result.getImage_id()) { %>
 					<a href="displayImage.jsp?<%= imageID %>" target="_blank">
 						<img src="GetOnePic?<%= imageID %>"/>
