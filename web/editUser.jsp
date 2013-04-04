@@ -110,7 +110,7 @@
 
 	<ul class="nav">
 		<li><a href="userManagementConsole.jsp">return to user management</a></h4></li>
-		<li><a href="https://github.com/c391Awesome/project/wiki/User-management#to-edit-a-current-user-information">help</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/User-management#to-edit-a-current-user-information" target="_blank">help</a></li>
 	</ul>
 
 </BODY>

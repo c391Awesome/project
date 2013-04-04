@@ -60,7 +60,7 @@
 
 	<ul class="nav">
 		<li><a href="userManagementConsole.jsp">return to user management</a></li>
-		<li><a href="https://github.com/c391Awesome/project/wiki/User-management#assign-or-remove-doctors-for-a-patient">help</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/User-management#assign-or-remove-doctors-for-a-patient" target="_blank">help</a></li>
 	</ul>
 
 

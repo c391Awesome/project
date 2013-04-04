@@ -50,7 +50,7 @@
 
 	<ul class="nav">
 		<li><a href="login.jsp">back</a></li>
-		<li><a href="https://github.com/c391Awesome/project/wiki/Login#changing-your-password">help</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/Login#changing-your-password" target="_blank">help</a></li>
 	</ul>
 
 </BODY>

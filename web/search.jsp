@@ -109,7 +109,7 @@
 	
 	<ul class="nav">
 		<li><a href="login.jsp">back</a></li>
-		<li><a href="https://github.com/c391Awesome/project/wiki/Search">help</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/Search" target="_blank">help</a></li>
 	</ul>
 </BODY>
 

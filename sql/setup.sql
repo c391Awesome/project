@@ -70,7 +70,6 @@ CREATE TABLE pacs_images (
 
 @insertuser.sql
 @insertpersons.sql
-@insertrecord.sql
 @insertdoctor.sql
 @createIndices.sql
 @createSequence.sql

@@ -71,7 +71,7 @@
 %>
 	<ul class="nav">
 		<li><a href="userManagementConsole.jsp">return to user management</a></li>
-		<li><a href="https://github.com/c391Awesome/project/wiki/User-management#to-create-a-new-user">help</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/User-management#to-create-a-new-user" target="_blank">help</a></li>
 	</ul>
 
 </BODY>

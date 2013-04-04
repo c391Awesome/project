@@ -43,7 +43,7 @@
 	</FORM>
 	<ul class="nav">
 		<li><a href="login.jsp">back</a></li>
-		<li><a href="https://github.com/c391Awesome/project/wiki/User-management">help</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/User-management" target="_blank">help</a></li>
 	</ul>
 </BODY>
 </HTML>

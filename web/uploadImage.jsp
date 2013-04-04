@@ -58,7 +58,7 @@
 	<ul class="nav">
 		<li><a href="login.jsp">back</a></li>
 		<li><a href="uploadToRecord.jsp">upload to a different record</a></li>
-		<li><a href="https://github.com/c391Awesome/project/wiki/Image-uploading#creating-a-radiology-record">help</a></li>
+		<li><a href="https://github.com/c391Awesome/project/wiki/Image-uploading#creating-a-radiology-record" target="_blank">help</a></li>
 	</ul>
 
 </BODY>

@@ -55,7 +55,7 @@
 			</ul>
 			<ul class="nav">
 				<li><a href="logout.jsp">logout</a></li>
-				<li><a href="https://github.com/c391Awesome/project/wiki/Help">help</a></li>
+				<li><a href="https://github.com/c391Awesome/project/wiki/Help" target="_blank">help</a></li>
 			</ul>
 		<%
 	} else {
