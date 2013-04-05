@@ -104,6 +104,14 @@ public class Controller {
 		}
 	}
 
+	public boolean recordTableEmpty() {
+		Record record = Record.getEmptyRecord();
+		if (record.getAllRecord(getDatabaseConnection(context)).isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
 	public boolean hasError() {
 		return error != null;
 	}

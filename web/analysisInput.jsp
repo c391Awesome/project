@@ -13,7 +13,15 @@
 		getServletContext(), request, response, session);
 
 	if (!controller.requireAdmin()) {
-			return;
+		return;
+	}
+	if (controller.recordTableEmpty()) {
+%>		<span class="error">table radiology_record is empty!</span>
+		<ul class="nav">
+			<li><a href="login.jsp">back</a></li>
+			<li><a href="https://github.com/c391Awesome/project/wiki/Data-analysis" target="_blank">help</a></li>
+		</ul>
+<%		return;
 	}
 	controller.setDropBoxValue();
 	controller.readParameters();

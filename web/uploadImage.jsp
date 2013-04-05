@@ -14,7 +14,14 @@
 	if (!controller.requireRadiologist()) {
 		return;
 	}
-
+	if (controller.recordTableEmpty()) {
+%>		<span class="error">table radiology_record is empty!</span>
+		<ul class="nav">
+			<li><a href="login.jsp">back</a></li>
+			<li><a href="https://github.com/c391Awesome/project/wiki/Image-uploading#creating-a-radiology-record" target="_blank">help</a></li>
+		</ul>
+<%		return;
+	}
 	if (controller.requestIsGet()) { 
 		controller.attemptSelectRecord();
 	}
