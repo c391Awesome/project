@@ -60,9 +60,7 @@ public class OLAPOperation {
 		try {
 			statement = connection.createStatement();
 			results = statement.executeQuery(
-				"select image_count from OLAPcube"
-				+" where patient_name is NULL and test_type is NULL"
-				+" and year is NULL and month is NULL and week is NULL"
+				"select count(image_id) from pacs_images"
 			);
 			results.next();
 			int totalCount = results.getInt(1);

@@ -50,9 +50,13 @@ public class OLAPController extends Controller {
 
 	// GET analysisInput.jsp
 	public void setDropBoxValue() {
+		OLAPOperation OLAP = new OLAPOperation();
+
+		totalImageCount = OLAP.getTotal(getDatabaseConnection(context));
 		patients = User.findUsersByType(User.PATIENT_T,
 					getDatabaseConnection(context));
 		testTypes = Record.getAllTestType(getDatabaseConnection(context));
+		
 	}
 
 	// POST analysisInput.jsp
@@ -60,6 +64,9 @@ public class OLAPController extends Controller {
 	// and can not choose all test type and one specific test type at the same time
 	public boolean getInput() {
 		readParameters();
+		if (totalImageCount == 0) {
+			return true;
+		}
 		if (patientBox.equals(ALL_PATIENT) && !onePatient.equals(NONE)) {
 			return false;
 		}
@@ -187,8 +194,6 @@ public class OLAPController extends Controller {
 			OLAPOperation OLAP = new OLAPOperation();
 
 			OLAP.setCubeTable(connection);
-
-			//totalImageCount = OLAP.getTotal(connection);
 			
 			if (patientBox.equals(EACH_PATIENT) && testTypeBox.equals(ALL_TYPE) && timeBox.equals(NONE)) {
 			// for each patient, all type, all time

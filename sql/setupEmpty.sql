@@ -1,9 +1,3 @@
-/*
- *  File name:  setup.sql
- *  Function:   to create the initial database schema for the CMPUT 391 project,
- *              Winter Term, 2012
- *  Author:     Prof. Li-Yan Yuan
- */
 DROP TABLE persons;
 DROP TABLE family_doctor;
 DROP TABLE pacs_images;
@@ -68,8 +62,6 @@ CREATE TABLE pacs_images (
    FOREIGN KEY(record_id) REFERENCES radiology_record
 );
 
-@insertuser.sql
-@insertpersons.sql
-@insertdoctor.sql
 @createIndices.sql
 @createSequence.sql
+

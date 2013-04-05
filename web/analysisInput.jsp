@@ -35,6 +35,7 @@
 	<TR VALIGN=TOP ALIGN=LEFT>
 	<TD><input type="radio" name="PATIENT_BOX" value="EACH_PATIENT" <%=controller.eachPatientChoosen()%>>
 		<B>each patient</B></TD>
+	<% if (controller.totalImageCount > 0) { %>
 	<TD><input type="radio" name="PATIENT_BOX" value="A_PATIENT" <%=controller.aPatientChoosen()%>>
 		<B>one patient</B></TD>
 	<TD><select NAME="ONE_PATIENT">
@@ -45,12 +46,14 @@
 			</option>
 		<% } %>
 	</select></TD>
+	<% } %>
 	<TD><input type="radio" name="PATIENT_BOX" value="ALL_PATIENT" <%=controller.allPatientChoosen()%>>
 		<B>all patients</B></TD></TR>
 
 	<TR VALIGN=TOP ALIGN=LEFT>
 	<TD><input type="radio" name="TYPE_BOX" value="EACH_TYPE" <%=controller.eachTypeChoosen()%>>
 		<B>each test type</B></TD>
+	<% if (controller.totalImageCount > 0) { %>
 	<TD><input type="radio" name="TYPE_BOX" value="A_TYPE" <%=controller.aTypeChoosen()%>>
 		<B>one test type</B></TD>
 	<TD><select NAME="ONE_TYPE">
@@ -61,6 +64,7 @@
 			</option>
 		<% } %>
 	</select></TD>
+	<% } %>
 	<TD><input type="radio" name="TYPE_BOX" value="ALL_TYPE" <%=controller.allTypeChoosen()%>>
 		<B>all test types</B></TD></TR>
 	</TABLE>
@@ -92,7 +96,8 @@
 	<TD><B>Patient</B></TD>
 	<TD><B>test type</B></TD>
 	<TD><B>Image count</B></TD></TR>
-<%	int index = 1; 	
+<% if (controller.totalImageCount > 0) {
+	int index = 1; 	
 	for (String temp : controller.attemptGetOLAP()) {
 		if (index == 1) {
 %>			<TR VALIGN=TOP ALIGN=LEFT>
@@ -105,6 +110,7 @@
 <%		}
 		index++;
 	}
+   }
 %></TABLE><TABLE border="1">
 	<TR VALIGN=TOP ALIGN=LEFT>
 		<TD><B>TOTAL</B></TD>
